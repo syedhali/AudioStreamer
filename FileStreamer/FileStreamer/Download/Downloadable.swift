@@ -14,7 +14,7 @@ protocol Downloadable: class {
     
     var completionHandler: ((Error?) -> Void)? { get set }
     
-    var data: Data? { get }
+    var data: Data { get }
     
     var progress: Float { get }
     

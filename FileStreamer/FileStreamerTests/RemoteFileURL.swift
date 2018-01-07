@@ -24,7 +24,7 @@ enum RemoteFileURL {
         case .faithfulDog:
             urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264432/faithful-dog_exlvpb.aac"
         case .theLastOnes:
-            urlString = "http://res.cloudinary.com/drvibcm45/video/upload/v1515264432/the-last-ones_rglkft.aac"
+            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264432/the-last-ones_rglkft.aac"
         }
         return URL(string: urlString)!
     }
@@ -40,6 +40,21 @@ enum RemoteFileURL {
             urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/faithful-dog_ihawmp.mp3"
         case .theLastOnes:
             urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/the-last-ones_fc6omw.mp3"
+        }
+        return URL(string: urlString)!
+    }
+    
+    var wav: URL {
+        var urlString: String
+        switch self {
+        case .brokeForFree:
+            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288411/broke-for-free_fzu5xw.wav"
+        case .claire:
+            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288411/claire_lih3yt.wav"
+        case .faithfulDog:
+            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288410/faithful-dog_cygtnr.wav"
+        case .theLastOnes:
+            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288410/the-last-ones_tcqkl6.wav"
         }
         return URL(string: urlString)!
     }
@@ -69,13 +84,13 @@ enum RemoteFileURL {
         var urlString: String
         switch self {
         case .brokeForFree:
-            urlString = "http://freemusicarchive.org/music/Broke_For_Free/Something_EP/Broke_For_Free_-_Something_EP_-_05_Something_Elated"
+            urlString = "https://freemusicarchive.org/music/Broke_For_Free/Something_EP/Broke_For_Free_-_Something_EP_-_05_Something_Elated"
         case .claire:
-            urlString = "http://freemusicarchive.org/music/Podington_Bear/Clair_De_Lune_Variations/Clair_De_Lune_Felt_Piano_Rhodes_and_Drum_Machine_Arr"
+            urlString = "https://freemusicarchive.org/music/Podington_Bear/Clair_De_Lune_Variations/Clair_De_Lune_Felt_Piano_Rhodes_and_Drum_Machine_Arr"
         case .faithfulDog:
-            urlString = "http://freemusicarchive.org/music/The_Kyoto_Connection/Wake_Up_1957/09_Hachiko_The_Faithtful_Dog"
+            urlString = "https://freemusicarchive.org/music/The_Kyoto_Connection/Wake_Up_1957/09_Hachiko_The_Faithtful_Dog"
         case .theLastOnes:
-            urlString = "http://freemusicarchive.org/music/Jahzzar/Smoke_Factory/The_last_ones"
+            urlString = "https://freemusicarchive.org/music/Jahzzar/Smoke_Factory/The_last_ones"
         }
         let songHomepageURL = URL(string: urlString)!
         return .freeMusicArchive(songHomepageURL: songHomepageURL)

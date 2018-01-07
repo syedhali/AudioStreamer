@@ -18,11 +18,22 @@
 		66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */; };
 		66A1397E2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */; };
 		66A1397F2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */; };
-		66A13981200140C60076B0E5 /* RemoteFileURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13980200140C60076B0E5 /* RemoteFileURLs.swift */; };
+		66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13980200140C60076B0E5 /* RemoteFileURL.swift */; };
 		66A139832001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
 		66A139842001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
 		66A13986200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */; };
 		66A13987200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */; };
+		66A13993200176B60076B0E5 /* Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13992200176B60076B0E5 /* Parsable.swift */; };
+		66A13994200176B60076B0E5 /* Parsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13992200176B60076B0E5 /* Parsable.swift */; };
+		66A13996200177050076B0E5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13995200177050076B0E5 /* Parser.swift */; };
+		66A13997200177050076B0E5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13995200177050076B0E5 /* Parser.swift */; };
+		66A1399C200179AD0076B0E5 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1399B200179AD0076B0E5 /* ParserTests.swift */; };
+		66C8350820019AD300E953C7 /* ParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350720019AD300E953C7 /* ParserError.swift */; };
+		66C8350920019C3900E953C7 /* ParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350720019AD300E953C7 /* ParserError.swift */; };
+		66C8350B2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */; };
+		66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */; };
+		66C8350E2001AAF400E953C7 /* Parser+Packets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350D2001AAF400E953C7 /* Parser+Packets.swift */; };
+		66C8350F2001AAF400E953C7 /* Parser+Packets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350D2001AAF400E953C7 /* Parser+Packets.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -46,9 +57,15 @@
 		66A1397520013FAA0076B0E5 /* Downloadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadableDelegate.swift; sourceTree = "<group>"; };
 		66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+Downloadable.swift"; sourceTree = "<group>"; };
-		66A13980200140C60076B0E5 /* RemoteFileURLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFileURLs.swift; sourceTree = "<group>"; };
+		66A13980200140C60076B0E5 /* RemoteFileURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFileURL.swift; sourceTree = "<group>"; };
 		66A139822001546D0076B0E5 /* DownloadableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadableState.swift; sourceTree = "<group>"; };
 		66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+URLSessionDelegate.swift"; sourceTree = "<group>"; };
+		66A13992200176B60076B0E5 /* Parsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsable.swift; sourceTree = "<group>"; };
+		66A13995200177050076B0E5 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
+		66A1399B200179AD0076B0E5 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
+		66C8350720019AD300E953C7 /* ParserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserError.swift; sourceTree = "<group>"; };
+		66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+PropertyListener.swift"; sourceTree = "<group>"; };
+		66C8350D2001AAF400E953C7 /* Parser+Packets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Packets.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,7 +92,6 @@
 			children = (
 				66A1395B20013F860076B0E5 /* FileStreamer */,
 				66A1396620013F860076B0E5 /* FileStreamerTests */,
-				66A1395A20013F860076B0E5 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -86,13 +102,15 @@
 				66A1396220013F860076B0E5 /* FileStreamerTests.xctest */,
 			);
 			name = Products;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		66A1395B20013F860076B0E5 /* FileStreamer */ = {
 			isa = PBXGroup;
 			children = (
 				66A1395C20013F860076B0E5 /* FileStreamer.h */,
-				66A1397320013FAA0076B0E5 /* Core */,
+				66A1397320013FAA0076B0E5 /* Download */,
+				66A139912001768B0076B0E5 /* Parse */,
 				66A1395D20013F860076B0E5 /* Info.plist */,
 			);
 			path = FileStreamer;
@@ -101,14 +119,16 @@
 		66A1396620013F860076B0E5 /* FileStreamerTests */ = {
 			isa = PBXGroup;
 			children = (
-				66A13980200140C60076B0E5 /* RemoteFileURLs.swift */,
+				66A13980200140C60076B0E5 /* RemoteFileURL.swift */,
 				66A1396720013F860076B0E5 /* DownloaderTests.swift */,
+				66A1399B200179AD0076B0E5 /* ParserTests.swift */,
+				66A1395A20013F860076B0E5 /* Products */,
 				66A1396920013F860076B0E5 /* Info.plist */,
 			);
 			path = FileStreamerTests;
 			sourceTree = "<group>";
 		};
-		66A1397320013FAA0076B0E5 /* Core */ = {
+		66A1397320013FAA0076B0E5 /* Download */ = {
 			isa = PBXGroup;
 			children = (
 				66A1397420013FAA0076B0E5 /* Downloader.swift */,
@@ -118,7 +138,19 @@
 				66A139822001546D0076B0E5 /* DownloadableState.swift */,
 				66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */,
 			);
-			path = Core;
+			path = Download;
+			sourceTree = "<group>";
+		};
+		66A139912001768B0076B0E5 /* Parse */ = {
+			isa = PBXGroup;
+			children = (
+				66A13995200177050076B0E5 /* Parser.swift */,
+				66C8350D2001AAF400E953C7 /* Parser+Packets.swift */,
+				66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */,
+				66A13992200176B60076B0E5 /* Parsable.swift */,
+				66C8350720019AD300E953C7 /* ParserError.swift */,
+			);
+			path = Parse;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +267,11 @@
 				66A1397720013FAA0076B0E5 /* Downloader.swift in Sources */,
 				66A1397920013FAA0076B0E5 /* Downloadable.swift in Sources */,
 				66A1397E2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */,
+				66C8350E2001AAF400E953C7 /* Parser+Packets.swift in Sources */,
+				66C8350820019AD300E953C7 /* ParserError.swift in Sources */,
+				66A13996200177050076B0E5 /* Parser.swift in Sources */,
+				66A13993200176B60076B0E5 /* Parsable.swift in Sources */,
+				66C8350B2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
 				66A1397B20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
 				66A139832001546D0076B0E5 /* DownloadableState.swift in Sources */,
 			);
@@ -246,12 +283,18 @@
 			files = (
 				66A1397F2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */,
 				66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
+				66C8350F2001AAF400E953C7 /* Parser+Packets.swift in Sources */,
+				66A13997200177050076B0E5 /* Parser.swift in Sources */,
 				66A13987200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */,
 				66A139842001546D0076B0E5 /* DownloadableState.swift in Sources */,
+				66A1399C200179AD0076B0E5 /* ParserTests.swift in Sources */,
 				66A1397820013FAA0076B0E5 /* Downloader.swift in Sources */,
+				66C8350920019C3900E953C7 /* ParserError.swift in Sources */,
+				66A13994200176B60076B0E5 /* Parsable.swift in Sources */,
 				66A1396820013F860076B0E5 /* DownloaderTests.swift in Sources */,
+				66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
 				66A1397A20013FAA0076B0E5 /* Downloadable.swift in Sources */,
-				66A13981200140C60076B0E5 /* RemoteFileURLs.swift in Sources */,
+				66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

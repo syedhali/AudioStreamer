@@ -1,34 +1,34 @@
 //
-//  DownloaderTests.swift
-//  DownloaderTests
+//  ParserTests.swift
+//  FileStreamerTests
 //
 //  Created by Syed Haris Ali on 1/6/18.
 //  Copyright © 2018 Ausome Apps LLC. All rights reserved.
 //
 
 import XCTest
+import os.log
 @testable import FileStreamer
 
-class DownloaderTests: XCTestCase {
+class ParserTests: XCTestCase {
     
-    func testInitialState() {
-        let url = RemoteFileURL.claire.mp3
-        let downloader = Downloader(url: url)
-        XCTAssertEqual(downloader.url, url)
-        XCTAssertNotNil(downloader.data)
-        XCTAssertEqual(downloader.data.count, 0)
-        XCTAssertEqual(downloader.progress, 0.0)
-        XCTAssertEqual(downloader.totalBytesReceived, 0)
-        XCTAssertEqual(downloader.totalBytesLength, 0)
-        XCTAssertEqual(downloader.state, .notStarted)
-    }
-    
-    func testDownloadMP3() {
-        let expectation = XCTestExpectation(description: "Download MP3")
+    func testParseDownloadedMP3() {
+        let expectation = XCTestExpectation(description: "Download & Parse MP3")
         
         let url = RemoteFileURL.theLastOnes.mp3
         let downloader = Downloader(url: url)
+        downloader.useCache = false
         downloader.start()
+        
+        do {
+            let parser = try Parser()
+            downloader.progressHandler = { (data, progress) in
+                parser.parse(data: data)
+            }
+        } catch {
+            XCTFail("Could not create parser")
+        }
+        
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
@@ -39,12 +39,23 @@ class DownloaderTests: XCTestCase {
         self.wait(for: [expectation], timeout: 10)
     }
     
-    func testDownloadAAC() {
-        let expectation = XCTestExpectation(description: "Download AAC")
+    func testParseDownloadedAAC() {
+        let expectation = XCTestExpectation(description: "Download & Parse AAC")
         
         let url = RemoteFileURL.theLastOnes.aac
         let downloader = Downloader(url: url)
+        downloader.useCache = false
         downloader.start()
+        
+        do {
+            let parser = try Parser()
+            downloader.progressHandler = { (data, progress) in
+                parser.parse(data: data)
+            }
+        } catch {
+            XCTFail("Could not create parser")
+        }
+        
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
@@ -55,12 +66,23 @@ class DownloaderTests: XCTestCase {
         self.wait(for: [expectation], timeout: 10)
     }
     
-    func testDownloadWAV() {
-        let expectation = XCTestExpectation(description: "Download WAV")
+    func testParseDownloadedWAV() {
+        let expectation = XCTestExpectation(description: "Download & Parse WAV")
         
         let url = RemoteFileURL.theLastOnes.wav
         let downloader = Downloader(url: url)
+        downloader.useCache = false
         downloader.start()
+        
+        do {
+            let parser = try Parser()
+            downloader.progressHandler = { (data, progress) in
+                parser.parse(data: data)
+            }
+        } catch {
+            XCTFail("Could not create parser")
+        }
+        
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
@@ -70,4 +92,5 @@ class DownloaderTests: XCTestCase {
         
         self.wait(for: [expectation], timeout: 10)
     }
+    
 }
