@@ -7,9 +7,33 @@
 //
 
 import Foundation
+import AVFoundation
 
-protocol Parsable: class {
-   
+/// <#Description#>
+public protocol Parsable: class {
+    
+    // MARK: - Properties
+    
+    /// <#Description#>
+    var byteCount: UInt64 { get }
+    
+    /// <#Description#>
+    var dataFormat: AVAudioFormat? { get }
+    
+    /// <#Description#>
+    var isComplete: Bool { get }
+    
+    /// <#Description#>
+    var fileFormat: AVAudioFormat? { get }
+    
+    /// <#Description#>
+    var packets: [(Data, AudioStreamPacketDescription?)] { get }
+    
+    // MARK: - Methods
+    
+    /// <#Description#>
+    ///
+    /// - Parameter data: <#data description#>
     func parse(data: Data)
     
 }

@@ -38,13 +38,13 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         var format = AudioStreamBasicDescription()
         get(value: &format)
         info.fileFormat = AVAudioFormat(streamDescription: &format)
-        os_log("File format: %@", log: Parser.loggerPropertyListenerCallback, type: .error, String(describing: info.fileFormat))
+        os_log("File format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: info.fileFormat))
         
     case kAudioFileStreamProperty_DataFormat:
         var format = AudioStreamBasicDescription()
         get(value: &format)
         info.dataFormat = AVAudioFormat(streamDescription: &format)
-        os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .error, String(describing: info.dataFormat))
+        os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: info.dataFormat))
         
     case kAudioFileStreamProperty_FormatList:
         os_log("kAudioFileStreamProperty_FormatList", log: Parser.loggerPropertyListenerCallback, type: .debug)
@@ -56,13 +56,13 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         var byteCount: UInt64 = 0
         get(value: &byteCount)
         info.byteCount = byteCount
-        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .error, byteCount)
+        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, byteCount)
         
     case kAudioFileStreamProperty_AudioDataPacketCount:
         var packetCount: UInt64 = 0
         get(value: &packetCount)
         info.packetCount = packetCount
-        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .error, packetCount)
+        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, packetCount)
         
     case kAudioFileStreamProperty_MaximumPacketSize:
         os_log("kAudioFileStreamProperty_MaximumPacketSize", log: Parser.loggerPropertyListenerCallback, type: .debug)
@@ -71,7 +71,7 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         var dataOffset: Int64 = 0
         get(value: &dataOffset)
         info.dataOffset = dataOffset
-        os_log("Data Offset: %i", log: Parser.loggerPropertyListenerCallback, type: .error, dataOffset)
+        os_log("Data Offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, dataOffset)
         
     case kAudioFileStreamProperty_ChannelLayout:
         os_log("kAudioFileStreamProperty_ChannelLayout", log: Parser.loggerPropertyListenerCallback, type: .debug)
@@ -101,7 +101,7 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         var bitRate: UInt32 = 0
         get(value: &bitRate)
         info.bitRate = bitRate
-        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .error, bitRate)
+        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, bitRate)
         
     case kAudioFileStreamProperty_InfoDictionary:
         os_log("kAudioFileStreamProperty_InfoDictionary", log: Parser.loggerPropertyListenerCallback, type: .debug)

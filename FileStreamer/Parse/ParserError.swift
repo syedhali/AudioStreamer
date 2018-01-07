@@ -8,6 +8,9 @@
 
 import Foundation
 
+/// <#Description#>
+///
+/// - streamCouldNotOpen: <#streamCouldNotOpen description#>
 public enum ParserError: Error {
     case streamCouldNotOpen
 }

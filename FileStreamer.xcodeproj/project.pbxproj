@@ -16,8 +16,6 @@
 		66A1397A20013FAA0076B0E5 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397520013FAA0076B0E5 /* Downloadable.swift */; };
 		66A1397B20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */; };
 		66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */; };
-		66A1397E2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */; };
-		66A1397F2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */; };
 		66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13980200140C60076B0E5 /* RemoteFileURL.swift */; };
 		66A139832001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
 		66A139842001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
@@ -34,6 +32,13 @@
 		66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */; };
 		66C8350E2001AAF400E953C7 /* Parser+Packets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350D2001AAF400E953C7 /* Parser+Packets.swift */; };
 		66C8350F2001AAF400E953C7 /* Parser+Packets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350D2001AAF400E953C7 /* Parser+Packets.swift */; };
+		66C835142001BEFA00E953C7 /* Readable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835132001BEFA00E953C7 /* Readable.swift */; };
+		66C835152001BEFA00E953C7 /* Readable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835132001BEFA00E953C7 /* Readable.swift */; };
+		66C835172001BF0000E953C7 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835162001BF0000E953C7 /* Reader.swift */; };
+		66C835182001BF0000E953C7 /* Reader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835162001BF0000E953C7 /* Reader.swift */; };
+		66C8351A2001DAC400E953C7 /* ReaderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835192001DAC400E953C7 /* ReaderError.swift */; };
+		66C8351B2001DAC400E953C7 /* ReaderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835192001DAC400E953C7 /* ReaderError.swift */; };
+		66C8351D2001DDE900E953C7 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8351C2001DDE900E953C7 /* ReaderTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,7 +61,6 @@
 		66A1397420013FAA0076B0E5 /* Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		66A1397520013FAA0076B0E5 /* Downloadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadableDelegate.swift; sourceTree = "<group>"; };
-		66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+Downloadable.swift"; sourceTree = "<group>"; };
 		66A13980200140C60076B0E5 /* RemoteFileURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFileURL.swift; sourceTree = "<group>"; };
 		66A139822001546D0076B0E5 /* DownloadableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadableState.swift; sourceTree = "<group>"; };
 		66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+URLSessionDelegate.swift"; sourceTree = "<group>"; };
@@ -66,6 +70,10 @@
 		66C8350720019AD300E953C7 /* ParserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserError.swift; sourceTree = "<group>"; };
 		66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+PropertyListener.swift"; sourceTree = "<group>"; };
 		66C8350D2001AAF400E953C7 /* Parser+Packets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Packets.swift"; sourceTree = "<group>"; };
+		66C835132001BEFA00E953C7 /* Readable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Readable.swift; sourceTree = "<group>"; };
+		66C835162001BF0000E953C7 /* Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reader.swift; sourceTree = "<group>"; };
+		66C835192001DAC400E953C7 /* ReaderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderError.swift; sourceTree = "<group>"; };
+		66C8351C2001DDE900E953C7 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +119,7 @@
 				66A1395C20013F860076B0E5 /* FileStreamer.h */,
 				66A1397320013FAA0076B0E5 /* Download */,
 				66A139912001768B0076B0E5 /* Parse */,
+				66C835102001BED600E953C7 /* Reader */,
 				66A1395D20013F860076B0E5 /* Info.plist */,
 			);
 			path = FileStreamer;
@@ -122,6 +131,7 @@
 				66A13980200140C60076B0E5 /* RemoteFileURL.swift */,
 				66A1396720013F860076B0E5 /* DownloaderTests.swift */,
 				66A1399B200179AD0076B0E5 /* ParserTests.swift */,
+				66C8351C2001DDE900E953C7 /* ReaderTests.swift */,
 				66A1395A20013F860076B0E5 /* Products */,
 				66A1396920013F860076B0E5 /* Info.plist */,
 			);
@@ -132,7 +142,6 @@
 			isa = PBXGroup;
 			children = (
 				66A1397420013FAA0076B0E5 /* Downloader.swift */,
-				66A1397D2001400F0076B0E5 /* Downloader+Downloadable.swift */,
 				66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */,
 				66A1397520013FAA0076B0E5 /* Downloadable.swift */,
 				66A139822001546D0076B0E5 /* DownloadableState.swift */,
@@ -151,6 +160,16 @@
 				66C8350720019AD300E953C7 /* ParserError.swift */,
 			);
 			path = Parse;
+			sourceTree = "<group>";
+		};
+		66C835102001BED600E953C7 /* Reader */ = {
+			isa = PBXGroup;
+			children = (
+				66C835162001BF0000E953C7 /* Reader.swift */,
+				66C835132001BEFA00E953C7 /* Readable.swift */,
+				66C835192001DAC400E953C7 /* ReaderError.swift */,
+			);
+			path = Reader;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -263,15 +282,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66C835172001BF0000E953C7 /* Reader.swift in Sources */,
 				66A13986200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */,
 				66A1397720013FAA0076B0E5 /* Downloader.swift in Sources */,
 				66A1397920013FAA0076B0E5 /* Downloadable.swift in Sources */,
-				66A1397E2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */,
+				66C8351A2001DAC400E953C7 /* ReaderError.swift in Sources */,
 				66C8350E2001AAF400E953C7 /* Parser+Packets.swift in Sources */,
 				66C8350820019AD300E953C7 /* ParserError.swift in Sources */,
 				66A13996200177050076B0E5 /* Parser.swift in Sources */,
 				66A13993200176B60076B0E5 /* Parsable.swift in Sources */,
 				66C8350B2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
+				66C835142001BEFA00E953C7 /* Readable.swift in Sources */,
 				66A1397B20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
 				66A139832001546D0076B0E5 /* DownloadableState.swift in Sources */,
 			);
@@ -281,15 +302,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66A1397F2001400F0076B0E5 /* Downloader+Downloadable.swift in Sources */,
 				66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
 				66C8350F2001AAF400E953C7 /* Parser+Packets.swift in Sources */,
 				66A13997200177050076B0E5 /* Parser.swift in Sources */,
 				66A13987200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */,
 				66A139842001546D0076B0E5 /* DownloadableState.swift in Sources */,
+				66C8351D2001DDE900E953C7 /* ReaderTests.swift in Sources */,
+				66C835152001BEFA00E953C7 /* Readable.swift in Sources */,
 				66A1399C200179AD0076B0E5 /* ParserTests.swift in Sources */,
 				66A1397820013FAA0076B0E5 /* Downloader.swift in Sources */,
 				66C8350920019C3900E953C7 /* ParserError.swift in Sources */,
+				66C8351B2001DAC400E953C7 /* ReaderError.swift in Sources */,
+				66C835182001BF0000E953C7 /* Reader.swift in Sources */,
 				66A13994200176B60076B0E5 /* Parsable.swift in Sources */,
 				66A1396820013F860076B0E5 /* DownloaderTests.swift in Sources */,
 				66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,

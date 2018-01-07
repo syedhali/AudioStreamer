@@ -19,18 +19,34 @@ class ParserTests: XCTestCase {
         let downloader = Downloader(url: url)
         downloader.start()
         
+        var parserOrNil: Parser?
         do {
-            let parser = try Parser()
-            downloader.progressHandler = { (data, progress) in
-                parser.parse(data: data)
-            }
+            parserOrNil = try Parser()
         } catch {
             XCTFail("Could not create parser")
+            return
+        }
+        
+        guard let parser = parserOrNil else {
+            XCTFail("Did not create parser")
+            return
+        }
+        
+        downloader.progressHandler = { (data, progress) in
+            parser.parse(data: data)
         }
         
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
+            
+            XCTAssertEqual(parser.bitRate, 8000)
+            XCTAssertEqual(parser.byteCount, 180245)
+            XCTAssertEqual(parser.dataOffset, 757)
+            XCTAssertNotEqual(parser.dataFormat, nil)
+            XCTAssertNotEqual(parser.fileFormat, nil)
+            XCTAssertEqual(parser.packets.count, 3450)
+            
             expectation.fulfill()
         }
         XCTAssertEqual(downloader.state, .started)
@@ -45,18 +61,32 @@ class ParserTests: XCTestCase {
         let downloader = Downloader(url: url)
         downloader.start()
         
+        var parserOrNil: Parser?
         do {
-            let parser = try Parser()
-            downloader.progressHandler = { (data, progress) in
-                parser.parse(data: data)
-            }
+            parserOrNil = try Parser()
         } catch {
             XCTFail("Could not create parser")
+            return
+        }
+        
+        guard let parser = parserOrNil else {
+            XCTFail("Did not create parser")
+            return
+        }
+        
+        downloader.progressHandler = { (data, progress) in
+            parser.parse(data: data)
         }
         
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
+            
+            XCTAssertEqual(parser.dataOffset, 0)
+            XCTAssertNotEqual(parser.dataFormat, nil)
+            XCTAssertNotEqual(parser.fileFormat, nil)
+            XCTAssertEqual(parser.packets.count, 1942)
+            
             expectation.fulfill()
         }
         XCTAssertEqual(downloader.state, .started)
@@ -71,18 +101,33 @@ class ParserTests: XCTestCase {
         let downloader = Downloader(url: url)
         downloader.start()
         
+        var parserOrNil: Parser?
         do {
-            let parser = try Parser()
-            downloader.progressHandler = { (data, progress) in
-                parser.parse(data: data)
-            }
+            parserOrNil = try Parser()
         } catch {
             XCTFail("Could not create parser")
+            return
+        }
+        
+        guard let parser = parserOrNil else {
+            XCTFail("Did not create parser")
+            return
+        }
+        
+        downloader.progressHandler = { (data, progress) in
+            parser.parse(data: data)
         }
         
         downloader.completionHandler = {
             XCTAssertEqual(downloader.state, .completed)
             XCTAssertNil($0)
+            
+            XCTAssertEqual(parser.byteCount, 7943040)
+            XCTAssertEqual(parser.dataOffset, 498)
+            XCTAssertNotEqual(parser.dataFormat, nil)
+            XCTAssertNotEqual(parser.fileFormat, nil)
+            XCTAssertEqual(parser.packets.count, 3971520)
+            
             expectation.fulfill()
         }
         XCTAssertEqual(downloader.state, .started)

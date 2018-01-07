@@ -9,14 +9,6 @@
 import Foundation
 import os.log
 
-extension Downloader: URLSessionDelegate {
-    public func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
-
-        completionHandler(.performDefaultHandling, nil)
-    }
-}
-
 extension Downloader: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)

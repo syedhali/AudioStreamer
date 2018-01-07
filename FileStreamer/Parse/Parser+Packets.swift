@@ -26,19 +26,20 @@ func ParserPacketCallback(_ context: UnsafeMutableRawPointer, _ byteCount: UInt3
     /// Iterate through the packets and store the data appropriately
     if isCompressed {
         for i in 0 ..< Int(packetCount) {
-            let packetStart = Int(packetDescriptions[i].mStartOffset)
-            let packetSize = Int(packetDescriptions[i].mDataByteSize)
+            let packetDescription = packetDescriptions[i]
+            let packetStart = Int(packetDescription.mStartOffset)
+            let packetSize = Int(packetDescription.mDataByteSize)
             let packetData = Data(bytes: data.advanced(by: packetStart), count: packetSize)
-            info.packets.append(packetData)
+            info.packets.append((packetData, packetDescription))
         }
     } else {
         let format = dataFormat.streamDescription.pointee
-        let bytesPerFrame = format.mBytesPerPacket
+        let bytesPerPacket = format.mBytesPerPacket
         for i in 0 ..< Int(packetCount) {
             let packetStart = Int(i)
-            let packetSize = Int(bytesPerFrame)
+            let packetSize = Int(bytesPerPacket)
             let packetData = Data(bytes: data.advanced(by: packetStart), count: packetSize)
-            info.packets.append(packetData)
+            info.packets.append((packetData, nil))
         }
     }
 }

@@ -8,29 +8,50 @@
 
 import Foundation
 
-protocol Downloadable: class {
+///
+public protocol Downloadable: class {
     
+    // MARK: - Properties
+    
+    /// <#Description#>
     weak var delegate: DownloadableDelegate? { get set }
     
+    /// <#Description#>
     var completionHandler: ((Error?) -> Void)? { get set }
     
+    /// <#Description#>
     var data: Data { get }
     
+    /// <#Description#>
     var progress: Float { get }
     
+    /// <#Description#>
     var state: DownloadableState { get }
     
+    /// <#Description#>
     var totalBytesReceived: Int64 { get }
     
+    /// <#Description#>
     var totalBytesLength: Int64 { get }
     
+    /// <#Description#>
     var url: URL { get }
     
+    // MARK: - Initializer
+    
+    /// <#Description#>
+    ///
+    /// - Parameter url: <#url description#>
+    init(url: URL)
+    
+    // MARK: - Methods
+    
+    /// <#Description#>
     func start()
     
+    /// <#Description#>
     func pause()
     
+    /// <#Description#>
     func stop()
-    
-    init(url: URL)
 }

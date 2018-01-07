@@ -8,7 +8,14 @@
 
 import Foundation
 
-enum DownloadableState {
+/// <#Description#>
+///
+/// - completed: <#completed description#>
+/// - started: <#started description#>
+/// - paused: <#paused description#>
+/// - notStarted: <#notStarted description#>
+/// - stopped: <#stopped description#>
+public enum DownloadableState {
     case completed
     case started
     case paused
