@@ -154,14 +154,14 @@ class ReaderTests: XCTestCase {
                 return
             }
             
-            let buffer = reader.read(4096)
+            let buffer = reader.read(1024)
             XCTAssertNotNil(buffer)
             
             usleep(250000)
             testRead(ticks - 1, reader)
         }
         
-        self.wait(for: [expectation], timeout: 20)
+        self.wait(for: [expectation], timeout: 60)
     }
     
 }
