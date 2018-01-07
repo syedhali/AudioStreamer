@@ -39,6 +39,8 @@
 		66C8351A2001DAC400E953C7 /* ReaderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835192001DAC400E953C7 /* ReaderError.swift */; };
 		66C8351B2001DAC400E953C7 /* ReaderError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C835192001DAC400E953C7 /* ReaderError.swift */; };
 		66C8351D2001DDE900E953C7 /* ReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8351C2001DDE900E953C7 /* ReaderTests.swift */; };
+		66C8351F200286B400E953C7 /* Reader+Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8351E200286B400E953C7 /* Reader+Converter.swift */; };
+		66C83520200286B400E953C7 /* Reader+Converter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8351E200286B400E953C7 /* Reader+Converter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -74,6 +76,7 @@
 		66C835162001BF0000E953C7 /* Reader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reader.swift; sourceTree = "<group>"; };
 		66C835192001DAC400E953C7 /* ReaderError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderError.swift; sourceTree = "<group>"; };
 		66C8351C2001DDE900E953C7 /* ReaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReaderTests.swift; sourceTree = "<group>"; };
+		66C8351E200286B400E953C7 /* Reader+Converter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Reader+Converter.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				66C835162001BF0000E953C7 /* Reader.swift */,
+				66C8351E200286B400E953C7 /* Reader+Converter.swift */,
 				66C835132001BEFA00E953C7 /* Readable.swift */,
 				66C835192001DAC400E953C7 /* ReaderError.swift */,
 			);
@@ -291,6 +295,7 @@
 				66C8350820019AD300E953C7 /* ParserError.swift in Sources */,
 				66A13996200177050076B0E5 /* Parser.swift in Sources */,
 				66A13993200176B60076B0E5 /* Parsable.swift in Sources */,
+				66C8351F200286B400E953C7 /* Reader+Converter.swift in Sources */,
 				66C8350B2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
 				66C835142001BEFA00E953C7 /* Readable.swift in Sources */,
 				66A1397B20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
@@ -319,6 +324,7 @@
 				66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
 				66A1397A20013FAA0076B0E5 /* Downloadable.swift in Sources */,
 				66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */,
+				66C83520200286B400E953C7 /* Reader+Converter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
