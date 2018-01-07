@@ -17,7 +17,6 @@ class ParserTests: XCTestCase {
         
         let url = RemoteFileURL.theLastOnes.mp3
         let downloader = Downloader(url: url)
-        downloader.useCache = false
         downloader.start()
         
         do {
@@ -44,7 +43,6 @@ class ParserTests: XCTestCase {
         
         let url = RemoteFileURL.theLastOnes.aac
         let downloader = Downloader(url: url)
-        downloader.useCache = false
         downloader.start()
         
         do {
@@ -71,7 +69,6 @@ class ParserTests: XCTestCase {
         
         let url = RemoteFileURL.theLastOnes.wav
         let downloader = Downloader(url: url)
-        downloader.useCache = false
         downloader.start()
         
         do {

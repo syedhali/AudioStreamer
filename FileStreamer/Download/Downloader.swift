@@ -31,8 +31,6 @@ public class Downloader: NSObject {
     
     lazy var session: URLSession = {
         let configuration = URLSessionConfiguration.default
-        // TODO: Remove this
-        configuration.urlCache = nil
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         return session
     }()

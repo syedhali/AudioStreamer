@@ -30,9 +30,7 @@ public class Parser: Parsable {
     var streamID: AudioFileStreamID?
     
     init() throws {
-        let result = AudioFileStreamOpen(&self.info, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &self.streamID)
-        
-        if result != noErr {
+        guard AudioFileStreamOpen(&self.info, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &self.streamID) == noErr else {
             throw ParserError.streamCouldNotOpen
         }
     }
