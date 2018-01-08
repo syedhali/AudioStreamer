@@ -22,8 +22,16 @@ class ViewController: UIViewController {
                                           interleaved: false)!
     }
     
+    @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var durationTimeLabel: UILabel!
+    @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var formatSegmentControl: UISegmentedControl!
     @IBOutlet weak var startDownloadButton: UIButton!
+    @IBOutlet weak var downloadProgressLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
+    
+    let timeFormatter = MMSSFormatter()
     
     var parser: Parser?
     var reader: Reader?
@@ -36,7 +44,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
 
         /// Download
-        let url = RemoteFileURL.brokeForFree.wav
+        let url = RemoteFileURL.theLastOnes.aac
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -86,16 +94,59 @@ class ViewController: UIViewController {
         
         do {
             try engine.start()
-            playerNode.play()
         } catch {
-            os_log("Engine start failed: %@", log: ViewController.logger, type: .error, error.localizedDescription)
+            os_log("Failed to start engine: %@", log: ViewController.logger, type: .error, error.localizedDescription)
         }
+    }
+    
+    @IBAction func changeFormat(_ sender: UISegmentedControl) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
     }
     
     @IBAction func startDownload(_ sender: UIButton) {
         os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
 
         Downloader.shared.start()
+        
+        startDownloadButton.setTitle("Downloading...", for: .normal)
+        startDownloadButton.isEnabled = false
+    }
+
+    @IBAction func togglePlayback(_ sender: UIButton) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
+        if playerNode.isPlaying {
+            playerNode.pause()
+            playButton.setTitle("Play", for: .normal)
+        } else {
+            playerNode.play()
+            playButton.setTitle("Pause", for: .normal)
+        }
+    }
+    
+    @IBAction func seek(_ sender: UISlider) {
+        os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, progressSlider.value)
+        
+        let isPlaying = playerNode.isPlaying
+        
+        guard let parser = parser, let reader = reader else {
+            return
+        }
+        
+        let frameOffset = AVAudioFrameCount(round(progressSlider.value))
+        
+        guard let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
+            return
+        }
+        
+        playerNode.stop()
+        
+        reader.currentPacket = packetOffset
+        
+        if isPlaying {
+            playerNode.play()
+        }
     }
     
 }

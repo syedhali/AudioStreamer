@@ -21,6 +21,7 @@ public class Parser: Parsable {
         var bitRate: UInt32 = 0
         var byteCount: UInt64 = 0
         var dataOffset: Int64 = 0
+        var frameCount: UInt64 = 0
         var packetCount: UInt64 = 0
         var fileFormat: AVAudioFormat?
         var dataFormat: AVAudioFormat?
@@ -52,6 +53,39 @@ public class Parser: Parsable {
     /// <#Description#>
     public var dataOffset: Int64 {
         return info.dataOffset
+    }
+    
+    ///
+    public var duration: TimeInterval? {
+        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+            return nil
+        }
+        
+        guard let totalFrameCount = totalFrameCount else {
+            return nil
+        }
+        
+        return TimeInterval(totalFrameCount) / TimeInterval(dataFormat.mSampleRate)
+    }
+    
+    public var totalFrameCount: AVAudioFrameCount? {
+        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+            return nil
+        }
+        
+        guard let totalPacketCount = totalPacketCount else {
+            return nil
+        }
+        
+        return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(dataFormat.mFramesPerPacket)
+    }
+    
+    public var totalPacketCount: AVAudioPacketCount? {
+        guard let _ = info.dataFormat?.streamDescription.pointee else {
+            return nil
+        }
+        
+        return max(AVAudioPacketCount(info.packetCount), AVAudioPacketCount(packets.count))
     }
     
     /// <#Description#>
@@ -98,5 +132,13 @@ public class Parser: Parsable {
                 return
             }
         }
+    }
+    
+    public func packetOffset(forFrame frame: AVAudioFrameCount) -> AVAudioPacketCount? {
+        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+            return nil
+        }
+        
+        return AVAudioPacketCount(frame) / AVAudioPacketCount(dataFormat.mFramesPerPacket)
     }
 }

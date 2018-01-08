@@ -27,9 +27,6 @@ public class Downloader: NSObject, Downloadable {
     public var progressHandler: ((Data, Float) -> Void)?
     
     /// <#Description#>
-    public var data: Data = Data()
-    
-    /// <#Description#>
     public var progress: Float = 0
     
     /// <#Description#>
@@ -48,8 +45,11 @@ public class Downloader: NSObject, Downloadable {
     /// <#Description#>
     public var url: URL? {
         didSet {
+            if state == .started {
+                stop()
+            }
+            
             if let url = url {
-                data = Data()
                 progress = 0.0
                 state = .notStarted
                 totalBytesLength = 0

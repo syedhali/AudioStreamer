@@ -13,11 +13,25 @@ import os.log
 extension ViewController: DownloadableDelegate {
     func download(_ download: Downloadable, completedWithError error: Error?) {
         os_log("%@ - %d [error: %@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
-
+        
+        DispatchQueue.main.async {
+            [weak self] in
+            self?.startDownloadButton.setTitle("Downloaded", for: .normal)
+        }
     }
     
     func download(_ download: Downloadable, changedState state: DownloadableState) {
         os_log("%@ - %d [state: %@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: state))
+        
+        DispatchQueue.main.async {
+            [weak self] in
+            switch state {
+            case .started, .paused:
+                self?.downloadProgressLabel.isHidden = false
+            default:
+                self?.downloadProgressLabel.isHidden = true
+            }
+        }
     }
     
     func download(_ download: Downloadable, didReceiveData data: Data, progress: Float) {
@@ -43,7 +57,21 @@ extension ViewController: DownloadableDelegate {
         /// Update the progress UI
         DispatchQueue.main.async {
             [weak self] in
+            self?.downloadProgressLabel.text = String(format: "%.0f%%", progress * 100)
             self?.downloadProgressView.progress = progress
+            
+            if let duration = self?.parser?.duration {
+                let number = NSNumber(value: duration)
+                let formattedNumber = self?.timeFormatter.string(from: number)
+                self?.durationTimeLabel.text = formattedNumber
+                self?.durationTimeLabel.isEnabled = true
+            }
+            
+            if let totalFrames = self?.parser?.totalFrameCount {
+                self?.progressSlider.isEnabled = true
+                self?.progressSlider.minimumValue = 0.0
+                self?.progressSlider.maximumValue = Float(totalFrames)
+            }
         }
     }
 }

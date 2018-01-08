@@ -21,6 +21,15 @@ public protocol Parsable: class {
     var dataFormat: AVAudioFormat? { get }
     
     /// <#Description#>
+    var duration: TimeInterval? { get }
+    
+    /// <#Description#>
+    var totalFrameCount: AVAudioFrameCount? { get }
+    
+    /// <#Description#>
+    var totalPacketCount: AVAudioPacketCount? { get }
+    
+    /// <#Description#>
     var isComplete: Bool { get }
     
     /// <#Description#>

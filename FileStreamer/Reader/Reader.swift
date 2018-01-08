@@ -22,7 +22,7 @@ public class Reader: Readable {
     var converter: AudioConverterRef? = nil
     
     /// <#Description#>
-    var currentPacket: AVAudioPacketCount = 0
+    public var currentPacket: AVAudioPacketCount = 0
     
     /// <#Description#>
     let parser: Parsable
@@ -63,6 +63,8 @@ public class Reader: Readable {
         
         self.sourceFormat = sourceFormat.pointee
         self.destinationFormat = destinationFormat.pointee
+        
+        os_log("%@ - %d [sourceFormat: %@, destinationFormat: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: dataFormat), String(describing: readFormat))
     }
     
     // MARK: - Methods
