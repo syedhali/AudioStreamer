@@ -28,8 +28,10 @@ extension ViewController: DownloadableDelegate {
             switch state {
             case .started, .paused:
                 self?.downloadProgressLabel.isHidden = false
+                self?.downloadProgressView.isHidden = false
             default:
                 self?.downloadProgressLabel.isHidden = true
+                self?.downloadProgressView.isHidden = true
             }
         }
     }
