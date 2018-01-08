@@ -18,8 +18,9 @@ class ReaderTests: XCTestCase {
         expectation.expectedFulfillmentCount = 2
         
         let url = RemoteFileURL.theLastOnes.mp3
-        let downloader = Downloader(url: url)
-        downloader.start()
+        Downloader.shared.url = url
+        Downloader.shared.start()
+        XCTAssertEqual(Downloader.shared.state, .started)
         
         var parserOrNil: Parser?
         do {
@@ -34,12 +35,12 @@ class ReaderTests: XCTestCase {
             return
         }
         
-        downloader.progressHandler = { (data, progress) in
+        Downloader.shared.progressHandler = { (data, progress) in
             parser.parse(data: data)
         }
         
-        downloader.completionHandler = {
-            XCTAssertEqual(downloader.state, .completed)
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
             XCTAssertEqual(parser.bitRate, 8000)
@@ -74,7 +75,6 @@ class ReaderTests: XCTestCase {
 
             testRead(10, reader)
         }
-        XCTAssertEqual(downloader.state, .started)
         
         func testRead(_ ticks: Int, _ reader: Reader) {
             guard ticks != 0 else {
@@ -97,8 +97,8 @@ class ReaderTests: XCTestCase {
         expectation.expectedFulfillmentCount = 2
         
         let url = RemoteFileURL.theLastOnes.wav
-        let downloader = Downloader(url: url)
-        downloader.start()
+        Downloader.shared.url = url
+        Downloader.shared.start()
         
         var parserOrNil: Parser?
         do {
@@ -113,12 +113,12 @@ class ReaderTests: XCTestCase {
             return
         }
         
-        downloader.progressHandler = { (data, progress) in
+        Downloader.shared.progressHandler = { (data, progress) in
             parser.parse(data: data)
         }
         
-        downloader.completionHandler = {
-            XCTAssertEqual(downloader.state, .completed)
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
             expectation.fulfill()
@@ -146,7 +146,7 @@ class ReaderTests: XCTestCase {
             
             testRead(10, reader)
         }
-        XCTAssertEqual(downloader.state, .started)
+        XCTAssertEqual(Downloader.shared.state, .started)
         
         func testRead(_ ticks: Int, _ reader: Reader) {
             guard ticks != 0 else {

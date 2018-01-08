@@ -14,6 +14,14 @@ import os.log
 class ViewController: UIViewController {
     static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "ViewController")
 
+    struct TapReader {
+        static let bufferSize: AVAudioFrameCount = 8192
+        static let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
+                                          sampleRate: 44100,
+                                          channels: 2,
+                                          interleaved: false)!
+    }
+    
     @IBOutlet weak var startDownloadButton: UIButton!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     
@@ -22,17 +30,13 @@ class ViewController: UIViewController {
     
     let engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
-    var readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32,
-                                   sampleRate: 44100,
-                                   channels: 2,
-                                   interleaved: false)!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
         /// Download
-        let url = RemoteFileURL.theLastOnes.mp3
+        let url = RemoteFileURL.brokeForFree.wav
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -59,21 +63,11 @@ class ViewController: UIViewController {
 
         /// Make connections
         engine.attach(playerNode)
-        engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
+        engine.connect(playerNode, to: engine.mainMixerNode, format: TapReader.format)
         engine.prepare()
         
         /// Install tap
-//        do {
-//            try engine.enableManualRenderingMode(.realtime, format: readFormat, maximumFrameCount: 4096)
-//        } catch {
-//            os_log("Failed to enable manual rendering mode: %@", log: ViewController.logger, type: .default, #function, #line, error.localizedDescription)
-//        }
-//
-//        guard engine.isInManualRenderingMode else {
-//            return
-//        }
-        
-        playerNode.installTap(onBus: 0, bufferSize: 4096, format: readFormat) {
+        playerNode.installTap(onBus: 0, bufferSize: TapReader.bufferSize/2, format: TapReader.format) {
             [weak self] (buffer, time) in
 
             guard let reader = self?.reader else {
@@ -81,15 +75,13 @@ class ViewController: UIViewController {
                 return
             }
 
-            guard let nextScheduledBuffer = reader.read(22050) else {
+            guard let nextScheduledBuffer = reader.read(TapReader.bufferSize) else {
                 os_log("No next scheduled buffer yet...", log: ViewController.logger, type: .debug)
                 return
             }
 
             // This is copying the buffer internally in some kind of circular buffer
             self?.playerNode.scheduleBuffer(nextScheduledBuffer)
-            
-            
         }
         
         do {
@@ -98,22 +90,6 @@ class ViewController: UIViewController {
         } catch {
             os_log("Engine start failed: %@", log: ViewController.logger, type: .error, error.localizedDescription)
         }
-    }
-    
-    func handleTap(_ buffer: AVAudioPCMBuffer, _ time: AVAudioTime) {
-        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
-        
-//        guard let reader = reader else {
-//            os_log("No reader yet...", log: ViewController.logger, type: .debug)
-//            return
-//        }
-//
-//        guard let nextScheduledBuffer = reader.read(11025) else {
-//            os_log("No next scheduled buffer yet...", log: ViewController.logger, type: .debug)
-//            return
-//        }
-//
-//
     }
     
     @IBAction func startDownload(_ sender: UIButton) {

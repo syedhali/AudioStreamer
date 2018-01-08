@@ -49,6 +49,11 @@ public class Downloader: NSObject, Downloadable {
     public var url: URL? {
         didSet {
             if let url = url {
+                data = Data()
+                progress = 0.0
+                state = .notStarted
+                totalBytesLength = 0
+                totalBytesReceived = 0
                 task = session.dataTask(with: url)
             } else {
                 task = nil

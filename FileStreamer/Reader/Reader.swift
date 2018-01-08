@@ -93,7 +93,6 @@ public class Reader: Readable {
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
         let result = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
         guard result == noErr else {
-            
             var localizedError = ""
             switch result {
             case kAudioConverterErr_FormatNotSupported:

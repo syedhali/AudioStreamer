@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 import AudioToolbox
 import os.log
 
@@ -16,7 +17,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ outPacketDescriptions: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
                              _ context: UnsafeMutableRawPointer?) -> OSStatus {
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
-    os_log("%@ - %d [packets: %i, current: %i]", log: Reader.loggerConverter, type: .debug, #function, #line, packetCount.pointee, reader.currentPacket)
+    os_log("%@ - %d [totalPackets: %i, inPackets: %i, current: %i]", log: Reader.loggerConverter, type: .debug, #function, #line, reader.parser.packets.count, packetCount.pointee, reader.currentPacket)
 
     let packetIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets
@@ -37,10 +38,9 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     let packet = packets[packetIndex]
     ioData.pointee.mNumberBuffers = 1
     
-    var data = packet.0
-    let dataCount = data.count
+    let dataCount = packet.0.count
     ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(bytes: dataCount, alignedTo: 0)
-    data.copyBytes(to: (ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, count: dataCount)
+    packet.0.copyBytes(to: (ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, count: dataCount)
     ioData.pointee.mBuffers.mDataByteSize = UInt32(dataCount)
     
     //

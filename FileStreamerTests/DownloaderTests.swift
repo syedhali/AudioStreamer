@@ -13,28 +13,28 @@ class DownloaderTests: XCTestCase {
     
     func testInitialState() {
         let url = RemoteFileURL.claire.mp3
-        let downloader = Downloader(url: url)
-        XCTAssertEqual(downloader.url, url)
-        XCTAssertNotNil(downloader.data)
-        XCTAssertEqual(downloader.data.count, 0)
-        XCTAssertEqual(downloader.progress, 0.0)
-        XCTAssertEqual(downloader.totalBytesReceived, 0)
-        XCTAssertEqual(downloader.totalBytesLength, 0)
-        XCTAssertEqual(downloader.state, .notStarted)
+        Downloader.shared.url = url
+        XCTAssertEqual(Downloader.shared.url, url)
+        XCTAssertNotNil(Downloader.shared.data)
+        XCTAssertEqual(Downloader.shared.data.count, 0)
+        XCTAssertEqual(Downloader.shared.progress, 0.0)
+        XCTAssertEqual(Downloader.shared.totalBytesReceived, 0)
+        XCTAssertEqual(Downloader.shared.totalBytesLength, 0)
+        XCTAssertEqual(Downloader.shared.state, .notStarted)
     }
     
     func testDownloadMP3() {
         let expectation = XCTestExpectation(description: "Download MP3")
         
         let url = RemoteFileURL.theLastOnes.mp3
-        let downloader = Downloader(url: url)
-        downloader.start()
-        downloader.completionHandler = {
-            XCTAssertEqual(downloader.state, .completed)
+        Downloader.shared.url = url
+        Downloader.shared.start()
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             expectation.fulfill()
         }
-        XCTAssertEqual(downloader.state, .started)
+        XCTAssertEqual(Downloader.shared.state, .started)
         
         self.wait(for: [expectation], timeout: 10)
     }
@@ -43,14 +43,14 @@ class DownloaderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Download AAC")
         
         let url = RemoteFileURL.theLastOnes.aac
-        let downloader = Downloader(url: url)
-        downloader.start()
-        downloader.completionHandler = {
-            XCTAssertEqual(downloader.state, .completed)
+        Downloader.shared.url = url
+        Downloader.shared.start()
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             expectation.fulfill()
         }
-        XCTAssertEqual(downloader.state, .started)
+        XCTAssertEqual(Downloader.shared.state, .started)
         
         self.wait(for: [expectation], timeout: 10)
     }
@@ -59,14 +59,14 @@ class DownloaderTests: XCTestCase {
         let expectation = XCTestExpectation(description: "Download WAV")
         
         let url = RemoteFileURL.theLastOnes.wav
-        let downloader = Downloader(url: url)
-        downloader.start()
-        downloader.completionHandler = {
-            XCTAssertEqual(downloader.state, .completed)
+        Downloader.shared.url = url
+        Downloader.shared.start()
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             expectation.fulfill()
         }
-        XCTAssertEqual(downloader.state, .started)
+        XCTAssertEqual(Downloader.shared.state, .started)
         
         self.wait(for: [expectation], timeout: 10)
     }
