@@ -20,9 +20,6 @@ public protocol Downloadable: class {
     var completionHandler: ((Error?) -> Void)? { get set }
     
     /// <#Description#>
-    var data: Data { get }
-    
-    /// <#Description#>
     var progress: Float { get }
     
     /// <#Description#>
@@ -35,14 +32,7 @@ public protocol Downloadable: class {
     var totalBytesLength: Int64 { get }
     
     /// <#Description#>
-    var url: URL { get }
-    
-    // MARK: - Initializer
-    
-    /// <#Description#>
-    ///
-    /// - Parameter url: <#url description#>
-    init(url: URL)
+    var url: URL? { get }
     
     // MARK: - Methods
     

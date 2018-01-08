@@ -63,7 +63,7 @@
 		66A1397420013FAA0076B0E5 /* Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		66A1397520013FAA0076B0E5 /* Downloadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadableDelegate.swift; sourceTree = "<group>"; };
-		66A13980200140C60076B0E5 /* RemoteFileURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteFileURL.swift; sourceTree = "<group>"; };
+		66A13980200140C60076B0E5 /* RemoteFileURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteFileURL.swift; path = ../Examples/BasicStreamingEngine/BasicStreamingEngine/RemoteFileURL.swift; sourceTree = "<group>"; };
 		66A139822001546D0076B0E5 /* DownloadableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadableState.swift; sourceTree = "<group>"; };
 		66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+URLSessionDelegate.swift"; sourceTree = "<group>"; };
 		66A13992200176B60076B0E5 /* Parsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsable.swift; sourceTree = "<group>"; };

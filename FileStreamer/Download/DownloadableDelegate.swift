@@ -16,14 +16,14 @@ public protocol DownloadableDelegate: class {
     /// - Parameters:
     ///   - download: <#download description#>
     ///   - changedState: <#changedState description#>
-    func download(_ download: Downloadable, changedState: DownloadableState)
+    func download(_ download: Downloadable, changedState state: DownloadableState)
     
     /// <#Description#>
     ///
     /// - Parameters:
     ///   - download: <#download description#>
     ///   - completedWithError: <#completedWithError description#>
-    func download(_ download: Downloadable, completedWithError: Error?)
+    func download(_ download: Downloadable, completedWithError error: Error?)
     
     /// <#Description#>
     ///
@@ -31,5 +31,5 @@ public protocol DownloadableDelegate: class {
     ///   - download: <#download description#>
     ///   - didReceiveData: <#didReceiveData description#>
     ///   - progress: <#progress description#>
-    func download(_ download: Downloadable, didReceiveData: Data, progress: Float)
+    func download(_ download: Downloadable, didReceiveData data: Data, progress: Float)
 }

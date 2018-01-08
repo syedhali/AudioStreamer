@@ -13,6 +13,8 @@ import os.log
 public class Downloader: NSObject, Downloadable {
     static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Downloader")
     
+    public static var shared: Downloader = Downloader()
+    
     // MARK: - Properties
     
     /// <#Description#>
@@ -44,10 +46,18 @@ public class Downloader: NSObject, Downloadable {
     public var totalBytesLength: Int64 = 0
     
     /// <#Description#>
-    public var url: URL
+    public var url: URL? {
+        didSet {
+            if let url = url {
+                task = session.dataTask(with: url)
+            } else {
+                task = nil
+            }
+        }
+    }
     
     /// <#Description#>
-    var useCache = true {
+    public var useCache = false {
         didSet {
             session.configuration.urlCache = useCache ? URLCache.shared : nil
         }
@@ -55,23 +65,18 @@ public class Downloader: NSObject, Downloadable {
     
     /// <#Description#>
     fileprivate lazy var session: URLSession = {
-        let configuration = URLSessionConfiguration.default
+        let configuration = URLSessionConfiguration.ephemeral
         let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
         return session
     }()
     
     /// <#Description#>
-    fileprivate lazy var task: URLSessionDataTask = {
-        return session.dataTask(with: url)
-    }()
+    fileprivate var task: URLSessionDataTask?
     
     // MARK: - Initializers
     
-    /// <#Description#>
-    ///
-    /// - Parameter url: <#url description#>
-    public required init(url: URL) {
-        self.url = url
+    deinit {
+        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
     }
     
     // MARK: - Methods
@@ -80,13 +85,30 @@ public class Downloader: NSObject, Downloadable {
     public func start() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
         
-        state = .started
-        task.resume()
+        guard let task = task else {
+            return
+        }
+        
+        switch state {
+        case .completed, .started:
+            return
+        default:
+            state = .started
+            task.resume()
+        }
     }
     
     /// <#Description#>
     public func pause() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        
+        guard let task = task else {
+            return
+        }
+        
+        guard state == .started else {
+            return
+        }
         
         state = .paused
         task.suspend()
@@ -95,6 +117,14 @@ public class Downloader: NSObject, Downloadable {
     /// <#Description#>
     public func stop() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        
+        guard let task = task else {
+            return
+        }
+        
+        guard state == .started else {
+            return
+        }
         
         state = .stopped
         task.cancel()

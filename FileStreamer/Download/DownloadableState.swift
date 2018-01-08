@@ -15,7 +15,7 @@ import Foundation
 /// - paused: <#paused description#>
 /// - notStarted: <#notStarted description#>
 /// - stopped: <#stopped description#>
-public enum DownloadableState {
+public enum DownloadableState: String {
     case completed
     case started
     case paused

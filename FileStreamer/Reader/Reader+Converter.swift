@@ -25,7 +25,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     // Check if we've reached the end of the packets
     //
     
-    if reader.currentPacket == packets.count {
+    if reader.currentPacket == packets.count - 1 {
         packetCount.pointee = 0
         return noErr
     }

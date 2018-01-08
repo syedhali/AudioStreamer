@@ -9,6 +9,8 @@
 import Foundation
 
 public enum ReaderError: Error {
+    case converterFailed(OSStatus,String)
+    case failedToCreateDestinationFormat
     case parserMissingDataFormat
     case unableToCreateConverter
 }

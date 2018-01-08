@@ -12,17 +12,16 @@ import os.log
 extension Downloader: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
-        
+
         totalBytesLength = response.expectedContentLength
         completionHandler(.allow)
     }
-    
+
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line, data.count)
 
         totalBytesReceived += Int64(data.count)
         progress = Float(totalBytesReceived) / Float(totalBytesLength)
-        self.data.append(data)
         delegate?.download(self, didReceiveData: data, progress: progress)
         progressHandler?(data, progress)
     }

@@ -73,6 +73,10 @@ public class Reader: Readable {
     public func read(_ frames: AVAudioFrameCount) -> AVAudioPCMBuffer? {
         var packets = frames / destinationFormat.mFramesPerPacket
         
+        guard currentPacket != parser.packets.count - 1 else {
+            return nil
+        }
+        
         guard let format = AVAudioFormat(streamDescription: &destinationFormat) else {
             os_log("Failed to create destination format", log: Reader.logger, type: .error)
             return nil

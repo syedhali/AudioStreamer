@@ -74,7 +74,7 @@ public class Parser: Parsable {
     /// <#Description#>
     ///
     /// - Throws: <#throws value description#>
-    init() throws {
+    public init() throws {
         guard AudioFileStreamOpen(&self.info, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &self.streamID) == noErr else {
             throw ParserError.streamCouldNotOpen
         }
