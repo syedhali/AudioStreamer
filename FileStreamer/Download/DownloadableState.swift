@@ -8,13 +8,13 @@
 
 import Foundation
 
-/// <#Description#>
+/// The various states of a download request.
 ///
-/// - completed: <#completed description#>
-/// - started: <#started description#>
-/// - paused: <#paused description#>
-/// - notStarted: <#notStarted description#>
-/// - stopped: <#stopped description#>
+/// - completed: The download has completed
+/// - started: The download has yet to start
+/// - paused: The download is paused
+/// - notStarted: The download has not started yet
+/// - stopped: The download has been stopped/cancelled
 public enum DownloadableState: String {
     case completed
     case started

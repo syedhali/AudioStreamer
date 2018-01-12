@@ -8,40 +8,40 @@
 
 import Foundation
 
-///
+/// The `Downloadable` protocol represents a generic downloader that can be used for grabbing a fixed length audio file.
 public protocol Downloadable: class {
     
     // MARK: - Properties
     
-    /// <#Description#>
+    /// A receiver implementing the `DownloadableDelegate` to receive state change, completion, and progress events from the `Downloadable` instance.
     weak var delegate: DownloadableDelegate? { get set }
     
-    /// <#Description#>
+    /// A completion block for when the contents of the download are fully downloaded.
     var completionHandler: ((Error?) -> Void)? { get set }
     
-    /// <#Description#>
+    /// The current progress of the downloader. Ranges from 0.0 - 1.0, default is 0.0.
     var progress: Float { get }
     
-    /// <#Description#>
+    /// The current state of the downloader. See `DownloadableState` for the different possible states.
     var state: DownloadableState { get }
     
-    /// <#Description#>
+    /// An `Int64` representing the total bytes received so far.
     var totalBytesReceived: Int64 { get }
     
-    /// <#Description#>
+    /// A `Int64` representing the total byte length of the target file.
     var totalBytesLength: Int64 { get }
     
-    /// <#Description#>
+    /// A `URL` representing the current URL the downloader is fetching. This is an optional because this protocol is designed to allow classes implementing the `Downloadable` protocol to be used as singletons for many different URLS so a common cache can be used to redownloading the same resources.
     var url: URL? { get }
     
     // MARK: - Methods
     
-    /// <#Description#>
+    /// Starts the downloader
     func start()
     
-    /// <#Description#>
+    /// Pauses the downloader
     func pause()
     
-    /// <#Description#>
+    /// Stops and/or aborts the downloader. This should invalidate all cached data under the hood.
     func stop()
 }

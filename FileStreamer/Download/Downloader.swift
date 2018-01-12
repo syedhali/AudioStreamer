@@ -9,40 +9,50 @@
 import Foundation
 import os.log
 
-/// <#Description#>
+/// The `Downloader` is a concrete implementation of the `Downloadable` protocol
+/// using `URLSession` as the backing HTTP/HTTPS implementation.
 public class Downloader: NSObject, Downloadable {
     static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Downloader")
     
+    // MARK: - Singleton
+    
+    /// A singleton that can be used to perform multiple download requests using a common cache.
     public static var shared: Downloader = Downloader()
     
     // MARK: - Properties
     
-    /// <#Description#>
+    /// A `Bool` indicating whether the session should use the shared URL cache or not. Really useful for testing, but in production environments you probably always want this to `true`. Default is true.
+    public var useCache = true {
+        didSet {
+            session.configuration.urlCache = useCache ? URLCache.shared : nil
+        }
+    }
+    
+    /// The `URLSession` currently being used as the HTTP/HTTPS implementation for the downloader.
+    fileprivate lazy var session: URLSession = {
+        let configuration = URLSessionConfiguration.ephemeral
+        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
+        return session
+    }()
+    
+    /// A `URLSessionDataTask` representing the data operation for the current `URL`.
+    fileprivate var task: URLSessionDataTask?
+    
+    // MARK: - Properties (Downloadable)
+    
+    // MARK: - Properties
+    
     public var delegate: DownloadableDelegate?
-    
-    /// <#Description#>
     public var completionHandler: ((Error?) -> Void)?
-    
-    /// <#Description#>
     public var progressHandler: ((Data, Float) -> Void)?
-    
-    /// <#Description#>
     public var progress: Float = 0
-    
-    /// <#Description#>
     public var state: DownloadableState = .notStarted {
         didSet {
             delegate?.download(self, changedState: state)
         }
     }
-    
-    /// <#Description#>
     public var totalBytesReceived: Int64 = 0
-    
-    /// <#Description#>
     public var totalBytesLength: Int64 = 0
-    
-    /// <#Description#>
     public var url: URL? {
         didSet {
             if state == .started {
@@ -61,32 +71,8 @@ public class Downloader: NSObject, Downloadable {
         }
     }
     
-    /// <#Description#>
-    public var useCache = false {
-        didSet {
-            session.configuration.urlCache = useCache ? URLCache.shared : nil
-        }
-    }
-    
-    /// <#Description#>
-    fileprivate lazy var session: URLSession = {
-        let configuration = URLSessionConfiguration.ephemeral
-        let session = URLSession(configuration: configuration, delegate: self, delegateQueue: nil)
-        return session
-    }()
-    
-    /// <#Description#>
-    fileprivate var task: URLSessionDataTask?
-    
-    // MARK: - Initializers
-    
-    deinit {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
-    }
-    
     // MARK: - Methods
     
-    /// <#Description#>
     public func start() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
         
@@ -103,7 +89,6 @@ public class Downloader: NSObject, Downloadable {
         }
     }
     
-    /// <#Description#>
     public func pause() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
         
@@ -119,7 +104,6 @@ public class Downloader: NSObject, Downloadable {
         task.suspend()
     }
     
-    /// <#Description#>
     public func stop() {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
         
