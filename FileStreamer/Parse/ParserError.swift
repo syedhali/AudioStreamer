@@ -8,9 +8,9 @@
 
 import Foundation
 
-/// <#Description#>
+/// Possible errors that can result from the `Parser` class.
 ///
-/// - streamCouldNotOpen: <#streamCouldNotOpen description#>
+/// - streamCouldNotOpen: The file stream could not be opened. This will only occur if the underlying `AudioFileStreamOpen` method fails.
 public enum ParserError: Error {
     case streamCouldNotOpen
 }
