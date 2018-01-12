@@ -11,60 +11,58 @@ import AVFoundation
 import AudioToolbox
 import os.log
 
+let ReaderReachedEndOfDataError: OSStatus = 932332581
+let ReaderPartialConversionError: OSStatus = 932332582
+let ReaderNotEnoughDataError: OSStatus = 932332583
+
 func ReaderConverterCallback(_ converter: AudioConverterRef,
-                             _ packetCount: UnsafeMutablePointer<UInt32>,
+                             _ ioPacketCount: UnsafeMutablePointer<UInt32>,
                              _ ioData: UnsafeMutablePointer<AudioBufferList>,
                              _ outPacketDescriptions: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
                              _ context: UnsafeMutableRawPointer?) -> OSStatus {
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
-    os_log("%@ - %d [totalPackets: %i, inPackets: %i, current: %i]", log: Reader.loggerConverter, type: .debug, #function, #line, reader.parser.packets.count, packetCount.pointee, reader.currentPacket)
 
-    let packetIndex = Int(reader.currentPacket)
+    let inPacketCount = Int(ioPacketCount.pointee)
+    let currentPacketIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets
+    let packetCount = packets.count
     
     //
-    // Check if we've reached the end of the packets
-    //
-    
-    if reader.currentPacket == packets.count - 1 {
-        packetCount.pointee = 0
-        return noErr
+    guard currentPacketIndex != packetCount - 1 else {
+        os_log("End of data", log: Reader.loggerConverter, type: .debug)
+        return ReaderReachedEndOfDataError
     }
     
-    //
-    // Copy data over
-    //
+    var outPacketCount: Int
+    if currentPacketIndex + inPacketCount <= packetCount - 1 {
+        outPacketCount = inPacketCount
+    } else {
+        outPacketCount = packetCount - 1 - currentPacketIndex
+    }
     
-    let packet = packets[packetIndex]
-    ioData.pointee.mNumberBuffers = 1
+    /// Copy over packet data (outPacketCount number of packets)
+    var dataCount = 0
+    var data = Data()
     
-    var data = packet.0
-    let dataCount = data.count
+    let startPacketIndex = currentPacketIndex
+    let endPacketIndex = Int(currentPacketIndex + outPacketCount)
+    let packetSubset = packets[startPacketIndex..<endPacketIndex]
+
+    for packet in packetSubset {
+        dataCount = dataCount + packet.0.count
+        data.append(packet.0)
+    }
+    
     ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(bytes: dataCount, alignedTo: 0)
     _ = data.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) in
         memcpy((ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, bytes, dataCount)
     }
     ioData.pointee.mBuffers.mDataByteSize = UInt32(dataCount)
     
-    //
-    // packet descriptions
-    //
-
-    if reader.sourceFormat.mFormatID != kAudioFormatLinearPCM {
-        struct PacketDescriptionHolder {
-            static var lastPacketDescription: UnsafeMutablePointer<AudioStreamPacketDescription>?
-        }
-        if PacketDescriptionHolder.lastPacketDescription == nil {
-            PacketDescriptionHolder.lastPacketDescription = UnsafeMutablePointer<AudioStreamPacketDescription>.allocate(capacity: 1)
-        }
-        outPacketDescriptions?.pointee = PacketDescriptionHolder.lastPacketDescription
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mDataByteSize = UInt32(dataCount)
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mStartOffset = 0
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mVariableFramesInPacket = 0
-    }
-
-    packetCount.pointee = 1
-    reader.currentPacket = reader.currentPacket + 1
+    os_log("%@ - %d [totalPackets: %i, inPackets: %i, outPackets: %i, current: %i, subset count: %i, data count: %i]", log: Reader.loggerConverter, type: .debug, #function, #line, reader.parser.packets.count, inPacketCount, outPacketCount ,reader.currentPacket, packetSubset.count, dataCount)
     
-    return noErr;
+    ioPacketCount.pointee = UInt32(outPacketCount)
+    reader.currentPacket = AVAudioPacketCount(endPacketIndex)
+
+    return noErr
 }
