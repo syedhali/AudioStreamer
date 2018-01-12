@@ -40,8 +40,6 @@ public class Downloader: NSObject, Downloadable {
     
     // MARK: - Properties (Downloadable)
     
-    // MARK: - Properties
-    
     public var delegate: DownloadableDelegate?
     public var completionHandler: ((Error?) -> Void)?
     public var progressHandler: ((Data, Float) -> Void)?

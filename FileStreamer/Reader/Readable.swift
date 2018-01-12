@@ -13,6 +13,9 @@ import AVFoundation
 public protocol Readable {
     
     /// <#Description#>
+    var currentPacket: AVAudioPacketCount { get set }
+    
+    /// <#Description#>
     ///
     /// - Parameter frames: <#frames description#>
     func read(_ frames: AVAudioFrameCount) -> AVAudioPCMBuffer?

@@ -9,14 +9,11 @@
 import Foundation
 import AVFoundation
 
-/// <#Description#>
+/// The `Parsable` protocol represents a generic parser that can be used for converting binary data into audio packets.
 public protocol Parsable: class {
     
     // MARK: - Properties
-    
-    /// <#Description#>
-    var byteCount: UInt64 { get }
-    
+        
     /// <#Description#>
     var dataFormat: AVAudioFormat? { get }
     
@@ -28,9 +25,6 @@ public protocol Parsable: class {
     
     /// <#Description#>
     var totalPacketCount: AVAudioPacketCount? { get }
-    
-    /// <#Description#>
-    var isComplete: Bool { get }
     
     /// <#Description#>
     var fileFormat: AVAudioFormat? { get }

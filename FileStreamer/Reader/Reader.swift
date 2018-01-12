@@ -18,14 +18,8 @@ public class Reader: Readable {
     
     // MARK: - Properties
     
-    /// <#Description#>
+    /// An `AudioConverterRef` used to do the conversion from the source format of the `parser` (i.e. the `sourceFormat`) to the read destination (i.e. the `destinationFormat`).
     var converter: AudioConverterRef? = nil
-    
-    /// <#Description#>
-    public var currentPacket: AVAudioPacketCount = 0
-    
-    /// <#Description#>
-    let parser: Parsable
     
     /// <#Description#>
     var sourceFormat: AudioStreamBasicDescription
@@ -33,7 +27,15 @@ public class Reader: Readable {
     /// <#Description#>
     var destinationFormat: AudioStreamBasicDescription
     
-    // MARK: - Initializers
+    // MARK: - Properties (Readable)
+    
+    /// <#Description#>
+    let parser: Parsable
+    
+    /// <#Description#>
+    public var currentPacket: AVAudioPacketCount = 0
+    
+    // MARK: - Lifecycle
     
     deinit {
         guard AudioConverterDispose(converter!) == noErr else {
@@ -42,12 +44,6 @@ public class Reader: Readable {
         }
     }
     
-    /// <#Description#>
-    ///
-    /// - Parameters:
-    ///   - parser: <#parser description#>
-    ///   - readFormat: <#readFormat description#>
-    /// - Throws: <#throws value description#>
     public required init(parser: Parsable, readFormat: AVAudioFormat) throws {
         self.parser = parser
         
@@ -69,9 +65,6 @@ public class Reader: Readable {
     
     // MARK: - Methods
     
-    /// <#Description#>
-    ///
-    /// - Returns: <#return value description#>
     public func read(_ frames: AVAudioFrameCount) -> AVAudioPCMBuffer? {
         var packets = frames / destinationFormat.mFramesPerPacket
         
