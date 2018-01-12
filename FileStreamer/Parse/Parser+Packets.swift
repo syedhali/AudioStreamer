@@ -34,10 +34,10 @@ func ParserPacketCallback(_ context: UnsafeMutableRawPointer, _ byteCount: UInt3
         }
     } else {
         let format = dataFormat.streamDescription.pointee
-        let bytesPerPacket = format.mBytesPerPacket
+        let bytesPerPacket = Int(format.mBytesPerPacket)
         for i in 0 ..< Int(packetCount) {
-            let packetStart = Int(i)
-            let packetSize = Int(bytesPerPacket)
+            let packetStart = i * bytesPerPacket
+            let packetSize = bytesPerPacket
             let packetData = Data(bytes: data.advanced(by: packetStart), count: packetSize)
             info.packets.append((packetData, nil))
         }
