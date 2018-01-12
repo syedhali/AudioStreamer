@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 import os.log
 
-/// <#Description#>
+/// The `Parser` is a concrete implementation of the `Parsable` protocol used to convert binary data into audio packet data. This class uses the Audio File Stream Services to progressively parse the properties and packets of the incoming audio data.
 public class Parser: Parsable {
     static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Parser")
     static let loggerPacketCallback = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Parser.Packets")
@@ -38,11 +38,6 @@ public class Parser: Parsable {
     /// <#Description#>
     public var bitRate: UInt32 {
         return info.bitRate
-    }
-    
-    /// <#Description#>
-    public var byteCount: UInt64 {
-        return info.byteCount
     }
     
     /// <#Description#>
@@ -94,16 +89,11 @@ public class Parser: Parsable {
     }
     
     /// <#Description#>
-    public var isComplete: Bool {
-        return info.packetCount == info.packets.count
-    }
-    
-    /// <#Description#>
     public var packets: [(Data, AudioStreamPacketDescription?)] {
         return info.packets
     }
     
-    // MARK: - Initializers
+    // MARK: - Lifecycle
     
     /// <#Description#>
     ///
@@ -114,9 +104,8 @@ public class Parser: Parsable {
         }
     }
     
-    /// <#Description#>
-    ///
-    /// - Parameter data: <#data description#>
+    // MARK: - Methods
+    
     public func parse(data: Data) {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
@@ -135,6 +124,8 @@ public class Parser: Parsable {
     }
     
     public func packetOffset(forFrame frame: AVAudioFrameCount) -> AVAudioPacketCount? {
+        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
+        
         guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
             return nil
         }
