@@ -15,8 +15,6 @@ class DownloaderTests: XCTestCase {
         let url = RemoteFileURL.claire.mp3
         Downloader.shared.url = url
         XCTAssertEqual(Downloader.shared.url, url)
-        XCTAssertNotNil(Downloader.shared.data)
-        XCTAssertEqual(Downloader.shared.data.count, 0)
         XCTAssertEqual(Downloader.shared.progress, 0.0)
         XCTAssertEqual(Downloader.shared.totalBytesReceived, 0)
         XCTAssertEqual(Downloader.shared.totalBytesLength, 0)

@@ -41,7 +41,6 @@ class ParserTests: XCTestCase {
             XCTAssertNil($0)
             
             XCTAssertEqual(parser.bitRate, 8000)
-            XCTAssertEqual(parser.byteCount, 180245)
             XCTAssertEqual(parser.dataOffset, 757)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
@@ -122,7 +121,6 @@ class ParserTests: XCTestCase {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.byteCount, 7943040)
             XCTAssertEqual(parser.dataOffset, 498)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)

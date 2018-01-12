@@ -44,7 +44,6 @@ class ReaderTests: XCTestCase {
             XCTAssertNil($0)
             
             XCTAssertEqual(parser.bitRate, 8000)
-            XCTAssertEqual(parser.byteCount, 180245)
             XCTAssertEqual(parser.dataOffset, 757)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
