@@ -31,7 +31,13 @@ class ViewController: UIViewController {
     @IBOutlet weak var downloadProgressLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     
-    let timeFormatter = MMSSFormatter()
+    lazy var timeFormatter: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.unitsStyle = .positional
+        formatter.zeroFormattingBehavior = .pad
+        return formatter
+    }()
     
     var parser: Parser?
     var reader: Reader?
@@ -44,7 +50,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
 
         /// Download
-        let url = RemoteFileURL.theLastOnes.aac
+        let url = RemoteFileURL.faithfulDog.aac
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -91,12 +97,6 @@ class ViewController: UIViewController {
             // This is copying the buffer internally in some kind of circular buffer
             self?.playerNode.scheduleBuffer(nextScheduledBuffer)
         }
-        
-        do {
-            try engine.start()
-        } catch {
-            os_log("Failed to start engine: %@", log: ViewController.logger, type: .error, error.localizedDescription)
-        }
     }
     
     @IBAction func changeFormat(_ sender: UISegmentedControl) {
@@ -118,8 +118,16 @@ class ViewController: UIViewController {
         
         if playerNode.isPlaying {
             playerNode.pause()
+            engine.pause()
             playButton.setTitle("Play", for: .normal)
         } else {
+            if !engine.isRunning {
+                do {
+                    try engine.start()
+                } catch {
+                    os_log("Failed to start engine: %@", log: ViewController.logger, type: .error, error.localizedDescription)
+                }
+            }
             playerNode.play()
             playButton.setTitle("Pause", for: .normal)
         }

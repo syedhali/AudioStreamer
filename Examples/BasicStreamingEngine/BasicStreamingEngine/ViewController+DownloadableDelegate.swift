@@ -63,9 +63,8 @@ extension ViewController: DownloadableDelegate {
             self?.downloadProgressView.progress = progress
             
             if let duration = self?.parser?.duration {
-                let number = NSNumber(value: duration)
-                let formattedNumber = self?.timeFormatter.string(from: number)
-                self?.durationTimeLabel.text = formattedNumber
+                let formattedDuration = self?.timeFormatter.string(from: duration)
+                self?.durationTimeLabel.text = formattedDuration
                 self?.durationTimeLabel.isEnabled = true
             }
             

@@ -83,7 +83,7 @@ public class Reader: Readable {
         }
         buffer.frameLength = frames
         
-        os_log("%@ - %d [converter: %@, packets: %i, format: %@, buffer: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: converter!), packets, String(describing: format), String(describing: buffer))
+//        os_log("%@ - %d [converter: %@, packets: %i, format: %@, buffer: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: converter!), packets, String(describing: format), String(describing: buffer))
         
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
         let result = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)

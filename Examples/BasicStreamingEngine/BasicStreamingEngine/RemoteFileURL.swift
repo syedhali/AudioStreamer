@@ -39,7 +39,6 @@ enum RemoteFileURL {
         case .faithfulDog:
             urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/faithful-dog_ihawmp.mp3"
         case .theLastOnes:
-//            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/the-last-ones_fc6omw.mp3"
             urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515363988/the-last-ones_siesju.mp3"
         }
         return URL(string: urlString)!
