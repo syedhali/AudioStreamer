@@ -30,6 +30,10 @@ class ViewController: UIViewController {
     @IBOutlet weak var startDownloadButton: UIButton!
     @IBOutlet weak var downloadProgressLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
+    @IBOutlet weak var rateLabel: UILabel!
+    @IBOutlet weak var rateSlider: UISlider!
+    @IBOutlet weak var pitchLabel: UILabel!
+    @IBOutlet weak var pitchSlider: UISlider!
     
     lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -44,13 +48,14 @@ class ViewController: UIViewController {
     
     let engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
+    let pitchShifterNode = AVAudioUnitTimePitch()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
 
         /// Download
-        let url = RemoteFileURL.faithfulDog.aac
+        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1515808303/05_Ro%CC%88yksopp_Forever_chz27m.mp3")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -63,6 +68,9 @@ class ViewController: UIViewController {
         
         /// Engine
         setupEngine()
+        
+        resetPitch(self)
+        resetTempo(self)
     }
     
     func setupEngine() {
@@ -77,7 +85,9 @@ class ViewController: UIViewController {
 
         /// Make connections
         engine.attach(playerNode)
-        engine.connect(playerNode, to: engine.mainMixerNode, format: TapReader.format)
+        engine.attach(pitchShifterNode)
+        engine.connect(playerNode, to: pitchShifterNode, format: TapReader.format)
+        engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: TapReader.format)
         engine.prepare()
         
         /// Install tap
@@ -157,5 +167,39 @@ class ViewController: UIViewController {
         }
     }
     
+    
+    @IBAction func changePitch(_ sender: UISlider) {
+        os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
+        
+        let pitch = roundf(sender.value)
+        pitchShifterNode.pitch = pitch
+        pitchLabel.text = String(format: "%i cents", Int(pitch))
+    }
+    
+    @IBAction func resetPitch(_ sender: Any) {
+        os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line)
+        
+        let pitch: Float = 0
+        pitchShifterNode.pitch = pitch
+        pitchLabel.text = String(format: "%i cents", Int(pitch))
+        pitchSlider.value = pitch
+    }
+    
+    @IBAction func changeTempo(_ sender: UISlider) {
+        os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
+        
+        let rate = sender.value
+        pitchShifterNode.rate = rate
+        rateLabel.text = String(format: "%.2fx", rate)
+    }
+    
+    @IBAction func resetTempo(_ sender: Any) {
+        os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line)
+        
+        let rate: Float = 1
+        pitchShifterNode.rate = rate
+        rateLabel.text = String(format: "%.2fx", rate)
+        rateSlider.value = rate
+    }
 }
 

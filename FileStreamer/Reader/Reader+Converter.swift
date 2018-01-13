@@ -15,7 +15,6 @@ let ReaderReachedEndOfDataError: OSStatus = 932332581
 let ReaderPartialConversionError: OSStatus = 932332582
 let ReaderNotEnoughDataError: OSStatus = 932332583
 
-
 func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ packetCount: UnsafeMutablePointer<UInt32>,
                              _ ioData: UnsafeMutablePointer<AudioBufferList>,
@@ -33,7 +32,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     
     if reader.currentPacket == packets.count - 1 {
         packetCount.pointee = 0
-        return noErr
+        return ReaderReachedEndOfDataError
     }
     
     //
