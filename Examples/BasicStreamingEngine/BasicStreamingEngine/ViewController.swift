@@ -50,6 +50,17 @@ class ViewController: UIViewController {
     let playerNode = AVAudioPlayerNode()
     let pitchShifterNode = AVAudioUnitTimePitch()
     
+    var currentTimeOffset: TimeInterval = 0
+    var currentTime: TimeInterval? {
+        guard let nodeTime = playerNode.lastRenderTime,
+              let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
+                return nil
+        }
+        
+        let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
+        return currentTime + currentTimeOffset
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -70,7 +81,14 @@ class ViewController: UIViewController {
         setupEngine()
         
         resetPitch(self)
-        resetTempo(self)
+        resetRate(self)
+        
+        Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) {
+            [weak self] (timer) in
+            if let currentTime = self?.currentTime {       
+                self?.currentTimeLabel.text = self?.timeFormatter.string(from: currentTime)
+            }
+        }
     }
     
     func setupEngine() {
@@ -153,10 +171,13 @@ class ViewController: UIViewController {
         }
         
         let frameOffset = AVAudioFrameCount(round(progressSlider.value))
-        
-        guard let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
+        guard let packetOffset = parser.packetOffset(forFrame: frameOffset),
+              let timeOffset = parser.timeOffset(forFrame: frameOffset)
+            else {
             return
         }
+        
+        currentTimeOffset = timeOffset
         
         playerNode.stop()
         
@@ -185,7 +206,7 @@ class ViewController: UIViewController {
         pitchSlider.value = pitch
     }
     
-    @IBAction func changeTempo(_ sender: UISlider) {
+    @IBAction func changeRate(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
         let rate = sender.value
@@ -193,7 +214,7 @@ class ViewController: UIViewController {
         rateLabel.text = String(format: "%.2fx", rate)
     }
     
-    @IBAction func resetTempo(_ sender: Any) {
+    @IBAction func resetRate(_ sender: Any) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line)
         
         let rate: Float = 1

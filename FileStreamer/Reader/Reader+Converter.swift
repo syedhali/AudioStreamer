@@ -21,7 +21,6 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ outPacketDescriptions: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
                              _ context: UnsafeMutableRawPointer?) -> OSStatus {
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
-//    os_log("%@ - %d [totalPackets: %i, inPackets: %i, current: %i]", log: Reader.loggerConverter, type: .debug, #function, #line, reader.parser.packets.count, packetCount.pointee, reader.currentPacket)
     
     let packetIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets

@@ -132,4 +132,16 @@ public class Parser: Parsable {
         
         return AVAudioPacketCount(frame) / AVAudioPacketCount(dataFormat.mFramesPerPacket)
     }
+    
+    public func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval? {
+        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
+        
+        guard let _ = info.dataFormat?.streamDescription.pointee,
+              let frameCount = totalFrameCount,
+              let duration = duration else {
+            return nil
+        }
+        
+        return TimeInterval(frame) / TimeInterval(frameCount) * duration
+    }
 }

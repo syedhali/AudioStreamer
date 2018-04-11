@@ -44,4 +44,5 @@ public protocol Downloadable: class {
     
     /// Stops and/or aborts the downloader. This should invalidate all cached data under the hood.
     func stop()
+    
 }

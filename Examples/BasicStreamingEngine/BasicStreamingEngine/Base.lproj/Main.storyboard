@@ -162,7 +162,7 @@
                                                         <rect key="frame" x="6" y="29" width="187" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <connections>
-                                                            <action selector="changeTempo:" destination="BYZ-38-t0r" eventType="valueChanged" id="Il4-xH-PlL"/>
+                                                            <action selector="changeRate:" destination="BYZ-38-t0r" eventType="valueChanged" id="Il4-xH-PlL"/>
                                                         </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Wl-Uu-Tp5">
@@ -178,7 +178,7 @@
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <state key="normal" title="Reset"/>
                                                         <connections>
-                                                            <action selector="resetTempo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ezT-7L-eDt"/>
+                                                            <action selector="resetRate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ezT-7L-eDt"/>
                                                         </connections>
                                                     </button>
                                                 </subviews>
