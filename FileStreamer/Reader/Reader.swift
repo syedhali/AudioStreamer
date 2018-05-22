@@ -115,6 +115,12 @@ public class Reader: Readable {
                 localizedError = "kAudioConverterErr_HardwareInUse"
             case kAudioConverterErr_NoHardwarePermission:
                 localizedError = "kAudioConverterErr_NoHardwarePermission"
+            case ReaderReachedEndOfDataError:
+                localizedError = "ReaderReachedEndOfDataError"
+            case ReaderNotEnoughDataError:
+                localizedError = "ReaderNotEnoughDataError"
+            case ReaderPartialConversionError:
+                localizedError = "ReaderPartialConversionError"
             default:
                 localizedError = "Unknown"
             }
@@ -123,5 +129,11 @@ public class Reader: Readable {
         }
         
         return buffer
+    }
+    
+    public func seek(_ packet: AVAudioPacketCount) {
+        os_log("%@ - %d [packet: %i]", log: Parser.logger, type: .debug, #function, #line, packet)
+        
+        currentPacket = packet
     }
 }

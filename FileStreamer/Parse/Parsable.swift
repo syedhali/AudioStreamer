@@ -20,6 +20,8 @@ public protocol Parsable: class {
     /// The total duration of the audio. For certain formats such as AAC this my be a guess or only equal to as many packets as have been processed.
     var duration: TimeInterval? { get }
     
+    var isParsingComplete: Bool { get }
+    
     /// The total number of frames (expressed in the data format)
     var totalFrameCount: AVAudioFrameCount? { get }
     
@@ -44,5 +46,13 @@ public protocol Parsable: class {
     /// - Parameter frame: An `AVAudioFrameCount` representing the desired frame
     /// - Returns: An optional `AVAudioPacketCount` representing the packet the frame belongs to. If the `dataFormat` is unknown (not enough data has been provided) then this will return nil.
     func packetOffset(forFrame frame: AVAudioFrameCount) -> AVAudioPacketCount?
+    
+}
+
+extension Parsable {
+    
+    public var isParsingComplete: Bool {
+        return false
+    }
     
 }

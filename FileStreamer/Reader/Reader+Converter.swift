@@ -26,10 +26,21 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     let packets = reader.parser.packets
     
     //
+    // Check if the packet index exceeds the number of packets we currently
+    // have (this could occur in a seek operation)
+    //
+    
+    if packetIndex > packets.count {
+        return ReaderNotEnoughDataError
+    }
+    
+    //
     // Check if we've reached the end of the packets
     //
     
-    if reader.currentPacket == packets.count - 1 {
+    let isParsingComplete = reader.parser.isParsingComplete
+//    os_log("is parsing complete: %i", isParsingComplete)
+    if packetIndex == packets.count - 1 {
         packetCount.pointee = 0
         return ReaderReachedEndOfDataError
     }
@@ -43,7 +54,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     
     var data = packet.0
     let dataCount = data.count
-    ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(bytes: dataCount, alignedTo: 0)
+    ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(byteCount: dataCount, alignment: 0)
     _ = data.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) in
         memcpy((ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, bytes, dataCount)
     }

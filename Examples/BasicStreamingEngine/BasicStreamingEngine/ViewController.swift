@@ -181,7 +181,7 @@ class ViewController: UIViewController {
         
         playerNode.stop()
         
-        reader.currentPacket = packetOffset
+        reader.seek(packetOffset)
         
         if isPlaying {
             playerNode.play()
