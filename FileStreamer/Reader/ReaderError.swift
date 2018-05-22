@@ -31,8 +31,6 @@ public enum ReaderError: LocalizedError {
             return localizedDescriptionFromReaderError(status)
         case .unableToCreateConverter(let status):
             return localizedDescriptionFromConverterError(status)
-        default:
-            return "Unknown error"
         }
     }
     

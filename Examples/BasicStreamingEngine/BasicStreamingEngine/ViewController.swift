@@ -131,6 +131,7 @@ class ViewController: UIViewController {
             let nextScheduledBuffer = try reader.read(TapReader.bufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch {
+            print("Error \(error)")
             os_log("No next scheduled buffer yet. Error: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
         }
     }

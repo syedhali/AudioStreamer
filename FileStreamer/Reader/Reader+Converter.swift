@@ -26,15 +26,6 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     let packets = reader.parser.packets
     
     //
-    // Check if the packet index exceeds the number of packets we currently
-    // have (this could occur in a seek operation)
-    //
-    
-    if packetIndex > packets.count - 1 {
-        return ReaderNotEnoughDataError
-    }
-    
-    //
     // Check if we've reached the end of the packets
     //
     
@@ -42,6 +33,15 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     if isParsingComplete, packetIndex >= packets.count - 1 {
         packetCount.pointee = 0
         return ReaderReachedEndOfDataError
+    }
+    
+    //
+    // Check if the packet index exceeds the number of packets we currently
+    // have (this could occur in a seek operation)
+    //
+    
+    if packetIndex >= packets.count - 1 {
+        return ReaderNotEnoughDataError
     }
     
     //
