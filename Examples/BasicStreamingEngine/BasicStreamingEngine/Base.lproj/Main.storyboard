@@ -40,17 +40,8 @@ Using AVAudioEngine</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="311" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pitch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAt-N1-dLO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="191" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="311" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sf-gN-iNW">
-                                                        <rect key="frame" x="191" y="2.5" width="120" height="13.5"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="120" id="Ntq-Vq-fNe"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -59,15 +50,21 @@ Using AVAudioEngine</string>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="31u-EN-kTK">
                                                 <rect key="frame" x="0.0" y="26" width="311" height="30"/>
                                                 <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Sf-gN-iNW">
+                                                        <rect key="frame" x="0.0" y="0.0" width="7" height="30"/>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1200" maxValue="1200" translatesAutoresizingMaskIntoConstraints="NO" id="ZgN-gD-MUl">
-                                                        <rect key="frame" x="-2" y="0.0" width="274" height="31"/>
+                                                        <rect key="frame" x="13" y="0.0" width="182" height="31"/>
                                                         <color key="tintColor" red="0.27058823529411763" green="0.85098039215686272" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changePitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="wtV-Ya-u7d"/>
                                                         </connections>
                                                     </slider>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0M-zn-gfp">
-                                                        <rect key="frame" x="278" y="0.0" width="33" height="30"/>
+                                                        <rect key="frame" x="201" y="0.0" width="110" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Reset"/>
@@ -86,17 +83,8 @@ Using AVAudioEngine</string>
                                                 <rect key="frame" x="0.0" y="0.0" width="311" height="18"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDB-J4-keW">
-                                                        <rect key="frame" x="0.0" y="0.0" width="191" height="18"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="311" height="18"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
-                                                        <nil key="textColor"/>
-                                                        <nil key="highlightedColor"/>
-                                                    </label>
-                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Wl-Uu-Tp5">
-                                                        <rect key="frame" x="191" y="0.0" width="120" height="18"/>
-                                                        <constraints>
-                                                            <constraint firstAttribute="width" constant="120" id="GEx-89-HMh"/>
-                                                        </constraints>
-                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
@@ -105,15 +93,24 @@ Using AVAudioEngine</string>
                                             <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="EUG-Mf-yfj">
                                                 <rect key="frame" x="0.0" y="26" width="311" height="30"/>
                                                 <subviews>
+                                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8Wl-Uu-Tp5">
+                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="30"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="32" id="ux9-ge-X4x"/>
+                                                        </constraints>
+                                                        <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                        <nil key="textColor"/>
+                                                        <nil key="highlightedColor"/>
+                                                    </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="WWs-0P-IbT">
-                                                        <rect key="frame" x="-2" y="0.0" width="274" height="31"/>
+                                                        <rect key="frame" x="38" y="0.0" width="174" height="31"/>
                                                         <color key="tintColor" red="0.59607843137254901" green="0.45882352941176469" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changeRate:" destination="BYZ-38-t0r" eventType="valueChanged" id="Il4-xH-PlL"/>
                                                         </connections>
                                                     </slider>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lLG-uX-dL5">
-                                                        <rect key="frame" x="278" y="0.0" width="33" height="30"/>
+                                                        <rect key="frame" x="218" y="0.0" width="93" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Reset"/>

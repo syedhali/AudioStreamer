@@ -153,7 +153,7 @@ public class Parser: Parsable {
             let duration = duration else {
                 return nil
         }
-        
+            
         let ratio = time / duration
         return AVAudioFramePosition(Double(frameCount) * ratio)
     }
