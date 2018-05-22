@@ -47,7 +47,7 @@ extension ViewController: DownloadableDelegate {
             self?.progressSlider.progress = progress
             
             if let duration = self?.parser?.duration {
-                let formattedDuration = self?.timeFormatter.string(from: duration)
+                let formattedDuration = self?.formatToMMSS(duration)
                 self?.durationTimeLabel.text = formattedDuration
                 self?.durationTimeLabel.isEnabled = true
                 self?.progressSlider.isEnabled = true

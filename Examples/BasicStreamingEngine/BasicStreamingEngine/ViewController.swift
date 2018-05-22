@@ -35,14 +35,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var pitchSlider: UISlider!
     var isSeeking: Bool = false
     
-    lazy var timeFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.unitsStyle = .positional
-        formatter.zeroFormattingBehavior = .pad
-        return formatter
-    }()
-    
     var parser: Parser?
     var reader: Reader?
     
@@ -88,16 +80,12 @@ class ViewController: UIViewController {
         
         Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) {
             [weak self] (timer) in
-
+            
             if let currentTime = self?.currentTime, let duration = self?.duration {
-                
-                guard let formatter = self?.timeFormatter else {
-                    return
-                }
                 
                 if let isSeeking = self?.isSeeking, !isSeeking {
                     self?.progressSlider.value = Float(currentTime)
-                    self?.currentTimeLabel.text = formatter.string(from: currentTime)!
+                    self?.currentTimeLabel.text = self?.formatToMMSS(currentTime)
                 }
                 
                 if currentTime >= duration {
@@ -207,7 +195,7 @@ class ViewController: UIViewController {
         os_log("Slider value changed")
         
         let currentTime = TimeInterval(sender.value)
-        currentTimeLabel.text = timeFormatter.string(from: currentTime)!
+        currentTimeLabel.text = formatToMMSS(currentTime)
     }
     
     @IBAction func progressSliderTouchedUp(_ sender: UISlider) {
@@ -250,5 +238,13 @@ class ViewController: UIViewController {
         rateLabel.text = String(format: "%.2fx", rate)
         rateSlider.value = rate
     }
+    
+    func formatToMMSS(_ time: TimeInterval) -> String {
+        let ts = Int(time)
+        let s = ts % 60
+        let m = (ts / 60) % 60
+        return String(format: "%02d:%02d", m, s)
+    }
+    
 }
 
