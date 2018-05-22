@@ -27,14 +27,11 @@ class ViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationTimeLabel: UILabel!
-    @IBOutlet weak var progressSlider: ProgressSlider!
-    @IBOutlet weak var formatSegmentControl: UISegmentedControl!
-    @IBOutlet weak var startDownloadButton: UIButton!
-    @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var rateSlider: UISlider!
     @IBOutlet weak var pitchLabel: UILabel!
     @IBOutlet weak var pitchSlider: UISlider!
+    @IBOutlet weak var progressSlider: ProgressSlider!
     var isSeeking: Bool = false
     
     // Streamer props
@@ -117,7 +114,6 @@ class ViewController: UIViewController {
         let interval = 1 / (TapReader.format.sampleRate / Double(TapReader.bufferSize))
         Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
             [weak self] (timer) in
-            
             self?.scheduleNextBuffer()
             self?.updateTimeDisplay()
         }
@@ -148,7 +144,7 @@ class ViewController: UIViewController {
         
         if currentTime >= duration {
             playerNode.pause()
-            playButton.setTitle("Play", for: .normal)
+            playButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
         }
         
         if !isSeeking {
@@ -165,7 +161,7 @@ class ViewController: UIViewController {
         if playerNode.isPlaying {
             playerNode.pause()
             engine.pause()
-            playButton.setTitle("Play", for: .normal)
+            playButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
         } else {
             if !engine.isRunning {
                 do {
@@ -175,7 +171,7 @@ class ViewController: UIViewController {
                 }
             }
             playerNode.play()
-            playButton.setTitle("Pause", for: .normal)
+            playButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
         }
     }
     

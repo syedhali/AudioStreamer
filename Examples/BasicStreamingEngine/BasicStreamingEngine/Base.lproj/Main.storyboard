@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ug-jH-Xc3">
-                                <rect key="frame" x="31" y="88" width="311" height="87"/>
+                                <rect key="frame" x="31" y="59" width="311" height="87"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="87" id="o9s-b5-viC"/>
                                 </constraints>
@@ -31,7 +31,7 @@ Using AVAudioEngine</string>
                                 <nil key="highlightedColor"/>
                             </label>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="7uo-NU-YtZ">
-                                <rect key="frame" x="32" y="222.5" width="311" height="222"/>
+                                <rect key="frame" x="32" y="193.5" width="311" height="280"/>
                                 <subviews>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="3bP-IE-Np2">
                                         <rect key="frame" x="0.0" y="0.0" width="311" height="56"/>
@@ -57,14 +57,14 @@ Using AVAudioEngine</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1200" maxValue="1200" translatesAutoresizingMaskIntoConstraints="NO" id="ZgN-gD-MUl">
-                                                        <rect key="frame" x="13" y="0.0" width="182" height="31"/>
+                                                        <rect key="frame" x="13" y="0.0" width="258" height="31"/>
                                                         <color key="tintColor" red="0.27058823529411763" green="0.85098039215686272" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changePitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="wtV-Ya-u7d"/>
                                                         </connections>
                                                     </slider>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="T0M-zn-gfp">
-                                                        <rect key="frame" x="201" y="0.0" width="110" height="30"/>
+                                                        <rect key="frame" x="277" y="0.0" width="34" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Reset"/>
@@ -103,14 +103,14 @@ Using AVAudioEngine</string>
                                                         <nil key="highlightedColor"/>
                                                     </label>
                                                     <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="WWs-0P-IbT">
-                                                        <rect key="frame" x="38" y="0.0" width="174" height="31"/>
+                                                        <rect key="frame" x="38" y="0.0" width="234" height="31"/>
                                                         <color key="tintColor" red="0.59607843137254901" green="0.45882352941176469" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changeRate:" destination="BYZ-38-t0r" eventType="valueChanged" id="Il4-xH-PlL"/>
                                                         </connections>
                                                     </slider>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lLG-uX-dL5">
-                                                        <rect key="frame" x="218" y="0.0" width="93" height="30"/>
+                                                        <rect key="frame" x="278" y="0.0" width="33" height="30"/>
                                                         <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                                         <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <state key="normal" title="Reset"/>
@@ -123,7 +123,7 @@ Using AVAudioEngine</string>
                                         </subviews>
                                     </stackView>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="Ghd-bc-Z2D">
-                                        <rect key="frame" x="0.0" y="128" width="311" height="94"/>
+                                        <rect key="frame" x="0.0" y="128" width="311" height="152"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Playback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z0G-Lh-GC5">
                                                 <rect key="frame" x="0.0" y="0.0" width="311" height="18"/>
@@ -147,7 +147,7 @@ Using AVAudioEngine</string>
                                                         <rect key="frame" x="37.5" y="0.0" width="236" height="31"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="progressProgressTintColor">
-                                                                <color key="value" red="0.96470588235294119" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="value" red="0.1803921568627451" green="0.24313725490196078" blue="0.34509803921568627" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
@@ -168,14 +168,19 @@ Using AVAudioEngine</string>
                                                     </label>
                                                 </subviews>
                                             </stackView>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pL1-YU-BrI">
-                                                <rect key="frame" x="0.0" y="64" width="311" height="30"/>
-                                                <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                <state key="normal" title="Play"/>
-                                                <connections>
-                                                    <action selector="togglePlayback:" destination="BYZ-38-t0r" eventType="touchUpInside" id="gCP-p4-kK9"/>
-                                                </connections>
-                                            </button>
+                                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Rql-KZ-673">
+                                                <rect key="frame" x="0.0" y="64" width="311" height="88"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Rt-X4-cTN">
+                                                        <rect key="frame" x="0.0" y="24" width="311" height="64"/>
+                                                        <state key="normal" image="play"/>
+                                                        <connections>
+                                                            <action selector="togglePlayback:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kfs-ic-Ezd"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                                <edgeInsets key="layoutMargins" top="24" left="0.0" bottom="0.0" right="0.0"/>
+                                            </stackView>
                                         </subviews>
                                     </stackView>
                                 </subviews>
@@ -198,7 +203,7 @@ Using AVAudioEngine</string>
                         <outlet property="durationTimeLabel" destination="cWp-4h-jRP" id="XRH-LF-u5l"/>
                         <outlet property="pitchLabel" destination="1Sf-gN-iNW" id="Jd2-bm-mph"/>
                         <outlet property="pitchSlider" destination="ZgN-gD-MUl" id="IkG-6F-z9y"/>
-                        <outlet property="playButton" destination="pL1-YU-BrI" id="czr-RF-W3J"/>
+                        <outlet property="playButton" destination="6Rt-X4-cTN" id="i6x-P2-CHk"/>
                         <outlet property="progressSlider" destination="wbu-hk-HMy" id="hlB-wq-TzU"/>
                         <outlet property="rateLabel" destination="8Wl-Uu-Tp5" id="u5f-R7-bh6"/>
                         <outlet property="rateSlider" destination="WWs-0P-IbT" id="RQh-60-diN"/>
@@ -209,4 +214,7 @@ Using AVAudioEngine</string>
             <point key="canvasLocation" x="32.799999999999997" y="31.934032983508249"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="play" width="64" height="64"/>
+    </resources>
 </document>
