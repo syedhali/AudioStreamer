@@ -63,7 +63,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         /// Download
-        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1526487111/bensound-creativeminds_iey0tr.mp3")!
+        let url = URL(string: "https://dg5aemm259g22.cloudfront.net/skinny+love+(vanic+remix)+-.mp3")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -226,7 +226,11 @@ class ViewController: UIViewController {
     @IBAction func changePitch(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
-        let pitch = roundf(sender.value)
+        let step: Float = 100
+        var pitch = roundf(sender.value)
+        let newStep = roundf(pitch / step)
+        pitch = newStep * step
+        sender.value = pitch
         pitchShifterNode.pitch = pitch
         pitchLabel.text = String(format: "%i cents", Int(pitch))
     }
@@ -245,7 +249,12 @@ class ViewController: UIViewController {
     @IBAction func changeRate(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
-        let rate = sender.value
+        
+        let step: Float = 0.25
+        var rate = sender.value
+        let newStep = roundf(rate / step)
+        rate = newStep * step
+        sender.value = rate
         pitchShifterNode.rate = rate
         rateLabel.text = String(format: "%.2fx", rate)
     }
