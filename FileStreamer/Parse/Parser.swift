@@ -123,7 +123,7 @@ public class Parser: Parsable {
         }
     }
     
-    public func packetOffset(forFrame frame: AVAudioFrameCount) -> AVAudioPacketCount? {
+    public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
         guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
@@ -143,5 +143,18 @@ public class Parser: Parsable {
         }
         
         return TimeInterval(frame) / TimeInterval(frameCount) * duration
+    }
+    
+    public func frameOffset(forTime time: TimeInterval) -> AVAudioFramePosition? {
+        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
+        
+        guard let _ = info.dataFormat?.streamDescription.pointee,
+            let frameCount = totalFrameCount,
+            let duration = duration else {
+                return nil
+        }
+        
+        let ratio = time / duration
+        return AVAudioFramePosition(Double(frameCount) * ratio)
     }
 }

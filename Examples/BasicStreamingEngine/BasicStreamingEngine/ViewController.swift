@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var rateSlider: UISlider!
     @IBOutlet weak var pitchLabel: UILabel!
     @IBOutlet weak var pitchSlider: UISlider!
+    var isSeeking: Bool = false
     
     lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
@@ -59,6 +60,9 @@ class ViewController: UIViewController {
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
     }
+    var duration: TimeInterval? {
+        return parser?.duration
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -84,8 +88,22 @@ class ViewController: UIViewController {
         
         Timer.scheduledTimer(withTimeInterval: 0.25, repeats: true) {
             [weak self] (timer) in
-            if let currentTime = self?.currentTime {       
-                self?.currentTimeLabel.text = self?.timeFormatter.string(from: currentTime)
+
+            if let currentTime = self?.currentTime, let duration = self?.duration {
+                
+                guard let formatter = self?.timeFormatter else {
+                    return
+                }
+                
+                if let isSeeking = self?.isSeeking, !isSeeking {
+                    self?.progressSlider.value = Float(currentTime)
+                    self?.currentTimeLabel.text = formatter.string(from: currentTime)!
+                }
+                
+                if currentTime >= duration {
+                    self?.playerNode.pause()
+                    self?.playButton.setTitle("Play", for: .normal)
+                }
             }
         }
         
@@ -109,10 +127,15 @@ class ViewController: UIViewController {
         engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: TapReader.format)
         engine.prepare()
         
-        /// Install tap
-        playerNode.installTap(onBus: 0, bufferSize: TapReader.bufferSize/2, format: TapReader.format) {
-            [weak self] (buffer, time) in
-
+        /// Use timer to schedule the buffers (this is not ideal)
+        let interval = 1 / (TapReader.format.sampleRate / Double(TapReader.bufferSize))
+        Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
+            [weak self] (timer) in
+            
+            guard let playerNode = self?.playerNode else {
+                return
+            }
+            
             guard let reader = self?.reader else {
                 os_log("No reader yet...", log: ViewController.logger, type: .debug)
                 return
@@ -124,7 +147,7 @@ class ViewController: UIViewController {
             }
 
             // This is copying the buffer internally in some kind of circular buffer
-            self?.playerNode.scheduleBuffer(nextScheduledBuffer)
+            playerNode.scheduleBuffer(nextScheduledBuffer)
         }
     }
 
@@ -156,15 +179,14 @@ class ViewController: UIViewController {
         guard let parser = parser, let reader = reader else {
             return
         }
-        
-        let frameOffset = AVAudioFrameCount(round(progressSlider.value))
-        guard let packetOffset = parser.packetOffset(forFrame: frameOffset),
-              let timeOffset = parser.timeOffset(forFrame: frameOffset)
-            else {
+
+        let currentTime = TimeInterval(progressSlider.value)
+        guard let frameOffset = parser.frameOffset(forTime: currentTime),
+              let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
             return
         }
         
-        currentTimeOffset = timeOffset
+        currentTimeOffset = currentTime
         
         playerNode.stop()
         
@@ -175,6 +197,25 @@ class ViewController: UIViewController {
         }
     }
     
+    @IBAction func progressSliderTouchedDown(_ sender: UISlider) {
+        os_log("Slider touched down")
+        
+        isSeeking = true
+    }
+    
+    @IBAction func progressSliderValueChanged(_ sender: UISlider) {
+        os_log("Slider value changed")
+        
+        let currentTime = TimeInterval(sender.value)
+        currentTimeLabel.text = timeFormatter.string(from: currentTime)!
+    }
+    
+    @IBAction func progressSliderTouchedUp(_ sender: UISlider) {
+        os_log("Slider touched up")
+        
+        seek(sender)
+        isSeeking = false
+    }
     
     @IBAction func changePitch(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)

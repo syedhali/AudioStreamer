@@ -45,7 +45,7 @@ public protocol Parsable: class {
     ///
     /// - Parameter frame: An `AVAudioFrameCount` representing the desired frame
     /// - Returns: An optional `AVAudioPacketCount` representing the packet the frame belongs to. If the `dataFormat` is unknown (not enough data has been provided) then this will return nil.
-    func packetOffset(forFrame frame: AVAudioFrameCount) -> AVAudioPacketCount?
+    func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount?
     
 }
 

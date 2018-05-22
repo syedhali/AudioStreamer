@@ -30,7 +30,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     // have (this could occur in a seek operation)
     //
     
-    if packetIndex > packets.count {
+    if packetIndex > packets.count - 1 {
         return ReaderNotEnoughDataError
     }
     

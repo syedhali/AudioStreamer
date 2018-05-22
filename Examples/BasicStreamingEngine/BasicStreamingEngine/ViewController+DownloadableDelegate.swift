@@ -50,12 +50,9 @@ extension ViewController: DownloadableDelegate {
                 let formattedDuration = self?.timeFormatter.string(from: duration)
                 self?.durationTimeLabel.text = formattedDuration
                 self?.durationTimeLabel.isEnabled = true
-            }
-            
-            if let totalFrames = self?.parser?.totalFrameCount {
                 self?.progressSlider.isEnabled = true
                 self?.progressSlider.minimumValue = 0.0
-                self?.progressSlider.maximumValue = Float(totalFrames)
+                self?.progressSlider.maximumValue = Float(duration)
             }
         }
     }

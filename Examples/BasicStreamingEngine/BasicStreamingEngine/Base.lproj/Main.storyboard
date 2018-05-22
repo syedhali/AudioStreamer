@@ -28,7 +28,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="247" height="88"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Pitch" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dAt-N1-dLO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="21"/>
+                                                        <rect key="frame" x="6" y="0.0" width="234" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                         <nil key="textColor"/>
@@ -37,7 +37,7 @@
                                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1200" maxValue="1200" translatesAutoresizingMaskIntoConstraints="NO" id="ZgN-gD-MUl">
                                                         <rect key="frame" x="6" y="29" width="187" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="tintColor" red="0.27058823529411763" green="0.85098039215686272" blue="0.62745098039215685" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changePitch:" destination="BYZ-38-t0r" eventType="valueChanged" id="wtV-Ya-u7d"/>
                                                         </connections>
@@ -74,7 +74,7 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="247" height="88"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Rate" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aDB-J4-keW">
-                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="21"/>
+                                                        <rect key="frame" x="8" y="0.0" width="232" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                         <nil key="textColor"/>
@@ -83,7 +83,7 @@
                                                     <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.5" maxValue="2" translatesAutoresizingMaskIntoConstraints="NO" id="WWs-0P-IbT">
                                                         <rect key="frame" x="6" y="29" width="187" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                        <color key="tintColor" red="0.1764705882352941" green="0.66666666666666663" blue="0.94117647058823528" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                        <color key="tintColor" red="0.59607843137254901" green="0.45882352941176469" blue="0.83921568627450982" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <connections>
                                                             <action selector="changeRate:" destination="BYZ-38-t0r" eventType="valueChanged" id="Il4-xH-PlL"/>
                                                         </connections>
@@ -120,22 +120,25 @@
                                                 <rect key="frame" x="0.0" y="0.0" width="247" height="122"/>
                                                 <subviews>
                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Playback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z0G-Lh-GC5">
-                                                        <rect key="frame" x="0.0" y="0.0" width="240" height="21"/>
+                                                        <rect key="frame" x="8" y="0.0" width="232" height="21"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
                                                         <nil key="textColor"/>
                                                         <nil key="highlightedColor"/>
                                                     </label>
-                                                    <slider opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" continuous="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wbu-hk-HMy" customClass="ProgressSlider" customModule="BasicStreamingEngine" customModuleProvider="target">
+                                                    <slider opaque="NO" alpha="0.5" contentMode="scaleToFill" fixedFrame="YES" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="wbu-hk-HMy" customClass="ProgressSlider" customModule="BasicStreamingEngine" customModuleProvider="target">
                                                         <rect key="frame" x="6" y="29" width="228" height="30"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                         <userDefinedRuntimeAttributes>
                                                             <userDefinedRuntimeAttribute type="color" keyPath="progressProgressTintColor">
-                                                                <color key="value" red="0.1764705882" green="0.66666666669999997" blue="0.94117647059999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="value" red="0.96470588235294119" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                             </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                         <connections>
-                                                            <action selector="seek:" destination="BYZ-38-t0r" eventType="valueChanged" id="eGf-xf-Bb2"/>
+                                                            <action selector="progressSliderTouchedDown:" destination="BYZ-38-t0r" eventType="touchDown" id="VHa-fc-IRl"/>
+                                                            <action selector="progressSliderTouchedUp:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Tau-Bo-iut"/>
+                                                            <action selector="progressSliderTouchedUp:" destination="BYZ-38-t0r" eventType="touchUpOutside" id="q6L-Pc-xHO"/>
+                                                            <action selector="progressSliderValueChanged:" destination="BYZ-38-t0r" eventType="valueChanged" id="J4C-kr-8jz"/>
                                                         </connections>
                                                     </slider>
                                                     <label opaque="NO" userInteractionEnabled="NO" alpha="0.5" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SgO-iI-Dgm">
@@ -170,13 +173,26 @@
                                         </constraints>
                                     </stackView>
                                 </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="247" id="DR6-TB-5Ec"/>
+                                </constraints>
                             </stackView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Streaming Audio With Effects Using AVAudioEngine" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3ug-jH-Xc3">
+                                <rect key="frame" x="70" y="57" width="233" height="87"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="233" id="lrS-QU-2yG"/>
+                                    <constraint firstAttribute="height" constant="87" id="o9s-b5-viC"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.95294117647058818" green="0.96470588235294119" blue="0.98431372549019602" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="OWa-p2-uZs" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="64" id="PbT-fC-pbC"/>
+                            <constraint firstItem="3ug-jH-Xc3" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" constant="-1" id="0As-yu-Qvi"/>
+                            <constraint firstItem="OWa-p2-uZs" firstAttribute="top" secondItem="3ug-jH-Xc3" secondAttribute="bottom" constant="32" id="UDT-g3-b9c"/>
                             <constraint firstItem="OWa-p2-uZs" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="hsK-D6-k3e"/>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="OWa-p2-uZs" secondAttribute="trailing" constant="64" id="lWx-bb-lxs"/>
                             <constraint firstItem="OWa-p2-uZs" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="lsi-G1-H0J"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
