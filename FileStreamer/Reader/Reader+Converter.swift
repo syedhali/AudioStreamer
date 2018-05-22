@@ -39,8 +39,7 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     //
     
     let isParsingComplete = reader.parser.isParsingComplete
-//    os_log("is parsing complete: %i", isParsingComplete)
-    if packetIndex == packets.count - 1 {
+    if isParsingComplete, packetIndex >= packets.count - 1 {
         packetCount.pointee = 0
         return ReaderReachedEndOfDataError
     }

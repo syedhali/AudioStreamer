@@ -52,7 +52,11 @@ public protocol Parsable: class {
 extension Parsable {
     
     public var isParsingComplete: Bool {
-        return false
+        guard let totalPacketCount = totalPacketCount else {
+            return false
+        }
+        
+        return packets.count == totalPacketCount
     }
     
 }

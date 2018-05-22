@@ -13,27 +13,10 @@ import os.log
 extension ViewController: DownloadableDelegate {
     func download(_ download: Downloadable, completedWithError error: Error?) {
         os_log("%@ - %d [error: %@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
-        
-        DispatchQueue.main.async {
-            [weak self] in
-            self?.startDownloadButton.setTitle("Downloaded", for: .normal)
-        }
     }
     
     func download(_ download: Downloadable, changedState state: DownloadableState) {
         os_log("%@ - %d [state: %@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: state))
-        
-        DispatchQueue.main.async {
-            [weak self] in
-            switch state {
-            case .started, .paused:
-                self?.downloadProgressLabel.isHidden = false
-                self?.downloadProgressView.isHidden = false
-            default:
-                self?.downloadProgressLabel.isHidden = true
-                self?.downloadProgressView.isHidden = true
-            }
-        }
     }
     
     func download(_ download: Downloadable, didReceiveData data: Data, progress: Float) {
@@ -61,8 +44,7 @@ extension ViewController: DownloadableDelegate {
         /// Update the progress UI
         DispatchQueue.main.async {
             [weak self] in
-            self?.downloadProgressLabel.text = String(format: "%.0f%%", progress * 100)
-            self?.downloadProgressView.progress = progress
+            self?.progressSlider.progress = progress
             
             if let duration = self?.parser?.duration {
                 let formattedDuration = self?.timeFormatter.string(from: duration)

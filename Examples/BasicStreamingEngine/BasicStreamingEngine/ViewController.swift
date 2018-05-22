@@ -25,10 +25,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationTimeLabel: UILabel!
-    @IBOutlet weak var progressSlider: UISlider!
+    @IBOutlet weak var progressSlider: ProgressSlider!
     @IBOutlet weak var formatSegmentControl: UISegmentedControl!
     @IBOutlet weak var startDownloadButton: UIButton!
-    @IBOutlet weak var downloadProgressLabel: UILabel!
     @IBOutlet weak var downloadProgressView: UIProgressView!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var rateSlider: UISlider!
@@ -37,7 +36,7 @@ class ViewController: UIViewController {
     
     lazy var timeFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.hour, .minute, .second]
+        formatter.allowedUnits = [.minute, .second]
         formatter.unitsStyle = .positional
         formatter.zeroFormattingBehavior = .pad
         return formatter
@@ -89,6 +88,8 @@ class ViewController: UIViewController {
                 self?.currentTimeLabel.text = self?.timeFormatter.string(from: currentTime)
             }
         }
+        
+        Downloader.shared.start()
     }
     
     func setupEngine() {
@@ -125,20 +126,6 @@ class ViewController: UIViewController {
             // This is copying the buffer internally in some kind of circular buffer
             self?.playerNode.scheduleBuffer(nextScheduledBuffer)
         }
-    }
-    
-    @IBAction func changeFormat(_ sender: UISegmentedControl) {
-        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
-        
-    }
-    
-    @IBAction func startDownload(_ sender: UIButton) {
-        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
-
-        Downloader.shared.start()
-        
-        startDownloadButton.setTitle("Downloading...", for: .normal)
-        startDownloadButton.isEnabled = false
     }
 
     @IBAction func togglePlayback(_ sender: UIButton) {
