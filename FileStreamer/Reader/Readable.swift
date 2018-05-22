@@ -18,7 +18,7 @@ public protocol Readable {
     /// <#Description#>
     ///
     /// - Parameter frames: <#frames description#>
-    func read(_ frames: AVAudioFrameCount) throws -> AVAudioPCMBuffer?
+    func read(_ frames: AVAudioFrameCount) throws -> AVAudioPCMBuffer
     
     /// <#Description#>
     ///

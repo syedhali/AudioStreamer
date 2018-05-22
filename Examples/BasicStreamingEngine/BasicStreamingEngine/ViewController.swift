@@ -127,12 +127,12 @@ class ViewController: UIViewController {
             return
         }
         
-        guard let nextScheduledBuffer = reader.read(TapReader.bufferSize) else {
-            os_log("No next scheduled buffer yet...", log: ViewController.logger, type: .debug)
-            return
+        do {
+            let nextScheduledBuffer = try reader.read(TapReader.bufferSize)
+            playerNode.scheduleBuffer(nextScheduledBuffer)
+        } catch {
+            os_log("No next scheduled buffer yet. Error: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
         }
-        
-        playerNode.scheduleBuffer(nextScheduledBuffer)
     }
     
     // MARK: - Updating The Time Display

@@ -66,66 +66,44 @@ public class Reader: Readable {
     
     // MARK: - Methods
     
-    public func read(_ frames: AVAudioFrameCount) -> AVAudioPCMBuffer? {
+    public func read(_ frames: AVAudioFrameCount) throws -> AVAudioPCMBuffer {
         var packets = frames / destinationFormat.mFramesPerPacket
         
         guard currentPacket != parser.packets.count - 1 else {
-            return nil
+            throw ReaderError.readFailed(ReaderNotEnoughDataError)
         }
         
         guard let format = AVAudioFormat(streamDescription: &destinationFormat) else {
-            os_log("Failed to create destination format", log: Reader.logger, type: .error)
-            return nil
+            throw ReaderError.failedToCreateDestinationFormat
         }
         
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames) else {
-            os_log("Failed to create PCM buffer", log: Reader.logger, type: .error)
-            return nil
+            throw ReaderError.failedToCreatePCMBuffer
         }
         buffer.frameLength = frames
         
 //        os_log("%@ - %d [converter: %@, packets: %i, format: %@, buffer: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: converter!), packets, String(describing: format), String(describing: buffer))
         
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
-        let result = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
-        guard result == noErr else {
-            var localizedError = ""
-            switch result {
-            case kAudioConverterErr_FormatNotSupported:
-                localizedError = "kAudioConverterErr_FormatNotSupported"
-            case kAudioConverterErr_OperationNotSupported:
-                localizedError = "kAudioConverterErr_OperationNotSupported"
-            case kAudioConverterErr_PropertyNotSupported:
-                localizedError = "kAudioConverterErr_PropertyNotSupported"
-            case kAudioConverterErr_InvalidInputSize:
-                localizedError = "kAudioConverterErr_InvalidInputSize"
-            case kAudioConverterErr_InvalidOutputSize:
-                localizedError = "kAudioConverterErr_InvalidOutputSize"
-            case kAudioConverterErr_UnspecifiedError:
-                localizedError = "kAudioConverterErr_UnspecifiedError"
-            case kAudioConverterErr_BadPropertySizeError:
-                localizedError = "kAudioConverterErr_BadPropertySizeError"
-            case kAudioConverterErr_RequiresPacketDescriptionsError:
-                localizedError = "kAudioConverterErr_RequiresPacketDescriptionsError"
-            case kAudioConverterErr_InputSampleRateOutOfRange:
-                localizedError = "kAudioConverterErr_InputSampleRateOutOfRange"
-            case kAudioConverterErr_OutputSampleRateOutOfRange:
-                localizedError = "kAudioConverterErr_OutputSampleRateOutOfRange"
-            case kAudioConverterErr_HardwareInUse:
-                localizedError = "kAudioConverterErr_HardwareInUse"
-            case kAudioConverterErr_NoHardwarePermission:
-                localizedError = "kAudioConverterErr_NoHardwarePermission"
-            case ReaderReachedEndOfDataError:
-                localizedError = "ReaderReachedEndOfDataError"
-            case ReaderNotEnoughDataError:
-                localizedError = "ReaderNotEnoughDataError"
-            case ReaderPartialConversionError:
-                localizedError = "ReaderPartialConversionError"
+        let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
+        guard status == noErr else {
+            switch status {
+            case kAudioConverterErr_FormatNotSupported,
+                 kAudioConverterErr_OperationNotSupported,
+                 kAudioConverterErr_PropertyNotSupported,
+                 kAudioConverterErr_InvalidInputSize,
+                 kAudioConverterErr_InvalidOutputSize,
+                 kAudioConverterErr_UnspecifiedError,
+                 kAudioConverterErr_BadPropertySizeError,
+                 kAudioConverterErr_RequiresPacketDescriptionsError,
+                 kAudioConverterErr_InputSampleRateOutOfRange,
+                 kAudioConverterErr_OutputSampleRateOutOfRange,
+                 kAudioConverterErr_HardwareInUse,
+                 kAudioConverterErr_NoHardwarePermission:
+                throw ReaderError.converterFailed(status)
             default:
-                localizedError = "Unknown"
+                throw ReaderError.readFailed(status)
             }
-            os_log("Failed to fill complex buffer [error: %@]", log: Reader.logger, type: .error, localizedError)
-            return nil
         }
         
         return buffer
