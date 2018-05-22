@@ -14,7 +14,7 @@ public protocol Downloadable: class {
     // MARK: - Properties
     
     /// A receiver implementing the `DownloadableDelegate` to receive state change, completion, and progress events from the `Downloadable` instance.
-    weak var delegate: DownloadableDelegate? { get set }
+    var delegate: DownloadableDelegate? { get set }
     
     /// A completion block for when the contents of the download are fully downloaded.
     var completionHandler: ((Error?) -> Void)? { get set }
@@ -29,7 +29,7 @@ public protocol Downloadable: class {
     var totalBytesReceived: Int64 { get }
     
     /// A `Int64` representing the total byte length of the target file.
-    var totalBytesLength: Int64 { get }
+    var totalBytesCount: Int64 { get }
     
     /// A `URL` representing the current URL the downloader is fetching. This is an optional because this protocol is designed to allow classes implementing the `Downloadable` protocol to be used as singletons for many different URLS so a common cache can be used to redownloading the same resources.
     var url: URL? { get }

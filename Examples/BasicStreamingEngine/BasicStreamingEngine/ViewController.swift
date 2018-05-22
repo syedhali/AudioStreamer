@@ -66,7 +66,7 @@ class ViewController: UIViewController {
         // Do any additional setup after loading the view, typically from a nib.
 
         /// Download
-        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1515808303/05_Ro%CC%88yksopp_Forever_chz27m.mp3")!
+        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1526487111/bensound-creativeminds_iey0tr.mp3")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      

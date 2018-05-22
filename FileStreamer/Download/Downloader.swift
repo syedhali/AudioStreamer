@@ -49,7 +49,7 @@ public class Downloader: NSObject, Downloadable {
         }
     }
     public var totalBytesReceived: Int64 = 0
-    public var totalBytesLength: Int64 = 0
+    public var totalBytesCount: Int64 = 0
     public var url: URL? {
         didSet {
             if state == .started {
@@ -59,7 +59,7 @@ public class Downloader: NSObject, Downloadable {
             if let url = url {
                 progress = 0.0
                 state = .notStarted
-                totalBytesLength = 0
+                totalBytesCount = 0
                 totalBytesReceived = 0
                 task = session.dataTask(with: url)
             } else {

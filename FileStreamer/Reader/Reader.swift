@@ -53,8 +53,9 @@ public class Reader: Readable {
 
         let sourceFormat = dataFormat.streamDescription
         let destinationFormat = readFormat.streamDescription
-        guard AudioConverterNew(sourceFormat, destinationFormat, &converter) == noErr else {
-            throw ReaderError.unableToCreateConverter
+        let result = AudioConverterNew(sourceFormat, destinationFormat, &converter)
+        guard result == noErr else {
+            throw ReaderError.unableToCreateConverter(result)
         }
         
         self.sourceFormat = sourceFormat.pointee
