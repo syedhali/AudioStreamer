@@ -33,31 +33,24 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: info.dataFormat))
         
     case kAudioFileStreamProperty_AudioDataByteCount:
-        var byteCount: UInt64 = 0
-        GetPropertyValue(&byteCount, streamID, propertyID)
-        info.byteCount = byteCount
-        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, byteCount)
+        GetPropertyValue(&info.byteCount, streamID, propertyID)
+        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.byteCount)
         
     case kAudioFileStreamProperty_AudioDataPacketCount:
-        var packetCount: UInt64 = 0
-        GetPropertyValue(&packetCount, streamID, propertyID)
-        info.packetCount = packetCount
-        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, packetCount)
+        GetPropertyValue(&info.packetCount, streamID, propertyID)
+        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.packetCount)
         
     case kAudioFileStreamProperty_DataOffset:
-        var dataOffset: Int64 = 0
-        GetPropertyValue(&dataOffset, streamID, propertyID)
-        info.dataOffset = dataOffset
-        os_log("Data offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, String(propertyID))
+        GetPropertyValue(&info.dataOffset, streamID, propertyID)
+        os_log("Data offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.dataOffset)
         
     case kAudioFileStreamProperty_BitRate:
-        var bitRate: UInt32 = 0
-        GetPropertyValue(&bitRate, streamID, propertyID)
-        info.bitRate = bitRate
-        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, bitRate)
+        GetPropertyValue(&info.bitRate, streamID, propertyID)
+        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.bitRate)
 
     default:
-        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
+        break
+//        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
     }
 }
 
@@ -83,8 +76,8 @@ func GetPropertyValue<T>(_ value: inout T, _ streamID: AudioFileStreamID, _ prop
 }
 
 /// This extension just helps us print out the name of an `AudioFileStreamPropertyID`. Purely for debugging and not essential to the main functionality of the parser.
-extension AudioFileStreamPropertyID: CustomDebugStringConvertible {
-    public var debugDescription: String {
+extension AudioFileStreamPropertyID: CustomStringConvertible {
+    public var description: String {
         switch self {
         case kAudioFileStreamProperty_ReadyToProducePackets:
             return "Ready to produce packets"

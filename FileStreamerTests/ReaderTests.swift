@@ -81,7 +81,85 @@ class ReaderTests: XCTestCase {
                 return
             }
             
-            let buffer = reader.read(22050)
+            let buffer = try! reader.read(22050)
+            XCTAssertNotNil(buffer)
+            
+            usleep(250000)
+            testRead(ticks - 1, reader)
+        }
+        
+        self.wait(for: [expectation], timeout: 20)
+    }
+    
+    func testParseDownloadedAAC() {
+        let expectation = XCTestExpectation(description: "Download & Parse & Read AAC")
+        expectation.expectedFulfillmentCount = 2
+        
+        let url = RemoteFileURL.theLastOnes.aac
+        Downloader.shared.url = url
+        Downloader.shared.start()
+        XCTAssertEqual(Downloader.shared.state, .started)
+        
+        var parserOrNil: Parser?
+        do {
+            parserOrNil = try Parser()
+        } catch {
+            XCTFail("Could not create parser")
+            return
+        }
+        
+        guard let parser = parserOrNil else {
+            XCTFail("Did not create parser")
+            return
+        }
+        
+        Downloader.shared.progressHandler = { (data, progress) in
+            parser.parse(data: data)
+        }
+        
+        Downloader.shared.completionHandler = {
+            XCTAssertEqual(Downloader.shared.state, .completed)
+            XCTAssertNil($0)
+            
+            XCTAssertEqual(parser.bitRate, 0)
+            XCTAssertEqual(parser.dataOffset, 0)
+            XCTAssertNotEqual(parser.dataFormat, nil)
+            XCTAssertNotEqual(parser.fileFormat, nil)
+            XCTAssertEqual(parser.packets.count, 1942)
+            
+            expectation.fulfill()
+            
+            //
+            let readFormatOrNil = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)
+            guard let readFormat = readFormatOrNil else {
+                XCTFail("Could not create read format")
+                return
+            }
+            
+            //
+            var readerOrNil: Reader?
+            do {
+                readerOrNil = try Reader(parser: parser, readFormat: readFormat)
+            } catch {
+                XCTFail("Could not create reader: \(error.localizedDescription)")
+                return
+            }
+            
+            guard let reader = readerOrNil else {
+                XCTFail("Did not create reader")
+                return
+            }
+            
+            testRead(10, reader)
+        }
+        
+        func testRead(_ ticks: Int, _ reader: Reader) {
+            guard ticks != 0 else {
+                expectation.fulfill()
+                return
+            }
+            
+            let buffer = try! reader.read(22050)
             XCTAssertNotNil(buffer)
             
             usleep(250000)
@@ -153,7 +231,7 @@ class ReaderTests: XCTestCase {
                 return
             }
             
-            let buffer = reader.read(1024)
+            let buffer = try! reader.read(1024)
             XCTAssertNotNil(buffer)
             
             usleep(250000)

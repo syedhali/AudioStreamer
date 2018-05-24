@@ -17,7 +17,7 @@ class DownloaderTests: XCTestCase {
         XCTAssertEqual(Downloader.shared.url, url)
         XCTAssertEqual(Downloader.shared.progress, 0.0)
         XCTAssertEqual(Downloader.shared.totalBytesReceived, 0)
-        XCTAssertEqual(Downloader.shared.totalBytesLength, 0)
+        XCTAssertEqual(Downloader.shared.totalBytesCount, 0)
         XCTAssertEqual(Downloader.shared.state, .notStarted)
     }
     
@@ -66,6 +66,6 @@ class DownloaderTests: XCTestCase {
         }
         XCTAssertEqual(Downloader.shared.state, .started)
         
-        self.wait(for: [expectation], timeout: 10)
+        self.wait(for: [expectation], timeout: 30)
     }
 }

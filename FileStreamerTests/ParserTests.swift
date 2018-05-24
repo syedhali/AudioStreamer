@@ -130,7 +130,7 @@ class ParserTests: XCTestCase {
         }
         XCTAssertEqual(Downloader.shared.state, .started)
         
-        self.wait(for: [expectation], timeout: 10)
+        self.wait(for: [expectation], timeout: 30)
     }
     
 }

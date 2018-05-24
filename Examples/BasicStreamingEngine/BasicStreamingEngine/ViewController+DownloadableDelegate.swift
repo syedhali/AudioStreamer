@@ -33,7 +33,7 @@ extension ViewController: DownloadableDelegate {
         /// Once there's enough data to start producing packets we can use the data format
         if let _ = parser.dataFormat, reader == nil {
             do {
-                reader = try Reader(parser: parser, readFormat: TapReader.format)
+                reader = try Reader(parser: parser, readFormat: readFormat)
             } catch ReaderError.unableToCreateConverter(let status) {
                 os_log("Failed to create converter for reader [OSStatus: %i]", log: ViewController.logger, type: .error, status)
             } catch {

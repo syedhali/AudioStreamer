@@ -12,16 +12,7 @@ import FileStreamer
 import os.log
 
 class ViewController: UIViewController {
-    static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "ViewController")
-
-    // Processing format and buffer size helper
-    struct TapReader {
-        static let bufferSize: AVAudioFrameCount = 8192
-        static let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
-                                          sampleRate: 44100,
-                                          channels: 2,
-                                          interleaved: false)!
-    }
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "ViewController")
     
     // UI props
     @IBOutlet weak var playButton: UIButton!
@@ -43,6 +34,8 @@ class ViewController: UIViewController {
     let engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
     let pitchShifterNode = AVAudioUnitTimePitch()
+    let readBufferSize: AVAudioFrameCount = 8192
+    let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
     // Playback state props
     var currentTimeOffset: TimeInterval = 0
@@ -105,14 +98,14 @@ class ViewController: UIViewController {
         engine.attach(pitchShifterNode)
         
         // Node nodes
-        engine.connect(playerNode, to: pitchShifterNode, format: TapReader.format)
-        engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: TapReader.format)
+        engine.connect(playerNode, to: pitchShifterNode, format: readFormat)
+        engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: readFormat)
         
         // Prepare the engine
         engine.prepare()
         
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
-        let interval = 1 / (TapReader.format.sampleRate / Double(TapReader.bufferSize))
+        let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
         Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
             [weak self] (timer) in
             self?.scheduleNextBuffer()
@@ -133,13 +126,13 @@ class ViewController: UIViewController {
         }
         
         do {
-            let nextScheduledBuffer = try reader.read(TapReader.bufferSize)
+            let nextScheduledBuffer = try reader.read(readBufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.reachedEndOfFile {
             os_log("Scheduler reached end of file", log: ViewController.logger, type: .debug)
             reachedEndOfFile = true
         } catch {
-            os_log("No next scheduled buffer yet. Error: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
+            os_log("Cannot schedule buffer: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
         }
     }
     

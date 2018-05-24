@@ -16,7 +16,6 @@
 		66A1397A20013FAA0076B0E5 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397520013FAA0076B0E5 /* Downloadable.swift */; };
 		66A1397B20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */; };
 		66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */; };
-		66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13980200140C60076B0E5 /* RemoteFileURL.swift */; };
 		66A139832001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
 		66A139842001546D0076B0E5 /* DownloadableState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A139822001546D0076B0E5 /* DownloadableState.swift */; };
 		66A13986200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */; };
@@ -26,6 +25,7 @@
 		66A13996200177050076B0E5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13995200177050076B0E5 /* Parser.swift */; };
 		66A13997200177050076B0E5 /* Parser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A13995200177050076B0E5 /* Parser.swift */; };
 		66A1399C200179AD0076B0E5 /* ParserTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1399B200179AD0076B0E5 /* ParserTests.swift */; };
+		66AE563620B7170D0032DCE2 /* RemoteFileURLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66AE563520B7170D0032DCE2 /* RemoteFileURLs.swift */; };
 		66C8350820019AD300E953C7 /* ParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350720019AD300E953C7 /* ParserError.swift */; };
 		66C8350920019C3900E953C7 /* ParserError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350720019AD300E953C7 /* ParserError.swift */; };
 		66C8350B2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */; };
@@ -63,12 +63,12 @@
 		66A1397420013FAA0076B0E5 /* Downloader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloader.swift; sourceTree = "<group>"; };
 		66A1397520013FAA0076B0E5 /* Downloadable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Downloadable.swift; sourceTree = "<group>"; };
 		66A1397620013FAA0076B0E5 /* DownloadableDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DownloadableDelegate.swift; sourceTree = "<group>"; };
-		66A13980200140C60076B0E5 /* RemoteFileURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RemoteFileURL.swift; path = ../Examples/BasicStreamingEngine/BasicStreamingEngine/RemoteFileURL.swift; sourceTree = "<group>"; };
 		66A139822001546D0076B0E5 /* DownloadableState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadableState.swift; sourceTree = "<group>"; };
 		66A13985200156790076B0E5 /* Downloader+URLSessionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Downloader+URLSessionDelegate.swift"; sourceTree = "<group>"; };
 		66A13992200176B60076B0E5 /* Parsable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parsable.swift; sourceTree = "<group>"; };
 		66A13995200177050076B0E5 /* Parser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Parser.swift; sourceTree = "<group>"; };
 		66A1399B200179AD0076B0E5 /* ParserTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserTests.swift; sourceTree = "<group>"; };
+		66AE563520B7170D0032DCE2 /* RemoteFileURLs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteFileURLs.swift; sourceTree = "<group>"; };
 		66C8350720019AD300E953C7 /* ParserError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParserError.swift; sourceTree = "<group>"; };
 		66C8350A2001A63A00E953C7 /* Parser+PropertyListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+PropertyListener.swift"; sourceTree = "<group>"; };
 		66C8350D2001AAF400E953C7 /* Parser+Packets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Parser+Packets.swift"; sourceTree = "<group>"; };
@@ -131,7 +131,7 @@
 		66A1396620013F860076B0E5 /* FileStreamerTests */ = {
 			isa = PBXGroup;
 			children = (
-				66A13980200140C60076B0E5 /* RemoteFileURL.swift */,
+				66AE563520B7170D0032DCE2 /* RemoteFileURLs.swift */,
 				66A1396720013F860076B0E5 /* DownloaderTests.swift */,
 				66A1399B200179AD0076B0E5 /* ParserTests.swift */,
 				66C8351C2001DDE900E953C7 /* ReaderTests.swift */,
@@ -308,6 +308,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66A1397C20013FAA0076B0E5 /* DownloadableDelegate.swift in Sources */,
+				66AE563620B7170D0032DCE2 /* RemoteFileURLs.swift in Sources */,
 				66C8350F2001AAF400E953C7 /* Parser+Packets.swift in Sources */,
 				66A13997200177050076B0E5 /* Parser.swift in Sources */,
 				66A13987200156790076B0E5 /* Downloader+URLSessionDelegate.swift in Sources */,
@@ -323,7 +324,6 @@
 				66A1396820013F860076B0E5 /* DownloaderTests.swift in Sources */,
 				66C8350C2001A63A00E953C7 /* Parser+PropertyListener.swift in Sources */,
 				66A1397A20013FAA0076B0E5 /* Downloadable.swift in Sources */,
-				66A13981200140C60076B0E5 /* RemoteFileURL.swift in Sources */,
 				66C83520200286B400E953C7 /* Reader+Converter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
