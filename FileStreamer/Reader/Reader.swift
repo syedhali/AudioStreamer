@@ -70,7 +70,7 @@ public class Reader: Readable {
         var packets = frames / destinationFormat.mFramesPerPacket
         
         guard currentPacket != parser.packets.count - 1 else {
-            throw ReaderError.readFailed(ReaderNotEnoughDataError)
+            throw ReaderError.notEnoughData
         }
         
         guard let format = AVAudioFormat(streamDescription: &destinationFormat) else {
@@ -88,21 +88,12 @@ public class Reader: Readable {
         let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
         guard status == noErr else {
             switch status {
-            case kAudioConverterErr_FormatNotSupported,
-                 kAudioConverterErr_OperationNotSupported,
-                 kAudioConverterErr_PropertyNotSupported,
-                 kAudioConverterErr_InvalidInputSize,
-                 kAudioConverterErr_InvalidOutputSize,
-                 kAudioConverterErr_UnspecifiedError,
-                 kAudioConverterErr_BadPropertySizeError,
-                 kAudioConverterErr_RequiresPacketDescriptionsError,
-                 kAudioConverterErr_InputSampleRateOutOfRange,
-                 kAudioConverterErr_OutputSampleRateOutOfRange,
-                 kAudioConverterErr_HardwareInUse,
-                 kAudioConverterErr_NoHardwarePermission:
-                throw ReaderError.converterFailed(status)
+            case ReaderReachedEndOfDataError:
+                throw ReaderError.reachedEndOfFile
+            case ReaderNotEnoughDataError:
+                throw ReaderError.notEnoughData
             default:
-                throw ReaderError.readFailed(status)
+                throw ReaderError.converterFailed(status)
             }
         }
         

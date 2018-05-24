@@ -33,6 +33,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var pitchSlider: UISlider!
     @IBOutlet weak var progressSlider: ProgressSlider!
     var isSeeking: Bool = false
+    var reachedEndOfFile: Bool = false
     
     // Streamer props
     var parser: Parser?
@@ -127,11 +128,17 @@ class ViewController: UIViewController {
             return
         }
         
+        guard !reachedEndOfFile else {
+            return
+        }
+        
         do {
             let nextScheduledBuffer = try reader.read(TapReader.bufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
+        } catch ReaderError.reachedEndOfFile {
+            os_log("Scheduler reached end of file", log: ViewController.logger, type: .debug)
+            reachedEndOfFile = true
         } catch {
-            print("Error \(error)")
             os_log("No next scheduled buffer yet. Error: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
         }
     }
@@ -192,6 +199,7 @@ class ViewController: UIViewController {
             return
         }
         currentTimeOffset = currentTime
+        reachedEndOfFile = false
         
         // We need to store whether or not the player node is currently playing to properly resume playback after
         let isPlaying = playerNode.isPlaying
@@ -209,15 +217,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func progressSliderTouchedDown(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         isSeeking = true
     }
     
     @IBAction func progressSliderValueChanged(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         let currentTime = TimeInterval(sender.value)
         currentTimeLabel.text = formatToMMSS(currentTime)
     }
     
     @IBAction func progressSliderTouchedUp(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         seek(sender)
         isSeeking = false
     }
@@ -249,7 +263,6 @@ class ViewController: UIViewController {
     
     @IBAction func changeRate(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
-        
         
         let step: Float = 0.25
         var rate = sender.value

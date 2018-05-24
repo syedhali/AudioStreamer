@@ -14,12 +14,13 @@ public protocol Parsable: class {
     
     // MARK: - Properties
         
-    /// The data format of the audio
+    /// The data format of the audio. Specifically, this is different from the `fileFormat` property in that it is a LPCM (uncompressed) format
     var dataFormat: AVAudioFormat? { get }
     
     /// The total duration of the audio. For certain formats such as AAC this my be a guess or only equal to as many packets as have been processed.
     var duration: TimeInterval? { get }
     
+    /// A `Bool` indicating whether all the audio packets have been parsed relative to the total packet count. This is optional where the default implementation will check if the total packets parsed (i.e. the count of `packets` property) is equal to the `totalPacketCount` property
     var isParsingComplete: Bool { get }
     
     /// The total number of frames (expressed in the data format)
