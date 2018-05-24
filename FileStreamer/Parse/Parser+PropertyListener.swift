@@ -56,32 +56,8 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         info.bitRate = bitRate
         os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, bitRate)
 
-    case kAudioFileStreamProperty_FormatList:
-        os_log("kAudioFileStreamProperty_FormatList", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_MagicCookieData:
-        os_log("kAudioFileStreamProperty_MagicCookieData", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_MaximumPacketSize:
-        os_log("kAudioFileStreamProperty_MaximumPacketSize", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_ChannelLayout:
-        os_log("kAudioFileStreamProperty_ChannelLayout", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_PacketToFrame:
-        os_log("kAudioFileStreamProperty_PacketToFrame", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_FrameToPacket:
-        os_log("kAudioFileStreamProperty_FrameToPacket", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_PacketToByte:
-        os_log("kAudioFileStreamProperty_PacketToByte", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_ByteToPacket:
-        os_log("kAudioFileStreamProperty_ByteToPacket", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_PacketTableInfo:
-        os_log("kAudioFileStreamProperty_PacketTableInfo", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_PacketSizeUpperBound:
-        os_log("kAudioFileStreamProperty_PacketSizeUpperBound", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_AverageBytesPerPacket:
-        os_log("kAudioFileStreamProperty_AverageBytesPerPacket", log: Parser.loggerPropertyListenerCallback, type: .debug)
-    case kAudioFileStreamProperty_InfoDictionary:
-        os_log("kAudioFileStreamProperty_InfoDictionary", log: Parser.loggerPropertyListenerCallback, type: .debug)
     default:
-        os_log("Unkown Property: [%@]", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: propertyID))
+        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
     }
 }
 

@@ -13,8 +13,8 @@ import os.log
 
 /// <#Description#>
 public class Reader: Readable {
-    static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Reader")
-    static let loggerConverter = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Reader.Converter")
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
+    static let loggerConverter = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader.Converter")
     
     // MARK: - Properties
     
