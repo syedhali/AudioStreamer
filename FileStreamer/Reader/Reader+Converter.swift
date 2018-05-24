@@ -20,12 +20,12 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ outPacketDescriptions: UnsafeMutablePointer<UnsafeMutablePointer<AudioStreamPacketDescription>?>?,
                              _ context: UnsafeMutableRawPointer?) -> OSStatus {
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
+    
     //
     // Check if we've reached the end of the packets. We have two scenarios:
     //     1. We've reached the end of the packet data and the file has been completely parsed
     //     2. We've reached the end of the data we currently have downloaded, but not the file
     //
-    
     let packetIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets
     let isEndOfData = packetIndex >= packets.count - 1
@@ -42,7 +42,6 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     //
     // Copy data over (note we've only processing a single packet of data at a time)
     //
-    
     let packet = packets[packetIndex]
     var data = packet.0
     let dataCount = data.count
