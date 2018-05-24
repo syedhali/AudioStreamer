@@ -71,7 +71,7 @@ public class Downloader: NSObject, Downloadable {
     // MARK: - Methods
     
     public func start() {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        os_log("%@ - %d [%@]", log: Downloader.logger, type: .debug, #function, #line, String(describing: url))
         
         guard let task = task else {
             return

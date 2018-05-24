@@ -7,55 +7,49 @@
 //
 import Foundation
 
+/// These files are for testing the various parts of the streamer. Note they sound terrible because I downsampled and compressed these to hell to save bandwidth since these are just for testing.
 enum RemoteFileURL {
     case brokeForFree
     case claire
     case faithfulDog
     case theLastOnes
     
-    var aac: URL {
-        var urlString: String
+    private var hostname: String {
+        return "blog.fastlearner.media"
+    }
+    
+    var filename: String {
         switch self {
         case .brokeForFree:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264432/broke-for-free_chk6vl.aac"
+            return "broke-for-free"
         case .claire:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515263589/claire_ppq2pk.aac"
+            return "claire"
         case .faithfulDog:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264432/faithful-dog_exlvpb.aac"
+            return "faithful-dog"
         case .theLastOnes:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264432/the-last-ones_rglkft.aac"
+            return "the-last-ones"
         }
-        return URL(string: urlString)!
+    }
+    
+    func resourcePathFor(_ fileExtension: String) -> URL {
+        let path = "http://\(hostname)/\(filename).\(fileExtension)"
+        return URL(string: path)!
+    }
+    
+    var aac: URL {
+        return resourcePathFor("aac")
     }
     
     var mp3: URL {
-        var urlString: String
-        switch self {
-        case .brokeForFree:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/broke-for-free_jpm3g9.mp3"
-        case .claire:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515262774/claire_v3z4em.mp3"
-        case .faithfulDog:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/faithful-dog_ihawmp.mp3"
-        case .theLastOnes:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515264427/the-last-ones_fc6omw.mp3"
-        }
-        return URL(string: urlString)!
+        return resourcePathFor("mp3")
+    }
+    
+    var flac: URL {
+        return resourcePathFor("flac")
     }
     
     var wav: URL {
-        var urlString: String
-        switch self {
-        case .brokeForFree:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288411/broke-for-free_fzu5xw.wav"
-        case .claire:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288411/claire_lih3yt.wav"
-        case .faithfulDog:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288410/faithful-dog_cygtnr.wav"
-        case .theLastOnes:
-            urlString = "https://res.cloudinary.com/drvibcm45/video/upload/v1515288410/the-last-ones_tcqkl6.wav"
-        }
-        return URL(string: urlString)!
+        return resourcePathFor("wav")
     }
     
     enum LicenseType {

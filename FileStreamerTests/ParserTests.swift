@@ -41,10 +41,10 @@ class ParserTests: XCTestCase {
             XCTAssertNil($0)
             
             XCTAssertEqual(parser.bitRate, 8000)
-            XCTAssertEqual(parser.dataOffset, 757)
+            XCTAssertEqual(parser.dataOffset, 731)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
-            XCTAssertEqual(parser.packets.count, 3450)
+            XCTAssertEqual(parser.packets.count, 6897)
             
             expectation.fulfill()
         }
@@ -84,7 +84,7 @@ class ParserTests: XCTestCase {
             XCTAssertEqual(parser.dataOffset, 0)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
-            XCTAssertEqual(parser.packets.count, 1942)
+            XCTAssertEqual(parser.packets.count, 3881)
             
             expectation.fulfill()
         }

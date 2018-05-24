@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         /// Download
-        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1526487111/bensound-creativeminds_iey0tr.mp3")!
+        let url = URL(string: "http://blog.fastlearner.media/bensound-hey.mp3")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
