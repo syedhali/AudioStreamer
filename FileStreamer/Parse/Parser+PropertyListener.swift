@@ -49,8 +49,7 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.bitRate)
 
     default:
-        break
-//        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
+        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
     }
 }
 

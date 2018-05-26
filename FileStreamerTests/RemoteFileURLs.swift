@@ -15,7 +15,7 @@ enum RemoteFileURL {
     case theLastOnes
     
     private var hostname: String {
-        return "blog.fastlearner.media"
+        return "cdn.fastlearner.media"
     }
     
     var filename: String {
@@ -32,7 +32,7 @@ enum RemoteFileURL {
     }
     
     func resourcePathFor(_ fileExtension: String) -> URL {
-        let path = "http://\(hostname)/\(filename).\(fileExtension)"
+        let path = "https://\(hostname)/\(filename).\(fileExtension)"
         return URL(string: path)!
     }
     
