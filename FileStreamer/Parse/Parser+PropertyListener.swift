@@ -11,42 +11,42 @@ import AVFoundation
 import os.log
 
 func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID: AudioFileStreamID, _ propertyID: AudioFileStreamPropertyID, _ flags: UnsafeMutablePointer<AudioFileStreamPropertyFlags>) {
-    /// Cast back our context to the info object
-    let info = context.assumingMemoryBound(to: Parser.Info.self).pointee
+    /// Cast back our context to the parser object
+    let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
     
     /// Parse the various properties
     switch propertyID {
     case kAudioFileStreamProperty_ReadyToProducePackets:
-        info.isReadyToProducePackets = true
+        parser.isReadyToProducePackets = true
         os_log("Ready to produce packets!", log: Parser.loggerPropertyListenerCallback, type: .debug)
         
     case kAudioFileStreamProperty_FileFormat:
         var format = AudioStreamBasicDescription()
         GetPropertyValue(&format, streamID, propertyID)
-        info.fileFormat = AVAudioFormat(streamDescription: &format)
-        os_log("File format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: info.fileFormat))
+        parser.fileFormat = AVAudioFormat(streamDescription: &format)
+        os_log("File format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: parser.fileFormat))
         
     case kAudioFileStreamProperty_DataFormat:
         var format = AudioStreamBasicDescription()
         GetPropertyValue(&format, streamID, propertyID)
-        info.dataFormat = AVAudioFormat(streamDescription: &format)
-        os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: info.dataFormat))
+        parser.dataFormat = AVAudioFormat(streamDescription: &format)
+        os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: parser.dataFormat))
         
     case kAudioFileStreamProperty_AudioDataByteCount:
-        GetPropertyValue(&info.byteCount, streamID, propertyID)
-        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.byteCount)
+        GetPropertyValue(&parser.byteCount, streamID, propertyID)
+        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.byteCount)
         
     case kAudioFileStreamProperty_AudioDataPacketCount:
-        GetPropertyValue(&info.packetCount, streamID, propertyID)
-        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.packetCount)
+        GetPropertyValue(&parser.packetCount, streamID, propertyID)
+        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.packetCount)
         
     case kAudioFileStreamProperty_DataOffset:
-        GetPropertyValue(&info.dataOffset, streamID, propertyID)
-        os_log("Data offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.dataOffset)
+        GetPropertyValue(&parser.dataOffset, streamID, propertyID)
+        os_log("Data offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.dataOffset)
         
     case kAudioFileStreamProperty_BitRate:
-        GetPropertyValue(&info.bitRate, streamID, propertyID)
-        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, info.bitRate)
+        GetPropertyValue(&parser.bitRate, streamID, propertyID)
+        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.bitRate)
 
     default:
         os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
@@ -75,7 +75,7 @@ func GetPropertyValue<T>(_ value: inout T, _ streamID: AudioFileStreamID, _ prop
 }
 
 /// This extension just helps us print out the name of an `AudioFileStreamPropertyID`. Purely for debugging and not essential to the main functionality of the parser.
-extension AudioFileStreamPropertyID: CustomStringConvertible {
+extension AudioFileStreamPropertyID {
     public var description: String {
         switch self {
         case kAudioFileStreamProperty_ReadyToProducePackets:

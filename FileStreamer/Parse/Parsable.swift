@@ -17,11 +17,17 @@ public protocol Parsable: class {
     /// The data format of the audio. Specifically, this is different from the `fileFormat` property in that it is a LPCM (uncompressed) format
     var dataFormat: AVAudioFormat? { get }
     
-    /// The total duration of the audio. For certain formats such as AAC this my be a guess or only equal to as many packets as have been processed.
+    /// The file format of the audio (this is the on-disk format). For compressed formats such as MP3 or AAC this will represent the on-disk format, while the `dataFormat` property represents the audio data as it exists in memory)
+    var fileFormat: AVAudioFormat? { get }
+    
+    /// The total duration of the audio. For certain formats such as AAC or live streams this may be a guess or only equal to as many packets as have been processed.
     var duration: TimeInterval? { get }
     
     /// A `Bool` indicating whether all the audio packets have been parsed relative to the total packet count. This is optional where the default implementation will check if the total packets parsed (i.e. the count of `packets` property) is equal to the `totalPacketCount` property
     var isParsingComplete: Bool { get }
+    
+    /// An array of duples, each index presenting a parsed audio packet. For compressed formats each packet of data should contain a `AudioStreamPacketDescription`, which describes the start offset and length of the audio data)
+    var packets: [(Data, AudioStreamPacketDescription?)] { get }
     
     /// The total number of frames (expressed in the data format)
     var totalFrameCount: AVAudioFrameCount? { get }
@@ -29,18 +35,12 @@ public protocol Parsable: class {
     /// The total packet count (expressed in the data format)
     var totalPacketCount: AVAudioPacketCount? { get }
     
-    /// The file format of the audio (this is the on-disk format). For compressed formats such as MP3 or AAC this will represent the on-disk format, while the `dataFormat` property represents the audio data as it exists in memory)
-    var fileFormat: AVAudioFormat? { get }
-    
-    /// An array of duples, each index presenting a parsed audio packet. For compressed formats each packet of data should contain a `AudioStreamPacketDescription`, which describes the start offset and length of the audio data)
-    var packets: [(Data, AudioStreamPacketDescription?)] { get }
-    
     // MARK: - Methods
     
     /// Given some data the parser should attempt to convert it into to audio packets.
     ///
     /// - Parameter data: A `Data` instance representing some binary data corresponding to an audio stream.
-    func parse(data: Data)
+    func parse(data: Data) throws
     
     /// Given a frame this method will attempt to provide the packet that frame belongs to for a safe seek operation.
     ///

@@ -77,6 +77,7 @@ public class Reader: Readable {
             throw ReaderError.failedToCreateDestinationFormat
         }
         
+        /// This should not be allocated everytime
         guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames) else {
             throw ReaderError.failedToCreatePCMBuffer
         }

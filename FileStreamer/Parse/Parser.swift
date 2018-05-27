@@ -16,43 +16,22 @@ public class Parser: Parsable {
     static let loggerPacketCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.Packets")
     static let loggerPropertyListenerCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
     
-    /// <#Description#>
-    class Info {
-        var bitRate: UInt32 = 0
-        var byteCount: UInt64 = 0
-        var dataOffset: Int64 = 0
-        var frameCount: UInt64 = 0
-        var packetCount: UInt64 = 0
-        var fileFormat: AVAudioFormat?
-        var dataFormat: AVAudioFormat?
-        var isReadyToProducePackets: Bool = false
-        var packets = [(Data, AudioStreamPacketDescription?)]()
-    }
+    public var bitRate: UInt32 = 0
+    public var byteCount: UInt64 = 0
+    public var dataOffset: Int64 = 0
+    public var frameCount: UInt64 = 0
+    public var packetCount: UInt64 = 0
+    public var fileFormat: AVAudioFormat?
+    public var dataFormat: AVAudioFormat?
+    public var isReadyToProducePackets: Bool = false
+    public var packets = [(Data, AudioStreamPacketDescription?)]()
     
-    /// <#Description#>
-    fileprivate var info = Info()
-    
-    /// <#Description#>
+    /// The `AudioFileStreamID` used by the Audio File Stream Services for converting the binary data into audio packets
     fileprivate var streamID: AudioFileStreamID?
-    
-    /// <#Description#>
-    public var bitRate: UInt32 {
-        return info.bitRate
-    }
-    
-    /// <#Description#>
-    public var dataFormat: AVAudioFormat? {
-        return info.dataFormat
-    }
-    
-    /// <#Description#>
-    public var dataOffset: Int64 {
-        return info.dataOffset
-    }
     
     ///
     public var duration: TimeInterval? {
-        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+        guard let dataFormat = dataFormat?.streamDescription.pointee else {
             return nil
         }
         
@@ -64,7 +43,7 @@ public class Parser: Parsable {
     }
     
     public var totalFrameCount: AVAudioFrameCount? {
-        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+        guard let dataFormat = dataFormat?.streamDescription.pointee else {
             return nil
         }
         
@@ -76,21 +55,11 @@ public class Parser: Parsable {
     }
     
     public var totalPacketCount: AVAudioPacketCount? {
-        guard let _ = info.dataFormat?.streamDescription.pointee else {
+        guard let _ = dataFormat?.streamDescription.pointee else {
             return nil
         }
         
-        return max(AVAudioPacketCount(info.packetCount), AVAudioPacketCount(packets.count))
-    }
-    
-    /// <#Description#>
-    public var fileFormat: AVAudioFormat? {
-        return info.fileFormat
-    }
-    
-    /// <#Description#>
-    public var packets: [(Data, AudioStreamPacketDescription?)] {
-        return info.packets
+        return max(AVAudioPacketCount(packetCount), AVAudioPacketCount(packets.count))
     }
     
     // MARK: - Lifecycle
@@ -99,26 +68,24 @@ public class Parser: Parsable {
     ///
     /// - Throws: <#throws value description#>
     public init() throws {
-        guard AudioFileStreamOpen(&self.info, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &self.streamID) == noErr else {
+        let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
+        guard AudioFileStreamOpen(context, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &streamID) == noErr else {
             throw ParserError.streamCouldNotOpen
         }
     }
     
     // MARK: - Methods
     
-    public func parse(data: Data) {
+    public func parse(data: Data) throws {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
-        guard let streamID = streamID else {
-            os_log("Failed to open stream", log: Parser.logger, type: .error)
-            return
-        }
-  
+        let streamID = self.streamID!
         let count = data.count
-        _ = data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
-            guard AudioFileStreamParseBytes(streamID, UInt32(count), bytes, []) == noErr else {
+        _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
+            let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
+            guard result == noErr else {
                 os_log("Failed to parse bytes", log: Parser.logger, type: .error)
-                return
+                throw ParserError.failedToParseBytes(result)
             }
         }
     }
@@ -126,7 +93,7 @@ public class Parser: Parsable {
     public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
-        guard let dataFormat = info.dataFormat?.streamDescription.pointee else {
+        guard let dataFormat = dataFormat?.streamDescription.pointee else {
             return nil
         }
         
@@ -136,7 +103,7 @@ public class Parser: Parsable {
     public func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval? {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
-        guard let _ = info.dataFormat?.streamDescription.pointee,
+        guard let _ = dataFormat?.streamDescription.pointee,
               let frameCount = totalFrameCount,
               let duration = duration else {
             return nil
@@ -148,7 +115,7 @@ public class Parser: Parsable {
     public func frameOffset(forTime time: TimeInterval) -> AVAudioFramePosition? {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
-        guard let _ = info.dataFormat?.streamDescription.pointee,
+        guard let _ = dataFormat?.streamDescription.pointee,
             let frameCount = totalFrameCount,
             let duration = duration else {
                 return nil
