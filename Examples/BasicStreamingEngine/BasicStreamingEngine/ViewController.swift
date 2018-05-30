@@ -57,7 +57,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         /// Download
-        let url = URL(string: "http://cdn.staging.fastlearner.media/do-it-alone.mp3")!
+        let url = URL(string: "https://cdn.fastlearner.media/bensound-hey.mp3")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -201,7 +201,11 @@ class ViewController: UIViewController {
         playerNode.stop()
         
         // Perform the seek to the proper packet offset
-        reader.seek(packetOffset)
+        do {
+            try reader.seek(packetOffset)
+        } catch {
+            os_log("Failed to seek: %@", log: ViewController.logger, type: .error, error.localizedDescription)
+        }
         
         // If the player node was previous playing then resume playback
         if isPlaying {

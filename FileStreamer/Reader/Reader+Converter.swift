@@ -11,8 +11,11 @@ import AVFoundation
 import AudioToolbox
 import os.log
 
-let ReaderReachedEndOfDataError: OSStatus = 932332581
-let ReaderNotEnoughDataError: OSStatus = 932332582
+// MARK: - Errors
+
+
+
+// MARK: -
 
 func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ packetCount: UnsafeMutablePointer<UInt32>,
@@ -22,6 +25,13 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
     
     //
+    // Make sure we have a valid source format so we know the data format of the parser's audio packets
+    //
+    guard let sourceFormat = reader.parser.dataFormat else {
+        return ReaderMissingSourceFormatError
+    }
+    
+    //
     // Check if we've reached the end of the packets. We have two scenarios:
     //     1. We've reached the end of the packet data and the file has been completely parsed
     //     2. We've reached the end of the data we currently have downloaded, but not the file
@@ -29,9 +39,8 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     let packetIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets
     let isEndOfData = packetIndex >= packets.count - 1
-    let isParsingComplete = reader.parser.isParsingComplete
     if isEndOfData {
-        if isParsingComplete {
+        if reader.parser.isParsingComplete {
             packetCount.pointee = 0
             return ReaderReachedEndOfDataError
         } else {
@@ -55,7 +64,8 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     //
     // Handle packet descriptions for compressed formats (MP3, AAC, etc)
     //
-    if reader.sourceFormat.mFormatID != kAudioFormatLinearPCM {
+    let sourceFormatDescription = sourceFormat.streamDescription.pointee
+    if sourceFormatDescription.mFormatID != kAudioFormatLinearPCM {
         if outPacketDescriptions?.pointee == nil {
             outPacketDescriptions?.pointee = UnsafeMutablePointer<AudioStreamPacketDescription>.allocate(capacity: 1)
         }

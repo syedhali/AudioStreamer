@@ -11,29 +11,28 @@ import AudioToolbox
 import AVFoundation
 import os.log
 
-/// <#Description#>
+/// The `Reader` is a concrete implementation of the `Readable` protocol and is intended to provide the audio data provider for an `AVAudioEngine`. The `parser` property provides a `Parseable` that handles converting binary audio data into audio packets in whatever the original file's format was (MP3, AAC, WAV, etc). The reader handles converting the audio data coming from the parser to a LPCM format that can be used in the context of `AVAudioEngine` since the `AVAudioPlayerNode` requires we provide `AVAudioPCMBuffer` in the `scheduleBuffer` methods.
 public class Reader: Readable {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
     static let loggerConverter = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader.Converter")
     
     // MARK: - Properties
     
-    /// An `AudioConverterRef` used to do the conversion from the source format of the `parser` (i.e. the `sourceFormat`) to the read destination (i.e. the `destinationFormat`).
+    /// An `AudioConverterRef` used to do the conversion from the source format of the `parser` (i.e. the `sourceFormat`) to the read destination (i.e. the `destinationFormat`). This is provided by the Audio Conversion Services (I prefer it to the `AVAudioConverter`)
     var converter: AudioConverterRef? = nil
     
-    /// <#Description#>
-    var sourceFormat: AudioStreamBasicDescription
-    
-    /// <#Description#>
-    var destinationFormat: AudioStreamBasicDescription
+    /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
+    private let queue = DispatchQueue(label: "com.fastlearner.streamer")
     
     // MARK: - Properties (Readable)
     
-    /// <#Description#>
+    /// A `Parseable` used to read the parsed audio packets. The `Reader` handles converting compressed packets to a LPCM format a graph or engine can use (similar to `AVAudioFile`'s common format)
     let parser: Parsable
     
-    /// <#Description#>
-    public var currentPacket: AVAudioPacketCount = 0
+    // MARK: - Readable props
+    
+    public internal(set) var currentPacket: AVAudioPacketCount = 0
+    public let readFormat: AVAudioFormat
     
     // MARK: - Lifecycle
     
@@ -52,14 +51,12 @@ public class Reader: Readable {
         }
 
         let sourceFormat = dataFormat.streamDescription
-        let destinationFormat = readFormat.streamDescription
-        let result = AudioConverterNew(sourceFormat, destinationFormat, &converter)
+        let commonFormat = readFormat.streamDescription
+        let result = AudioConverterNew(sourceFormat, commonFormat, &converter)
         guard result == noErr else {
             throw ReaderError.unableToCreateConverter(result)
         }
-        
-        self.sourceFormat = sourceFormat.pointee
-        self.destinationFormat = destinationFormat.pointee
+        self.readFormat = readFormat
         
         os_log("%@ - %d [sourceFormat: %@, destinationFormat: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: dataFormat), String(describing: readFormat))
     }
@@ -67,43 +64,41 @@ public class Reader: Readable {
     // MARK: - Methods
     
     public func read(_ frames: AVAudioFrameCount) throws -> AVAudioPCMBuffer {
-        var packets = frames / destinationFormat.mFramesPerPacket
+        let framesPerPacket = readFormat.streamDescription.pointee.mFramesPerPacket
+        var packets = frames / framesPerPacket
         
-        guard currentPacket != parser.packets.count - 1 else {
-            throw ReaderError.notEnoughData
-        }
-        
-        guard let format = AVAudioFormat(streamDescription: &destinationFormat) else {
-            throw ReaderError.failedToCreateDestinationFormat
-        }
-        
-        /// This should not be allocated everytime
-        guard let buffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frames) else {
+        /// Allocate a buffer to hold the target audio data in the Read format
+        guard let buffer = AVAudioPCMBuffer(pcmFormat: readFormat, frameCapacity: frames) else {
             throw ReaderError.failedToCreatePCMBuffer
         }
         buffer.frameLength = frames
         
-//        os_log("%@ - %d [converter: %@, packets: %i, format: %@, buffer: %@]", log: Reader.logger, type: .debug, #function, #line, String(describing: converter!), packets, String(describing: format), String(describing: buffer))
-        
-        let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
-        let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
-        guard status == noErr else {
-            switch status {
-            case ReaderReachedEndOfDataError:
-                throw ReaderError.reachedEndOfFile
-            case ReaderNotEnoughDataError:
-                throw ReaderError.notEnoughData
-            default:
-                throw ReaderError.converterFailed(status)
+        // Try to read the frames from the parser
+        try queue.sync {
+            let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
+            let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
+            guard status == noErr else {
+                switch status {
+                case ReaderMissingSourceFormatError:
+                    throw ReaderError.parserMissingDataFormat
+                case ReaderReachedEndOfDataError:
+                    throw ReaderError.reachedEndOfFile
+                case ReaderNotEnoughDataError:
+                    throw ReaderError.notEnoughData
+                default:
+                    throw ReaderError.converterFailed(status)
+                }
             }
         }
         
         return buffer
     }
     
-    public func seek(_ packet: AVAudioPacketCount) {
+    public func seek(_ packet: AVAudioPacketCount) throws {
         os_log("%@ - %d [packet: %i]", log: Parser.logger, type: .debug, #function, #line, packet)
         
-        currentPacket = packet
+        queue.sync {
+            currentPacket = packet
+        }
     }
 }

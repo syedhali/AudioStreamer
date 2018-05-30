@@ -12,6 +12,7 @@ import AudioToolbox
 /// Possible errors that can result from the `Parser` class.
 ///
 /// - streamCouldNotOpen: The file stream could not be opened. This will only occur if the underlying `AudioFileStreamOpen` method fails.
+/// - failedToParseBytes: The parser failed to parse the raw bytes. This will contain an OSStatus that is the return value from the AudioFileParseBytes method that emitted this error.
 public enum ParserError: LocalizedError {
     case streamCouldNotOpen
     case failedToParseBytes(OSStatus)

@@ -9,7 +9,7 @@
 import Foundation
 import AVFoundation
 import os.log
-
+       
 func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID: AudioFileStreamID, _ propertyID: AudioFileStreamPropertyID, _ flags: UnsafeMutablePointer<AudioFileStreamPropertyFlags>) {
     /// Cast back our context to the parser object
     let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
@@ -32,24 +32,12 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         parser.dataFormat = AVAudioFormat(streamDescription: &format)
         os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: parser.dataFormat))
         
-    case kAudioFileStreamProperty_AudioDataByteCount:
-        GetPropertyValue(&parser.byteCount, streamID, propertyID)
-        os_log("Byte count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.byteCount)
-        
     case kAudioFileStreamProperty_AudioDataPacketCount:
         GetPropertyValue(&parser.packetCount, streamID, propertyID)
         os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.packetCount)
-        
-    case kAudioFileStreamProperty_DataOffset:
-        GetPropertyValue(&parser.dataOffset, streamID, propertyID)
-        os_log("Data offset: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.dataOffset)
-        
-    case kAudioFileStreamProperty_BitRate:
-        GetPropertyValue(&parser.bitRate, streamID, propertyID)
-        os_log("Bit Rate: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.bitRate)
 
     default:
-        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID)
+        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID.description)
     }
 }
 

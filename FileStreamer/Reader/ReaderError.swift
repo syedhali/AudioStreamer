@@ -9,7 +9,16 @@
 import Foundation
 import AudioToolbox
 
+// MARK: - Reader OSStatus Error Codes
+
+let ReaderReachedEndOfDataError: OSStatus = 932332581
+let ReaderNotEnoughDataError: OSStatus = 932332582
+let ReaderMissingSourceFormatError: OSStatus = 932332583
+
+// MARK: - ReaderError
+
 public enum ReaderError: LocalizedError {
+    case cannotLockQueue
     case converterFailed(OSStatus)
     case failedToCreateDestinationFormat
     case failedToCreatePCMBuffer
@@ -20,6 +29,8 @@ public enum ReaderError: LocalizedError {
     
     public var localizedDescription: String {
         switch self {
+        case .cannotLockQueue:
+            return "Failed to lock queue"
         case .converterFailed(let status):
             return localizedDescriptionFromConverterError(status)
         case .failedToCreateDestinationFormat:

@@ -16,22 +16,16 @@ public class Parser: Parsable {
     static let loggerPacketCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.Packets")
     static let loggerPropertyListenerCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
     
-    public var bitRate: UInt32 = 0
-    public var byteCount: UInt64 = 0
-    public var dataOffset: Int64 = 0
-    public var frameCount: UInt64 = 0
-    public var packetCount: UInt64 = 0
-    public var fileFormat: AVAudioFormat?
-    public var dataFormat: AVAudioFormat?
-    public var isReadyToProducePackets: Bool = false
-    public var packets = [(Data, AudioStreamPacketDescription?)]()
-    
-    /// The `AudioFileStreamID` used by the Audio File Stream Services for converting the binary data into audio packets
-    fileprivate var streamID: AudioFileStreamID?
-    
-    ///
+    // MARK: - Parsable props
+        
+    public internal(set) var frameCount: UInt64 = 0
+    public internal(set) var packetCount: UInt64 = 0
+    public internal(set) var fileFormat: AVAudioFormat?
+    public internal(set) var dataFormat: AVAudioFormat?
+    public internal(set) var isReadyToProducePackets: Bool = false
+    public internal(set) var packets = [(Data, AudioStreamPacketDescription?)]()
     public var duration: TimeInterval? {
-        guard let dataFormat = dataFormat?.streamDescription.pointee else {
+        guard let sampleRate = dataFormat?.sampleRate else {
             return nil
         }
         
@@ -39,11 +33,10 @@ public class Parser: Parsable {
             return nil
         }
         
-        return TimeInterval(totalFrameCount) / TimeInterval(dataFormat.mSampleRate)
+        return TimeInterval(totalFrameCount) / TimeInterval(sampleRate)
     }
-    
     public var totalFrameCount: AVAudioFrameCount? {
-        guard let dataFormat = dataFormat?.streamDescription.pointee else {
+        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
             return nil
         }
         
@@ -51,22 +44,25 @@ public class Parser: Parsable {
             return nil
         }
         
-        return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(dataFormat.mFramesPerPacket)
+        
+        return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(framesPerPacket)
     }
-    
     public var totalPacketCount: AVAudioPacketCount? {
-        guard let _ = dataFormat?.streamDescription.pointee else {
+        guard let _ = dataFormat else {
             return nil
         }
         
         return max(AVAudioPacketCount(packetCount), AVAudioPacketCount(packets.count))
     }
     
+    /// The `AudioFileStreamID` used by the Audio File Stream Services for converting the binary data into audio packets
+    fileprivate var streamID: AudioFileStreamID?
+    
     // MARK: - Lifecycle
     
-    /// <#Description#>
+    /// Initializes an instance of the `Parser`
     ///
-    /// - Throws: <#throws value description#>
+    /// - Throws: A `ParserError.streamCouldNotOpen` meaning a file stream instance could not be opened
     public init() throws {
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
         guard AudioFileStreamOpen(context, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &streamID) == noErr else {
@@ -89,39 +85,5 @@ public class Parser: Parsable {
             }
         }
     }
-    
-    public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
-        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
-        
-        guard let dataFormat = dataFormat?.streamDescription.pointee else {
-            return nil
-        }
-        
-        return AVAudioPacketCount(frame) / AVAudioPacketCount(dataFormat.mFramesPerPacket)
-    }
-    
-    public func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval? {
-        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
-        
-        guard let _ = dataFormat?.streamDescription.pointee,
-              let frameCount = totalFrameCount,
-              let duration = duration else {
-            return nil
-        }
-        
-        return TimeInterval(frame) / TimeInterval(frameCount) * duration
-    }
-    
-    public func frameOffset(forTime time: TimeInterval) -> AVAudioFramePosition? {
-        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
-        
-        guard let _ = dataFormat?.streamDescription.pointee,
-            let frameCount = totalFrameCount,
-            let duration = duration else {
-                return nil
-        }
-            
-        let ratio = time / duration
-        return AVAudioFramePosition(Double(frameCount) * ratio)
-    }
+
 }

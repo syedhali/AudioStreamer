@@ -11,12 +11,10 @@ import AVFoundation
 import os.log
 
 func ParserPacketCallback(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ data: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>) {
+    let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
     let packetDescriptionsOrNil: UnsafeMutablePointer<AudioStreamPacketDescription>? = packetDescriptions
     let isCompressed = packetDescriptionsOrNil != nil
     os_log("%@ - %d [bytes: %i, packets: %i, compressed: %@]", log: Parser.loggerPacketCallback, type: .debug, #function, #line, byteCount, packetCount, "\(isCompressed)")
-    
-    /// Cast back our context to the parser object
-    let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
     
     /// At this point we should definitely have a data format
     guard let dataFormat = parser.dataFormat else {

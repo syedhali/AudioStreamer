@@ -17,11 +17,11 @@ public protocol Parsable: class {
     /// The data format of the audio. Specifically, this is different from the `fileFormat` property in that it is a LPCM (uncompressed) format
     var dataFormat: AVAudioFormat? { get }
     
-    /// The file format of the audio (this is the on-disk format). For compressed formats such as MP3 or AAC this will represent the on-disk format, while the `dataFormat` property represents the audio data as it exists in memory)
-    var fileFormat: AVAudioFormat? { get }
-    
     /// The total duration of the audio. For certain formats such as AAC or live streams this may be a guess or only equal to as many packets as have been processed.
     var duration: TimeInterval? { get }
+    
+    /// The file format of the audio (this is the on-disk format). For compressed formats such as MP3 or AAC this will represent the on-disk format, while the `dataFormat` property represents the audio data as it exists in memory)
+    var fileFormat: AVAudioFormat? { get }
     
     /// A `Bool` indicating whether all the audio packets have been parsed relative to the total packet count. This is optional where the default implementation will check if the total packets parsed (i.e. the count of `packets` property) is equal to the `totalPacketCount` property
     var isParsingComplete: Bool { get }
@@ -42,14 +42,27 @@ public protocol Parsable: class {
     /// - Parameter data: A `Data` instance representing some binary data corresponding to an audio stream.
     func parse(data: Data) throws
     
-    /// Given a frame this method will attempt to provide the packet that frame belongs to for a safe seek operation.
+    /// Given a time this method will attempt to provide the corresponding audio frame representing that position.
+    ///
+    /// - Parameter time: A `TimeInterval` representing the time
+    /// - Returns: An optional `AVAudioFramePosition` representing the frame's position relative to the time provided. If the `dataFormat`, total frame count, or duration is unknown then this will return nil.
+    func frameOffset(forTime time: TimeInterval) -> AVAudioFramePosition?
+    
+    /// Given a frame this method will attempt to provide the corresponding audio packet representing that position.
     ///
     /// - Parameter frame: An `AVAudioFrameCount` representing the desired frame
     /// - Returns: An optional `AVAudioPacketCount` representing the packet the frame belongs to. If the `dataFormat` is unknown (not enough data has been provided) then this will return nil.
     func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount?
     
+    /// Given a frame this method will attempt to provide the corresponding time relative to the duration representing that position.
+    ///
+    /// - Parameter frame: An `AVAudioFrameCount` representing the desired frame
+    /// - Returns: An optional `TimeInterval` representing the time relative to the frame. If the `dataFormat`, total frame count, or duration is unknown then this will return nil.
+    func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval?
+    
 }
 
+// Helper to provide default implementation for parsing complete bool.
 extension Parsable {
     
     public var isParsingComplete: Bool {
@@ -58,6 +71,35 @@ extension Parsable {
         }
         
         return packets.count == totalPacketCount
+    }
+    
+    public func frameOffset(forTime time: TimeInterval) -> AVAudioFramePosition? {
+        guard let _ = dataFormat?.streamDescription.pointee,
+            let frameCount = totalFrameCount,
+            let duration = duration else {
+                return nil
+        }
+        
+        let ratio = time / duration
+        return AVAudioFramePosition(Double(frameCount) * ratio)
+    }
+    
+    public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
+        guard let dataFormat = dataFormat?.streamDescription.pointee else {
+            return nil
+        }
+        
+        return AVAudioPacketCount(frame) / AVAudioPacketCount(dataFormat.mFramesPerPacket)
+    }
+    
+    public func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval? {
+        guard let _ = dataFormat?.streamDescription.pointee,
+            let frameCount = totalFrameCount,
+            let duration = duration else {
+                return nil
+        }
+        
+        return TimeInterval(frame) / TimeInterval(frameCount) * duration
     }
     
 }
