@@ -12,7 +12,7 @@ import os.log
 /// The `Downloader` is a concrete implementation of the `Downloadable` protocol
 /// using `URLSession` as the backing HTTP/HTTPS implementation.
 public class Downloader: NSObject, Downloadable {
-    static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "Downloader")
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
     
     // MARK: - Singleton
     
@@ -71,7 +71,7 @@ public class Downloader: NSObject, Downloadable {
     // MARK: - Methods
     
     public func start() {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        os_log("%@ - %d [%@]", log: Downloader.logger, type: .debug, #function, #line, String(describing: url))
         
         guard let task = task else {
             return

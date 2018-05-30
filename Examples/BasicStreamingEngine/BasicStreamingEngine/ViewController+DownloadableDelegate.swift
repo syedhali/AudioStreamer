@@ -28,14 +28,16 @@ extension ViewController: DownloadableDelegate {
         }
         
         /// Parse the incoming audio into packets
-        parser.parse(data: data)
+        do {
+            try parser.parse(data: data)
+        } catch {
+            os_log("Failed to parse: %@", log: ViewController.logger, type: .error, error.localizedDescription)
+        }
         
         /// Once there's enough data to start producing packets we can use the data format
         if let _ = parser.dataFormat, reader == nil {
             do {
-                reader = try Reader(parser: parser, readFormat: TapReader.format)
-            } catch ReaderError.unableToCreateConverter(let status) {
-                os_log("Failed to create converter for reader [OSStatus: %i]", log: ViewController.logger, type: .error, status)
+                reader = try Reader(parser: parser, readFormat: readFormat)
             } catch {
                 os_log("Failed to create reader: %@", log: ViewController.logger, type: .error, error.localizedDescription)
             }

@@ -11,9 +11,11 @@ import AVFoundation
 import AudioToolbox
 import os.log
 
-let ReaderReachedEndOfDataError: OSStatus = 932332581
-let ReaderPartialConversionError: OSStatus = 932332582
-let ReaderNotEnoughDataError: OSStatus = 932332583
+// MARK: - Errors
+
+
+
+// MARK: -
 
 func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ packetCount: UnsafeMutablePointer<UInt32>,
@@ -22,37 +24,37 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
                              _ context: UnsafeMutableRawPointer?) -> OSStatus {
     let reader = Unmanaged<Reader>.fromOpaque(context!).takeUnretainedValue()
     
+    //
+    // Make sure we have a valid source format so we know the data format of the parser's audio packets
+    //
+    guard let sourceFormat = reader.parser.dataFormat else {
+        return ReaderMissingSourceFormatError
+    }
+    
+    //
+    // Check if we've reached the end of the packets. We have two scenarios:
+    //     1. We've reached the end of the packet data and the file has been completely parsed
+    //     2. We've reached the end of the data we currently have downloaded, but not the file
+    //
     let packetIndex = Int(reader.currentPacket)
     let packets = reader.parser.packets
-    
-    //
-    // Check if we've reached the end of the packets
-    //
-    
-    let isParsingComplete = reader.parser.isParsingComplete
-    if isParsingComplete, packetIndex >= packets.count - 1 {
-        packetCount.pointee = 0
-        return ReaderReachedEndOfDataError
+    let isEndOfData = packetIndex >= packets.count - 1
+    if isEndOfData {
+        if reader.parser.isParsingComplete {
+            packetCount.pointee = 0
+            return ReaderReachedEndOfDataError
+        } else {
+            return ReaderNotEnoughDataError
+        }
     }
     
     //
-    // Check if the packet index exceeds the number of packets we currently
-    // have (this could occur in a seek operation)
+    // Copy data over (note we've only processing a single packet of data at a time)
     //
-    
-    if packetIndex >= packets.count - 1 {
-        return ReaderNotEnoughDataError
-    }
-    
-    //
-    // Copy data over
-    //
-    
     let packet = packets[packetIndex]
-    ioData.pointee.mNumberBuffers = 1
-    
     var data = packet.0
     let dataCount = data.count
+    ioData.pointee.mNumberBuffers = 1
     ioData.pointee.mBuffers.mData = UnsafeMutableRawPointer.allocate(byteCount: dataCount, alignment: 0)
     _ = data.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>) in
         memcpy((ioData.pointee.mBuffers.mData?.assumingMemoryBound(to: UInt8.self))!, bytes, dataCount)
@@ -60,21 +62,17 @@ func ReaderConverterCallback(_ converter: AudioConverterRef,
     ioData.pointee.mBuffers.mDataByteSize = UInt32(dataCount)
     
     //
-    // packet descriptions
+    // Handle packet descriptions for compressed formats (MP3, AAC, etc)
     //
-    if reader.sourceFormat.mFormatID != kAudioFormatLinearPCM {
-        struct PacketDescriptionHolder {
-            static var lastPacketDescription: UnsafeMutablePointer<AudioStreamPacketDescription>?
+    let sourceFormatDescription = sourceFormat.streamDescription.pointee
+    if sourceFormatDescription.mFormatID != kAudioFormatLinearPCM {
+        if outPacketDescriptions?.pointee == nil {
+            outPacketDescriptions?.pointee = UnsafeMutablePointer<AudioStreamPacketDescription>.allocate(capacity: 1)
         }
-        if PacketDescriptionHolder.lastPacketDescription == nil {
-            PacketDescriptionHolder.lastPacketDescription = UnsafeMutablePointer<AudioStreamPacketDescription>.allocate(capacity: 1)
-        }
-        outPacketDescriptions?.pointee = PacketDescriptionHolder.lastPacketDescription
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mDataByteSize = UInt32(dataCount)
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mStartOffset = 0
-        PacketDescriptionHolder.lastPacketDescription?.pointee.mVariableFramesInPacket = 0
+        outPacketDescriptions?.pointee?.pointee.mDataByteSize = UInt32(dataCount)
+        outPacketDescriptions?.pointee?.pointee.mStartOffset = 0
+        outPacketDescriptions?.pointee?.pointee.mVariableFramesInPacket = 0
     }
-    
     packetCount.pointee = 1
     reader.currentPacket = reader.currentPacket + 1
     

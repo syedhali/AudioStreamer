@@ -12,16 +12,7 @@ import FileStreamer
 import os.log
 
 class ViewController: UIViewController {
-    static let logger = OSLog(subsystem: "com.ausomeapps.fstreamer", category: "ViewController")
-
-    // Processing format and buffer size helper
-    struct TapReader {
-        static let bufferSize: AVAudioFrameCount = 8192
-        static let format = AVAudioFormat(commonFormat: .pcmFormatFloat32,
-                                          sampleRate: 44100,
-                                          channels: 2,
-                                          interleaved: false)!
-    }
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "ViewController")
     
     // UI props
     @IBOutlet weak var playButton: UIButton!
@@ -33,6 +24,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var pitchSlider: UISlider!
     @IBOutlet weak var progressSlider: ProgressSlider!
     var isSeeking: Bool = false
+    var reachedEndOfFile: Bool = false
     
     // Streamer props
     var parser: Parser?
@@ -42,6 +34,8 @@ class ViewController: UIViewController {
     let engine = AVAudioEngine()
     let playerNode = AVAudioPlayerNode()
     let pitchShifterNode = AVAudioUnitTimePitch()
+    let readBufferSize: AVAudioFrameCount = 8192
+    let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
     // Playback state props
     var currentTimeOffset: TimeInterval = 0
@@ -63,7 +57,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
 
         /// Download
-        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1526487111/bensound-creativeminds_iey0tr.mp3")!
+        let url = URL(string: "http://real4.atimemedia.com:80/chill")!
         Downloader.shared.url = url
         Downloader.shared.delegate = self
      
@@ -104,14 +98,14 @@ class ViewController: UIViewController {
         engine.attach(pitchShifterNode)
         
         // Node nodes
-        engine.connect(playerNode, to: pitchShifterNode, format: TapReader.format)
-        engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: TapReader.format)
+        engine.connect(playerNode, to: pitchShifterNode, format: readFormat)
+        engine.connect(pitchShifterNode, to: engine.mainMixerNode, format: readFormat)
         
         // Prepare the engine
         engine.prepare()
         
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
-        let interval = 1 / (TapReader.format.sampleRate / Double(TapReader.bufferSize))
+        let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
         Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
             [weak self] (timer) in
             self?.scheduleNextBuffer()
@@ -127,12 +121,18 @@ class ViewController: UIViewController {
             return
         }
         
+        guard !reachedEndOfFile else {
+            return
+        }
+        
         do {
-            let nextScheduledBuffer = try reader.read(TapReader.bufferSize)
+            let nextScheduledBuffer = try reader.read(readBufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
+        } catch ReaderError.reachedEndOfFile {
+            os_log("Scheduler reached end of file", log: ViewController.logger, type: .debug)
+            reachedEndOfFile = true
         } catch {
-            print("Error \(error)")
-            os_log("No next scheduled buffer yet. Error: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
+            os_log("Cannot schedule buffer: %@", log: ViewController.logger, type: .debug, error.localizedDescription)
         }
     }
     
@@ -192,6 +192,7 @@ class ViewController: UIViewController {
             return
         }
         currentTimeOffset = currentTime
+        reachedEndOfFile = false
         
         // We need to store whether or not the player node is currently playing to properly resume playback after
         let isPlaying = playerNode.isPlaying
@@ -200,7 +201,11 @@ class ViewController: UIViewController {
         playerNode.stop()
         
         // Perform the seek to the proper packet offset
-        reader.seek(packetOffset)
+        do {
+            try reader.seek(packetOffset)
+        } catch {
+            os_log("Failed to seek: %@", log: ViewController.logger, type: .error, error.localizedDescription)
+        }
         
         // If the player node was previous playing then resume playback
         if isPlaying {
@@ -209,15 +214,21 @@ class ViewController: UIViewController {
     }
     
     @IBAction func progressSliderTouchedDown(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         isSeeking = true
     }
     
     @IBAction func progressSliderValueChanged(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         let currentTime = TimeInterval(sender.value)
         currentTimeLabel.text = formatToMMSS(currentTime)
     }
     
     @IBAction func progressSliderTouchedUp(_ sender: UISlider) {
+        os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
+        
         seek(sender)
         isSeeking = false
     }
@@ -249,7 +260,6 @@ class ViewController: UIViewController {
     
     @IBAction func changeRate(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
-        
         
         let step: Float = 0.25
         var rate = sender.value

@@ -33,18 +33,16 @@ class ParserTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.bitRate, 8000)
-            XCTAssertEqual(parser.dataOffset, 757)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
-            XCTAssertEqual(parser.packets.count, 3450)
+            XCTAssertEqual(parser.packets.count, 6897)
             
             expectation.fulfill()
         }
@@ -74,17 +72,16 @@ class ParserTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.dataOffset, 0)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
-            XCTAssertEqual(parser.packets.count, 1942)
+            XCTAssertEqual(parser.packets.count, 3881)
             
             expectation.fulfill()
         }
@@ -114,14 +111,13 @@ class ParserTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.dataOffset, 498)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
             XCTAssertEqual(parser.packets.count, 3971520)
@@ -130,7 +126,7 @@ class ParserTests: XCTestCase {
         }
         XCTAssertEqual(Downloader.shared.state, .started)
         
-        self.wait(for: [expectation], timeout: 10)
+        self.wait(for: [expectation], timeout: 30)
     }
     
 }

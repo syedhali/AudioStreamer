@@ -9,26 +9,40 @@
 import Foundation
 import AudioToolbox
 
+// MARK: - Reader OSStatus Error Codes
+
+let ReaderReachedEndOfDataError: OSStatus = 932332581
+let ReaderNotEnoughDataError: OSStatus = 932332582
+let ReaderMissingSourceFormatError: OSStatus = 932332583
+
+// MARK: - ReaderError
+
 public enum ReaderError: LocalizedError {
+    case cannotLockQueue
     case converterFailed(OSStatus)
     case failedToCreateDestinationFormat
     case failedToCreatePCMBuffer
+    case notEnoughData
     case parserMissingDataFormat
-    case readFailed(OSStatus)
+    case reachedEndOfFile
     case unableToCreateConverter(OSStatus)
     
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         switch self {
+        case .cannotLockQueue:
+            return "Failed to lock queue"
         case .converterFailed(let status):
             return localizedDescriptionFromConverterError(status)
         case .failedToCreateDestinationFormat:
             return "Failed to create a destination (processing) format"
         case .failedToCreatePCMBuffer:
             return "Failed to create PCM buffer for reading data"
+        case .notEnoughData:
+            return "Not enough data for read-conversion operation"
         case .parserMissingDataFormat:
             return "Parser is missing a valid data format"
-        case .readFailed(let status):
-            return localizedDescriptionFromReaderError(status)
+        case .reachedEndOfFile:
+            return "Reached the end of the file"
         case .unableToCreateConverter(let status):
             return localizedDescriptionFromConverterError(status)
         }
@@ -60,19 +74,6 @@ public enum ReaderError: LocalizedError {
             return "No hardware permission"
         default:
             return "Unspecified error"
-        }
-    }
-    
-    func localizedDescriptionFromReaderError(_ status: OSStatus) -> String {
-        switch status {
-        case ReaderNotEnoughDataError:
-            return "Reader does not have enough data"
-        case ReaderReachedEndOfDataError:
-            return "Reader reached the end of the file"
-        case ReaderPartialConversionError:
-            return "Reader could only partially convert the requested buffer of audio"
-        default:
-            return "Unspecified reader error"
         }
     }
 }
