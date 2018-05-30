@@ -13,7 +13,7 @@ import os.log
 
 class ReaderTests: XCTestCase {
 
-    func testParseDownloadedMP3() {
+    func testReadDownloadedMP3() {
         let expectation = XCTestExpectation(description: "Download & Parse & Read MP3")
         expectation.expectedFulfillmentCount = 2
         
@@ -36,15 +36,13 @@ class ReaderTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.bitRate, 8000)
-            XCTAssertEqual(parser.dataOffset, 731)
             XCTAssertNotEqual(parser.dataFormat, nil)
             XCTAssertNotEqual(parser.fileFormat, nil)
             XCTAssertEqual(parser.packets.count, 6897)
@@ -91,7 +89,7 @@ class ReaderTests: XCTestCase {
         self.wait(for: [expectation], timeout: 20)
     }
     
-    func testParseDownloadedAAC() {
+    func testReadDownloadedAAC() {
         let expectation = XCTestExpectation(description: "Download & Parse & Read AAC")
         expectation.expectedFulfillmentCount = 2
         
@@ -114,17 +112,13 @@ class ReaderTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {
             XCTAssertEqual(Downloader.shared.state, .completed)
             XCTAssertNil($0)
             
-            XCTAssertEqual(parser.bitRate, 0)
-            XCTAssertEqual(parser.dataOffset, 0)
-            XCTAssertNotEqual(parser.dataFormat, nil)
-            XCTAssertNotEqual(parser.fileFormat, nil)
             XCTAssertEqual(parser.packets.count, 3881)
             
             expectation.fulfill()
@@ -169,7 +163,7 @@ class ReaderTests: XCTestCase {
         self.wait(for: [expectation], timeout: 20)
     }
     
-    func testParseDownloadedWAV() {
+    func testReadDownloadedWAV() {
         let expectation = XCTestExpectation(description: "Download & Parse & Read WAV")
         expectation.expectedFulfillmentCount = 2
         
@@ -191,7 +185,7 @@ class ReaderTests: XCTestCase {
         }
         
         Downloader.shared.progressHandler = { (data, progress) in
-            parser.parse(data: data)
+            try! parser.parse(data: data)
         }
         
         Downloader.shared.completionHandler = {

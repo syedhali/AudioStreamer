@@ -24,29 +24,6 @@ public class Parser: Parsable {
     public internal(set) var dataFormat: AVAudioFormat?
     public internal(set) var isReadyToProducePackets: Bool = false
     public internal(set) var packets = [(Data, AudioStreamPacketDescription?)]()
-    public var duration: TimeInterval? {
-        guard let sampleRate = dataFormat?.sampleRate else {
-            return nil
-        }
-        
-        guard let totalFrameCount = totalFrameCount else {
-            return nil
-        }
-        
-        return TimeInterval(totalFrameCount) / TimeInterval(sampleRate)
-    }
-    public var totalFrameCount: AVAudioFrameCount? {
-        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
-            return nil
-        }
-        
-        guard let totalPacketCount = totalPacketCount else {
-            return nil
-        }
-        
-        
-        return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(framesPerPacket)
-    }
     public var totalPacketCount: AVAudioPacketCount? {
         guard let _ = dataFormat else {
             return nil

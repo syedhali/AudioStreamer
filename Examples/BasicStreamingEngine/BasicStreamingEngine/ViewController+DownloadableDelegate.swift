@@ -38,8 +38,6 @@ extension ViewController: DownloadableDelegate {
         if let _ = parser.dataFormat, reader == nil {
             do {
                 reader = try Reader(parser: parser, readFormat: readFormat)
-            } catch ReaderError.unableToCreateConverter(let status) {
-                os_log("Failed to create converter for reader [OSStatus: %i]", log: ViewController.logger, type: .error, status)
             } catch {
                 os_log("Failed to create reader: %@", log: ViewController.logger, type: .error, error.localizedDescription)
             }

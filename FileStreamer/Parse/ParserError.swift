@@ -17,7 +17,7 @@ public enum ParserError: LocalizedError {
     case streamCouldNotOpen
     case failedToParseBytes(OSStatus)
     
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .streamCouldNotOpen:
             return "Could not open stream for parsing"

@@ -27,7 +27,7 @@ public enum ReaderError: LocalizedError {
     case reachedEndOfFile
     case unableToCreateConverter(OSStatus)
     
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .cannotLockQueue:
             return "Failed to lock queue"

@@ -65,6 +65,30 @@ public protocol Parsable: class {
 // Helper to provide default implementation for parsing complete bool.
 extension Parsable {
     
+    public var duration: TimeInterval? {
+        guard let sampleRate = dataFormat?.sampleRate else {
+            return nil
+        }
+        
+        guard let totalFrameCount = totalFrameCount else {
+            return nil
+        }
+        
+        return TimeInterval(totalFrameCount) / TimeInterval(sampleRate)
+    }
+    public var totalFrameCount: AVAudioFrameCount? {
+        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
+            return nil
+        }
+        
+        guard let totalPacketCount = totalPacketCount else {
+            return nil
+        }
+        
+        
+        return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(framesPerPacket)
+    }
+    
     public var isParsingComplete: Bool {
         guard let totalPacketCount = totalPacketCount else {
             return false
