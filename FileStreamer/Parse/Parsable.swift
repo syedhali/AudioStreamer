@@ -62,7 +62,7 @@ public protocol Parsable: class {
     
 }
 
-// Helper to provide default implementation for parsing complete bool.
+// Usually these methods are gonna be calculated using the same way everytime so here are the default implementations that should work 99% of the time relative to the properties defined. 
 extension Parsable {
     
     public var duration: TimeInterval? {
@@ -76,6 +76,7 @@ extension Parsable {
         
         return TimeInterval(totalFrameCount) / TimeInterval(sampleRate)
     }
+    
     public var totalFrameCount: AVAudioFrameCount? {
         guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
             return nil
