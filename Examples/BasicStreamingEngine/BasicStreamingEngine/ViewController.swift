@@ -30,13 +30,6 @@ class ViewController: UIViewController {
     var parser: Parser?
     var reader: Reader?
     
-    // AVAudioEngine related props
-    let engine = AVAudioEngine()
-    let playerNode = AVAudioPlayerNode()
-    let pitchShifterNode = AVAudioUnitTimePitch()
-    let readBufferSize: AVAudioFrameCount = 8192
-    let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
-    
     // Playback state props
     var currentTimeOffset: TimeInterval = 0
     var currentTime: TimeInterval? {
@@ -277,15 +270,6 @@ class ViewController: UIViewController {
         pitchShifterNode.rate = rate
         rateLabel.text = String(format: "%.2fx", rate)
         rateSlider.value = rate
-    }
-    
-    /// MARK: - Utils
-    
-    func formatToMMSS(_ time: TimeInterval) -> String {
-        let ts = Int(time)
-        let s = ts % 60
-        let m = (ts / 60) % 60
-        return String(format: "%02d:%02d", m, s)
     }
     
 }
