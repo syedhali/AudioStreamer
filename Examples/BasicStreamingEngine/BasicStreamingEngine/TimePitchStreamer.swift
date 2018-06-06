@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 import FileStreamer
 
-class TimePitchStreamer: Streamer {
+final class TimePitchStreamer: Streamer {
     
     let timePitchNode = AVAudioUnitTimePitch()
     

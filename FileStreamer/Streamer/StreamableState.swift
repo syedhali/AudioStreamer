@@ -8,6 +8,11 @@
 
 import Foundation
 
+/// The various playback states of a `Streamable`.
+///
+/// - stopped: Audio playback and download operations are all stopped
+/// - paused: Audio playback is paused
+/// - playing: Audio playback is playing
 public enum StreamableState: String {
     case stopped
     case paused

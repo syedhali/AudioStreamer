@@ -15,13 +15,13 @@ class ViewController: UIViewController {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "ViewController")
     
     // UI props
-    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationTimeLabel: UILabel!
     @IBOutlet weak var rateLabel: UILabel!
     @IBOutlet weak var rateSlider: UISlider!
     @IBOutlet weak var pitchLabel: UILabel!
     @IBOutlet weak var pitchSlider: UISlider!
+    @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var progressSlider: ProgressSlider!
     
     // Streamer props

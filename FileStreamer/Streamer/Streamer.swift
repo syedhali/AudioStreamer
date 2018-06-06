@@ -10,6 +10,7 @@ import AVFoundation
 import Foundation
 import os.log
 
+/// The `Streamer` is a concrete implementation of the `Streamable` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streamable {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
@@ -42,10 +43,6 @@ open class Streamer: Streamable {
     
     public internal(set) var reader: Readable?
     
-    public let readBufferSize: AVAudioFrameCount = 8192
-    
-    public let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
-    
     public internal(set) var state: StreamableState = .stopped
     
     public var url: URL? {
@@ -76,10 +73,9 @@ open class Streamer: Streamable {
     /// A `Bool` indicating whether the file has been completely scheduled into the player node.
     var isFileSchedulingComplete = false
 
-    public init() {
-        // Setup the downloader. This could be a lazy prop, but we want to be sure the streamer class is thread-safe.
-        downloader.delegate = self
-        
+    // MARK: - Lifecycle
+    
+    public init() {        
         // Setup the audio engine (attach nodes, connect stuff, etc). No playback yet.
         setupAudioEngine()
     }
