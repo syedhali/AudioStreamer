@@ -86,7 +86,6 @@ extension Parsable {
             return nil
         }
         
-        
         return AVAudioFrameCount(totalPacketCount) * AVAudioFrameCount(framesPerPacket)
     }
     

@@ -56,13 +56,17 @@ extension Streamer: DownloadableDelegate {
     }
     
     func checkDurationUpdated() {
-        guard duration == nil else {
-            return
+        func update(_ newDuration: TimeInterval) {
+            self.duration = newDuration
+            notifyDurationUpdate(newDuration)
         }
         
-        if let duration = parser?.duration {
-            self.duration = duration
-            notifyDurationUpdate(duration)
+        if let newDuration = parser?.duration {
+            if duration == nil {
+                update(newDuration)
+            } else if let oldDuration = duration, oldDuration < newDuration {
+                update(newDuration)
+            }
         }
     }
     

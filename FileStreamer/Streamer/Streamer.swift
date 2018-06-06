@@ -13,6 +13,8 @@ import os.log
 open class Streamer: Streamable {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
+    // MARK: - Properties (Streamable)
+    
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
             let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
@@ -21,33 +23,34 @@ open class Streamer: Streamable {
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
     }
-
+    
     public var delegate: StreamableDelegate?
-
-    public var duration: TimeInterval?
-
+    
+    public lazy var downloader: Downloadable = {
+        let downloader = Downloader()
+        downloader.delegate = self
+        return downloader
+    }()
+    
+    public internal(set) var duration: TimeInterval?
+    
     public let engine = AVAudioEngine()
-
+    
+    public internal(set) var parser: Parsable?
+    
     public let playerNode = AVAudioPlayerNode()
-
+    
+    public internal(set) var reader: Readable?
+    
     public let readBufferSize: AVAudioFrameCount = 8192
-
+    
     public let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
-
-    public var state: StreamableState = .stopped
-
+    
+    public internal(set) var state: StreamableState = .stopped
+    
     public var url: URL? {
         didSet {
-            stop()
-            duration = nil
-            reader = nil
-            do {
-                parser = try Parser()
-            } catch {
-                os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-            }
-            isFileSchedulingComplete = false
-            state = .stopped
+            reset()
 
             if let url = url {
                 downloader.url = url
@@ -55,7 +58,7 @@ open class Streamer: Streamable {
             }
         }
     }
-
+    
     public var volume: Float {
         get {
             return engine.mainMixerNode.volume
@@ -65,17 +68,19 @@ open class Streamer: Streamable {
         }
     }
 
-    //
+    // MARK: - Properties
+    
+    /// A `TimeInterval` used to calculate the current play time relative to a seek operation.
     var currentTimeOffset: TimeInterval = 0
+    
+    /// A `Bool` indicating whether the file has been completely scheduled into the player node.
     var isFileSchedulingComplete = false
-    let downloader: Downloader
-    var parser: Parser?
-    var reader: Reader?
 
     public init() {
-        downloader = Downloader()
+        // Setup the downloader. This could be a lazy prop, but we want to be sure the streamer class is thread-safe.
         downloader.delegate = self
-
+        
+        // Setup the audio engine (attach nodes, connect stuff, etc). No playback yet.
         setupAudioEngine()
     }
 
@@ -84,10 +89,12 @@ open class Streamer: Streamable {
     public func play() {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
 
+        // Check we're not already playing
         guard !playerNode.isPlaying else {
             return
         }
 
+        // Start the engine if it's not running
         if !engine.isRunning {
             do {
                 try engine.start()
@@ -96,9 +103,11 @@ open class Streamer: Streamable {
                 return
             }
         }
-
+        
+        // Start playback on the player node
         playerNode.play()
 
+        // Update the state
         state = .playing
         delegate?.streamer(self, changedState: state)
     }
@@ -106,13 +115,16 @@ open class Streamer: Streamable {
     public func pause() {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
 
+        // Check if the player node is playing
         guard playerNode.isPlaying else {
             return
         }
 
+        // Pause the player node and the engine
         playerNode.pause()
         engine.pause()
 
+        // Update the state
         state = .paused
         delegate?.streamer(self, changedState: state)
     }
@@ -120,10 +132,12 @@ open class Streamer: Streamable {
     public func stop() {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
 
+        // Stop the downloader, the player node, and the engine
         downloader.stop()
         playerNode.stop()
         engine.stop()
 
+        // Update the state
         state = .stopped
         delegate?.streamer(self, changedState: state)
     }
@@ -131,6 +145,7 @@ open class Streamer: Streamable {
     public func seek(to time: TimeInterval) throws {
         os_log("%@ - %d [%.1f]", log: Streamer.logger, type: .debug, #function, #line, time)
 
+        // Make sure we have a valid parser and reader
         guard let parser = parser, let reader = reader else {
             return
         }
@@ -162,6 +177,7 @@ open class Streamer: Streamable {
             playerNode.play()
         }
 
+        // Update the current time
         delegate?.streamer(self, updatedCurrentTime: time)
     }
 
@@ -188,13 +204,32 @@ open class Streamer: Streamable {
             self?.notifyTimeUpdated()
         }
     }
+    
+    func reset() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
+        // Reset the playback state
+        stop()
+        duration = nil
+        reader = nil
+        isFileSchedulingComplete = false
+        state = .stopped
+        
+        // Create a new parser
+        do {
+            parser = try Parser()
+        } catch {
+            os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+        }
+        
+    }
 
-    // Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
+    /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
     open func attachNodes() {
         engine.attach(playerNode)
     }
 
-    // Subclass can override this to make custom node connections in the engine before it is prepared. Default implementation connects the playerNode to the mainMixerNode on the `AVAudioEngine` using the default `readFormat`. Subclass should use the `readFormat` property when connecting nodes.
+    /// Subclass can override this to make custom node connections in the engine before it is prepared. Default implementation connects the playerNode to the mainMixerNode on the `AVAudioEngine` using the default `readFormat`. Subclass should use the `readFormat` property when connecting nodes.
     open func connectNodes() {
         engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
     }

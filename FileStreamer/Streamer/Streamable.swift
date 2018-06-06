@@ -17,6 +17,12 @@ public protocol Streamable: class {
     
     var duration: TimeInterval? { get }
     
+    var downloader: Downloadable { get }
+    
+    var parser: Parsable? { get }
+    
+    var reader: Readable? { get }
+    
     var engine: AVAudioEngine { get }
     
     var playerNode: AVAudioPlayerNode { get }
@@ -38,4 +44,5 @@ public protocol Streamable: class {
     func stop()
     
     func seek(to time: TimeInterval) throws
+    
 }

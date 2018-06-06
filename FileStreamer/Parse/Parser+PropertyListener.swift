@@ -11,7 +11,6 @@ import AVFoundation
 import os.log
        
 func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID: AudioFileStreamID, _ propertyID: AudioFileStreamPropertyID, _ flags: UnsafeMutablePointer<AudioFileStreamPropertyFlags>) {
-    /// Cast back our context to the parser object
     let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
     
     /// Parse the various properties

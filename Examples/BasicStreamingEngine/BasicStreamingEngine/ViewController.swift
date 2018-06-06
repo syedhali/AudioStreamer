@@ -42,13 +42,12 @@ class ViewController: UIViewController {
         // Setup the AVAudioSession and AVAudioEngine
         setupAudioSession()
         
-        /// Download
-        let url = URL(string: "https://cdn.fastlearner.media/bensound-hey.mp3")!
-        
         // Reset the pitch and rate
         resetPitch(self)
         resetRate(self)
         
+        /// Download
+        let url = URL(string: "https://cdn.fastlearner.media/bensound-creativeminds.mp3")!
         streamer.url = url
     }
     

@@ -9,6 +9,7 @@
 import UIKit
 import os.log
 
+/// The `ProgressSlider` is a `UISlider` subclass that adds a `UIProgressView` to show a deterministic loading state. In streaming this is useful for showing how much of the file has been downloaded.
 public class ProgressSlider: UISlider {
     
     /// A `UIProgressView` used to display the track progress layer
