@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		6611101720B476A200B93F10 /* ProgressSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6611101520B476A100B93F10 /* ProgressSlider.swift */; };
 		661DD3E92002C6C000B9172B /* FileStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 661DD3E62002C6B300B9172B /* FileStreamer.framework */; };
 		661DD3EA2002C6C000B9172B /* FileStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 661DD3E62002C6B300B9172B /* FileStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		66A1DBC920C7372D00A29E34 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBC820C7372D00A29E34 /* Utils.swift */; };
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
 		66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
@@ -59,9 +57,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6611101520B476A100B93F10 /* ProgressSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressSlider.swift; sourceTree = "<group>"; };
 		661DD3E02002C6B300B9172B /* FileStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = FileStreamer.xcodeproj; path = ../../../FileStreamer.xcodeproj; sourceTree = "<group>"; };
-		66A1DBC820C7372D00A29E34 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
 		66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* BasicStreamingEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicStreamingEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -116,8 +112,6 @@
 				661DD3E02002C6B300B9172B /* FileStreamer.xcodeproj */,
 				66C8352D2002C67700E953C7 /* AppDelegate.swift */,
 				66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */,
-				6611101520B476A100B93F10 /* ProgressSlider.swift */,
-				66A1DBC820C7372D00A29E34 /* Utils.swift */,
 				66C8352F2002C67700E953C7 /* ViewController.swift */,
 				66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */,
 				66C835312002C67700E953C7 /* Main.storyboard */,
@@ -231,9 +225,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */,
-				66A1DBC920C7372D00A29E34 /* Utils.swift in Sources */,
 				66C835302002C67700E953C7 /* ViewController.swift in Sources */,
-				6611101720B476A200B93F10 /* ProgressSlider.swift in Sources */,
 				66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */,
 				66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */,
 			);

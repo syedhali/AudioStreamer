@@ -1,6 +1,6 @@
 //
 //  ProgressSlider.swift
-//  BasicStreamingEngine
+//  FileStreamer
 //
 //  Created by Syed Haris Ali on 5/22/18.
 //  Copyright © 2018 Ausome Apps LLC. All rights reserved.
@@ -15,7 +15,7 @@ public class ProgressSlider: UISlider {
     fileprivate let progressView = UIProgressView(progressViewStyle: .default)
     
     /// A `Float` representing the progress value
-    @IBInspectable var progress: Float {
+    @IBInspectable public var progress: Float {
         get {
             return progressView.progress
         }
@@ -25,7 +25,7 @@ public class ProgressSlider: UISlider {
     }
     
     /// A `UIColor` representing the progress view's track tint color (right region)
-    @IBInspectable var progressTrackTintColor: UIColor {
+    @IBInspectable public var progressTrackTintColor: UIColor {
         get {
             return progressView.trackTintColor ?? .white
         }
@@ -35,7 +35,7 @@ public class ProgressSlider: UISlider {
     }
     
     /// A `UIColor` representing the progress view's progress tint color (left region)
-    @IBInspectable var progressProgressTintColor: UIColor {
+    @IBInspectable public var progressProgressTintColor: UIColor {
         get {
             return progressView.progressTintColor ?? .blue
         }

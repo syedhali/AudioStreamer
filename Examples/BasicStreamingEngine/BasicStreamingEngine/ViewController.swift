@@ -99,7 +99,7 @@ class ViewController: UIViewController {
         os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
         
         let currentTime = TimeInterval(sender.value)
-        currentTimeLabel.text = formatToMMSS(currentTime)
+        currentTimeLabel.text = currentTime.toMMSS()
     }
     
     @IBAction func progressSliderTouchedUp(_ sender: UISlider) {

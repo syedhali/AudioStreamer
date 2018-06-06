@@ -31,16 +31,16 @@ extension ViewController: StreamableDelegate {
     }
     
     func streamer(_ streamer: Streamable, updatedCurrentTime currentTime: TimeInterval) {
-        os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, formatToMMSS(currentTime))
+        os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, currentTime.toMMSS())
         
         if !isSeeking {
             progressSlider.value = Float(currentTime)
-            currentTimeLabel.text = formatToMMSS(currentTime)
+            currentTimeLabel.text = currentTime.toMMSS()
         }
     }
     
     func streamer(_ streamer: Streamable, updatedDuration duration: TimeInterval) {
-        let formattedDuration = formatToMMSS(duration)
+        let formattedDuration = duration.toMMSS()
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, formattedDuration)
         
         durationTimeLabel.text = formattedDuration
