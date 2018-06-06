@@ -25,8 +25,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var progressSlider: ProgressSlider!
     
     // Streamer props
-    lazy var streamer: Streamer = {
-        let streamer = Streamer()
+    lazy var streamer: TimePitchStreamer = {
+        let streamer = TimePitchStreamer()
         streamer.delegate = self
         return streamer
     }()
@@ -46,8 +46,8 @@ class ViewController: UIViewController {
         let url = URL(string: "https://cdn.fastlearner.media/bensound-hey.mp3")!
         
         // Reset the pitch and rate
-//        resetPitch(self)
-//        resetRate(self)
+        resetPitch(self)
+        resetRate(self)
         
         streamer.url = url
     }
@@ -114,22 +114,22 @@ class ViewController: UIViewController {
     @IBAction func changePitch(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
-//        let step: Float = 100
-//        var pitch = roundf(sender.value)
-//        let newStep = roundf(pitch / step)
-//        pitch = newStep * step
-//        sender.value = pitch
-//        pitchShifterNode.pitch = pitch
-//        pitchLabel.text = String(format: "%i cents", Int(pitch))
+        let step: Float = 100
+        var pitch = roundf(sender.value)
+        let newStep = roundf(pitch / step)
+        pitch = newStep * step
+        sender.value = pitch
+        streamer.pitch = pitch
+        pitchLabel.text = String(format: "%i cents", Int(pitch))
     }
     
     @IBAction func resetPitch(_ sender: Any) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line)
         
-//        let pitch: Float = 0
-//        pitchShifterNode.pitch = pitch
-//        pitchLabel.text = String(format: "%i cents", Int(pitch))
-//        pitchSlider.value = pitch
+        let pitch: Float = 0
+        streamer.pitch = pitch
+        pitchLabel.text = String(format: "%i cents", Int(pitch))
+        pitchSlider.value = pitch
     }
     
     /// MARK: - Change Rate
@@ -137,22 +137,22 @@ class ViewController: UIViewController {
     @IBAction func changeRate(_ sender: UISlider) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
-//        let step: Float = 0.25
-//        var rate = sender.value
-//        let newStep = roundf(rate / step)
-//        rate = newStep * step
-//        sender.value = rate
-//        pitchShifterNode.rate = rate
-//        rateLabel.text = String(format: "%.2fx", rate)
+        let step: Float = 0.25
+        var rate = sender.value
+        let newStep = roundf(rate / step)
+        rate = newStep * step
+        sender.value = rate
+        streamer.rate = rate
+        rateLabel.text = String(format: "%.2fx", rate)
     }
     
     @IBAction func resetRate(_ sender: Any) {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line)
         
-//        let rate: Float = 1
-//        pitchShifterNode.rate = rate
-//        rateLabel.text = String(format: "%.2fx", rate)
-//        rateSlider.value = rate
+        let rate: Float = 1
+        streamer.rate = rate
+        rateLabel.text = String(format: "%.2fx", rate)
+        rateSlider.value = rate
     }
     
 }

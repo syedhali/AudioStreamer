@@ -18,12 +18,18 @@ extension Streamer: DownloadableDelegate {
     public func download(_ download: Downloadable, changedState downloadState: DownloadableState) {
         os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
         
-        if downloadState == .started {
+        switch downloadState {
+        case .started:
             state.insert(.downloading)
-        } else {
+        default:
             state.remove(.downloading)
         }
-        delegate?.streamer(self, changedState: state)
+        
+        DispatchQueue.main.async { [weak self] in
+            if let wSelf = self {
+                wSelf.delegate?.streamer(wSelf, changedState: wSelf.state)
+            }
+        }
     }
     
     public func download(_ download: Downloadable, didReceiveData data: Data, progress: Float) {
@@ -57,19 +63,20 @@ extension Streamer: DownloadableDelegate {
             // Notify the delegate of the new progress value of the download
             self?.notifyDownloadProgress(progress)
             
-            // Update the duration if we have it
-            if self?.duration == nil, let newDuration = self?.parser?.duration {
-                self?.duration = newDuration
-            }
+            // Check if we have the duration
+            self?.checkDurationUpdated()
         }
     }
     
-    func notifyDownloadProgress(_ progress: Float) {
-        guard let url = url else {
+    func checkDurationUpdated() {
+        guard duration == nil else {
             return
         }
         
-        delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
+        if let duration = parser?.duration {
+            self.duration = duration
+            notifyDurationUpdate(duration)
+        }
     }
     
 }

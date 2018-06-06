@@ -10,7 +10,7 @@ import Foundation
 import AVFoundation
 import os.log
 
-public class Streamer: Streamable {
+open class Streamer: Streamable {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
     
     public var currentTime: TimeInterval? {
@@ -24,13 +24,7 @@ public class Streamer: Streamable {
     
     public var delegate: StreamableDelegate?
     
-    public var duration: TimeInterval? {
-        didSet {
-            if let duration = duration {
-                delegate?.streamer(self, updatedDuration: duration)
-            }
-        }
-    }
+    public var duration: TimeInterval?
     
     public let engine = AVAudioEngine()
     
@@ -245,7 +239,24 @@ public class Streamer: Streamable {
         }
     }
     
-    /// Notifies the delegate of a time update
+    // MARK: - Notifying stuff
+    
+    func notifyDownloadProgress(_ progress: Float) {
+        guard let url = url else {
+            return
+        }
+        
+        delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
+    }
+    
+    func notifyDurationUpdate(_ duration: TimeInterval) {
+        guard let _ = url else {
+            return
+        }
+        
+        delegate?.streamer(self, updatedDuration: duration)
+    }
+    
     func notifyTimeUpdated() {
         guard engine.isRunning, playerNode.isPlaying else {
             return
