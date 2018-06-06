@@ -16,13 +16,13 @@ public struct StreamableState: OptionSet {
     }
     
     // Playback state
-    static let stopped = StreamableState(rawValue: 1 << 0)
-    static let paused = StreamableState(rawValue: 1 << 1)
-    static let playing = StreamableState(rawValue: 1 << 2)
+    public static let stopped = StreamableState(rawValue: 1 << 0)
+    public static let paused = StreamableState(rawValue: 1 << 1)
+    public static let playing = StreamableState(rawValue: 1 << 2)
     
     // End state
-    static let endOfFile = StreamableState(rawValue: 1 << 3)
+    public static let endOfFile = StreamableState(rawValue: 1 << 3)
     
     // Download state
-    static let downloading = StreamableState(rawValue: 1 << 4)
+    public static let downloading = StreamableState(rawValue: 1 << 4)
 }

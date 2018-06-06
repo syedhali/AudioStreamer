@@ -16,7 +16,7 @@ extension Streamer: DownloadableDelegate {
     }
     
     public func download(_ download: Downloadable, changedState downloadState: DownloadableState) {
-        os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: state))
+        os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
         
         if downloadState == .started {
             state.insert(.downloading)

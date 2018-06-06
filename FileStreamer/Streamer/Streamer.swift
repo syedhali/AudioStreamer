@@ -40,11 +40,7 @@ public class Streamer: Streamable {
     
     public let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
     
-    public var state: StreamableState = [.stopped] {
-        didSet {
-            delegate?.streamer(self, changedState: state)
-        }
-    }
+    public var state: StreamableState = [.stopped]
     
     public var url: URL? {
         didSet {
@@ -82,9 +78,11 @@ public class Streamer: Streamable {
     var parser: Parser?
     var reader: Reader?
     
-    init() {
+    public init() {
         downloader = Downloader()
         downloader.delegate = self
+        
+        setupAudioEngine()
     }
     
     // MARK: - Methods
@@ -101,6 +99,7 @@ public class Streamer: Streamable {
                 try engine.start()
             } catch {
                 os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+                return
             }
         }
         
@@ -181,6 +180,8 @@ public class Streamer: Streamable {
     // MARK: - Setup
     
     func setupAudioEngine() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
         // Attach nodes
         attachNodes()
         
