@@ -21,11 +21,10 @@ extension ViewController: StreamableDelegate {
     func streamer(_ streamer: Streamable, changedState state: StreamableState) {
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: state))
         
-        if state.contains(.playing) {
+        switch state {
+        case .playing:
             playButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
-        }
-        
-        if state.contains(.paused) || state.contains(.stopped) {
+        case .paused, .stopped:
             playButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
         }
     }

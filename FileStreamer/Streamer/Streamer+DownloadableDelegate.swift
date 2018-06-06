@@ -17,19 +17,6 @@ extension Streamer: DownloadableDelegate {
     
     public func download(_ download: Downloadable, changedState downloadState: DownloadableState) {
         os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
-        
-        switch downloadState {
-        case .started:
-            state.insert(.downloading)
-        default:
-            state.remove(.downloading)
-        }
-        
-        DispatchQueue.main.async { [weak self] in
-            if let wSelf = self {
-                wSelf.delegate?.streamer(wSelf, changedState: wSelf.state)
-            }
-        }
     }
     
     public func download(_ download: Downloadable, didReceiveData data: Data, progress: Float) {

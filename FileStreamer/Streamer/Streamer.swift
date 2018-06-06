@@ -34,7 +34,7 @@ open class Streamer: Streamable {
 
     public let readFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32, sampleRate: 44100, channels: 2, interleaved: false)!
 
-    public var state: StreamableState = [.stopped]
+    public var state: StreamableState = .stopped
 
     public var url: URL? {
         didSet {
@@ -47,7 +47,7 @@ open class Streamer: Streamable {
                 os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
             }
             isFileSchedulingComplete = false
-            state = [.stopped]
+            state = .stopped
 
             if let url = url {
                 downloader.url = url
@@ -99,9 +99,7 @@ open class Streamer: Streamable {
 
         playerNode.play()
 
-        state.remove(.paused)
-        state.remove(.stopped)
-        state.insert(.playing)
+        state = .playing
         delegate?.streamer(self, changedState: state)
     }
 
@@ -115,9 +113,7 @@ open class Streamer: Streamable {
         playerNode.pause()
         engine.pause()
 
-        state.remove(.playing)
-        state.remove(.stopped)
-        state.insert(.paused)
+        state = .paused
         delegate?.streamer(self, changedState: state)
     }
 
@@ -128,9 +124,7 @@ open class Streamer: Streamable {
         playerNode.stop()
         engine.stop()
 
-        state.remove(.playing)
-        state.remove(.paused)
-        state.insert(.stopped)
+        state = .stopped
         delegate?.streamer(self, changedState: state)
     }
 

@@ -69,7 +69,7 @@ class ViewController: UIViewController {
     @IBAction func togglePlayback(_ sender: UIButton) {
         os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
         
-        if streamer.state.contains(.playing) {
+        if streamer.state == .playing {
             streamer.pause()
         } else {
             streamer.play()
