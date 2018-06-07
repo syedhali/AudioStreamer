@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import FileStreamer
+@testable import AudioStreamer
 
 class DownloaderTests: XCTestCase {
     

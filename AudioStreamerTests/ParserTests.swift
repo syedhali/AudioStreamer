@@ -1,6 +1,6 @@
 //
 //  ParserTests.swift
-//  FileStreamerTests
+//  AudioStreamerTests
 //
 //  Created by Syed Haris Ali on 1/6/18.
 //  Copyright © 2018 Ausome Apps LLC. All rights reserved.
@@ -8,7 +8,7 @@
 
 import XCTest
 import os.log
-@testable import FileStreamer
+@testable import AudioStreamer
 
 class ParserTests: XCTestCase {
     
