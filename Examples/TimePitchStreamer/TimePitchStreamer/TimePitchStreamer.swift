@@ -8,7 +8,7 @@
 
 import Foundation
 import AVFoundation
-import FileStreamer
+import AudioStreamer
 
 /// The `TimePitchStreamer` demonstrates how to subclass the `Streamer` and add a time/pitch shift effect.
 final class TimePitchStreamer: Streamer {

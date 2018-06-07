@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
+		66ADA36320C9B614000A4503 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66ADA36220C9B614000A4503 /* Default-568h@2x.png */; };
+		66ADA36420C9B64B000A4503 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; };
+		66ADA36520C9B64B000A4503 /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
 		66C835302002C67700E953C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352F2002C67700E953C7 /* ViewController.swift */; };
@@ -31,15 +34,23 @@
 			remoteGlobalIDString = 66A1396220013F860076B0E5;
 			remoteInfo = AudioStreamerTests;
 		};
+		66ADA36620C9B64B000A4503 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 66A1395820013F860076B0E5;
+			remoteInfo = AudioStreamer;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		661DD3ED2002C6C000B9172B /* Embed Frameworks */ = {
+		66ADA36820C9B64B000A4503 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				66ADA36520C9B64B000A4503 /* AudioStreamer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,8 +60,9 @@
 /* Begin PBXFileReference section */
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
 		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
+		66ADA36220C9B614000A4503 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
-		66C8352A2002C67700E953C7 /* BasicStreamingEngine.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BasicStreamingEngine.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C8352D2002C67700E953C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66C8352F2002C67700E953C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		66C835322002C67700E953C7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -64,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66ADA36420C9B64B000A4503 /* AudioStreamer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,7 +95,8 @@
 		66C835212002C67700E953C7 = {
 			isa = PBXGroup;
 			children = (
-				66C8352C2002C67700E953C7 /* BasicStreamingEngine */,
+				66ADA36220C9B614000A4503 /* Default-568h@2x.png */,
+				66C8352C2002C67700E953C7 /* TimePitchStreamer */,
 				66C8352B2002C67700E953C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -90,12 +104,12 @@
 		66C8352B2002C67700E953C7 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				66C8352A2002C67700E953C7 /* BasicStreamingEngine.app */,
+				66C8352A2002C67700E953C7 /* TimePitchStreamer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		66C8352C2002C67700E953C7 /* BasicStreamingEngine */ = {
+		66C8352C2002C67700E953C7 /* TimePitchStreamer */ = {
 			isa = PBXGroup;
 			children = (
 				66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */,
@@ -108,28 +122,29 @@
 				66C835362002C67700E953C7 /* LaunchScreen.storyboard */,
 				66C835392002C67700E953C7 /* Info.plist */,
 			);
-			path = BasicStreamingEngine;
+			path = TimePitchStreamer;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		66C835292002C67700E953C7 /* BasicStreamingEngine */ = {
+		66C835292002C67700E953C7 /* TimePitchStreamer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "BasicStreamingEngine" */;
+			buildConfigurationList = 66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer" */;
 			buildPhases = (
 				66C835262002C67700E953C7 /* Sources */,
 				66C835272002C67700E953C7 /* Frameworks */,
 				66C835282002C67700E953C7 /* Resources */,
-				661DD3ED2002C6C000B9172B /* Embed Frameworks */,
+				66ADA36820C9B64B000A4503 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				66ADA36720C9B64B000A4503 /* PBXTargetDependency */,
 			);
-			name = BasicStreamingEngine;
+			name = TimePitchStreamer;
 			productName = BasicStreamingEngine;
-			productReference = 66C8352A2002C67700E953C7 /* BasicStreamingEngine.app */;
+			productReference = 66C8352A2002C67700E953C7 /* TimePitchStreamer.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -153,7 +168,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 66C835252002C67700E953C7 /* Build configuration list for PBXProject "BasicStreamingEngine" */;
+			buildConfigurationList = 66C835252002C67700E953C7 /* Build configuration list for PBXProject "TimePitchStreamer" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -172,7 +187,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				66C835292002C67700E953C7 /* BasicStreamingEngine */,
+				66C835292002C67700E953C7 /* TimePitchStreamer */,
 			);
 		};
 /* End PBXProject section */
@@ -200,6 +215,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66C835382002C67700E953C7 /* LaunchScreen.storyboard in Resources */,
+				66ADA36320C9B614000A4503 /* Default-568h@2x.png in Resources */,
 				66C835352002C67700E953C7 /* Assets.xcassets in Resources */,
 				66C835332002C67700E953C7 /* Main.storyboard in Resources */,
 			);
@@ -220,6 +236,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		66ADA36720C9B64B000A4503 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AudioStreamer;
+			targetProxy = 66ADA36620C9B64B000A4503 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		66C835312002C67700E953C7 /* Main.storyboard */ = {
@@ -359,9 +383,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QZ222K9SPY;
-				INFOPLIST_FILE = BasicStreamingEngine/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TimePitchStreamer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.BasicStreamingEngine;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -375,9 +399,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QZ222K9SPY;
-				INFOPLIST_FILE = BasicStreamingEngine/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/TimePitchStreamer/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.BasicStreamingEngine;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -387,7 +411,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		66C835252002C67700E953C7 /* Build configuration list for PBXProject "BasicStreamingEngine" */ = {
+		66C835252002C67700E953C7 /* Build configuration list for PBXProject "TimePitchStreamer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				66C8353A2002C67700E953C7 /* Debug */,
@@ -396,7 +420,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "BasicStreamingEngine" */ = {
+		66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				66C8353D2002C67700E953C7 /* Debug */,

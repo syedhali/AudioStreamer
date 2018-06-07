@@ -28,25 +28,25 @@ public enum ParserError: LocalizedError {
     
     func localizedDescriptionFromParseError(_ status: OSStatus) -> String {
         switch status {
-        case kAudioAudioStreamerror_UnsupportedFileType:
+        case kAudioFileStreamError_UnsupportedFileType:
             return "The file type is not supported"
-        case kAudioAudioStreamerror_UnsupportedDataFormat:
+        case kAudioFileStreamError_UnsupportedDataFormat:
             return "The data format is not supported by this file type"
-        case kAudioAudioStreamerror_UnsupportedProperty:
+        case kAudioFileStreamError_UnsupportedProperty:
             return "The property is not supported"
-        case kAudioAudioStreamerror_BadPropertySize:
+        case kAudioFileStreamError_BadPropertySize:
             return "The size of the property data was not correct"
-        case kAudioAudioStreamerror_NotOptimized:
+        case kAudioFileStreamError_NotOptimized:
             return "It is not possible to produce output packets because the file's packet table or other defining"
-        case kAudioAudioStreamerror_InvalidPacketOffset:
+        case kAudioFileStreamError_InvalidPacketOffset:
             return "A packet offset was less than zero, or past the end of the file,"
-        case kAudioAudioStreamerror_InvalidFile:
+        case kAudioFileStreamError_InvalidFile:
             return "The file is malformed, or otherwise not a valid instance of an audio file of its type, or is not recognized as an audio file"
-        case kAudioAudioStreamerror_ValueUnknown:
+        case kAudioFileStreamError_ValueUnknown:
             return "The property value is not present in this file before the audio data"
-        case kAudioAudioStreamerror_DataUnavailable:
+        case kAudioFileStreamError_DataUnavailable:
             return "The amount of data provided to the parser was insufficient to produce any result"
-        case kAudioAudioStreamerror_IllegalOperation:
+        case kAudioFileStreamError_IllegalOperation:
             return "An illegal operation was attempted"
         default:
             return "An unspecified error occurred"

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-import FileStreamer
+import AudioStreamer
 import os.log
 
 extension ViewController: StreamableDelegate {

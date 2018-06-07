@@ -8,7 +8,7 @@
 
 import UIKit
 import AVFoundation
-import FileStreamer
+import AudioStreamer
 import os.log
 
 class ViewController: UIViewController {
