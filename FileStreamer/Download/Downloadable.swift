@@ -32,7 +32,7 @@ public protocol Downloadable: class {
     var totalBytesCount: Int64 { get }
     
     /// A `URL` representing the current URL the downloader is fetching. This is an optional because this protocol is designed to allow classes implementing the `Downloadable` protocol to be used as singletons for many different URLS so a common cache can be used to redownloading the same resources.
-    var url: URL? { get }
+    var url: URL? { get set }
     
     // MARK: - Methods
     
