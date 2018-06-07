@@ -11,7 +11,7 @@
 		665DDED020C7ADEC00CBC330 /* TimeInterval+MMSS.swift in Sources */ = {isa = PBXBuildFile; fileRef = 665DDECF20C7ADEC00CBC330 /* TimeInterval+MMSS.swift */; };
 		66A1396320013F860076B0E5 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66A1395920013F860076B0E5 /* AudioStreamer.framework */; };
 		66A1396820013F860076B0E5 /* DownloaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1396720013F860076B0E5 /* DownloaderTests.swift */; };
-		66A1396A20013F860076B0E5 /* FileStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A1395C20013F860076B0E5 /* FileStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		66A1396A20013F860076B0E5 /* AudioStreamer.h in Headers */ = {isa = PBXBuildFile; fileRef = 66A1395C20013F860076B0E5 /* AudioStreamer.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		66A1397720013FAA0076B0E5 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397420013FAA0076B0E5 /* Downloader.swift */; };
 		66A1397820013FAA0076B0E5 /* Downloader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397420013FAA0076B0E5 /* Downloader.swift */; };
 		66A1397920013FAA0076B0E5 /* Downloadable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1397520013FAA0076B0E5 /* Downloadable.swift */; };
@@ -64,7 +64,7 @@
 		665DDECD20C7AD1F00CBC330 /* ProgressSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProgressSlider.swift; sourceTree = "<group>"; };
 		665DDECF20C7ADEC00CBC330 /* TimeInterval+MMSS.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TimeInterval+MMSS.swift"; sourceTree = "<group>"; };
 		66A1395920013F860076B0E5 /* AudioStreamer.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AudioStreamer.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		66A1395C20013F860076B0E5 /* FileStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileStreamer.h; sourceTree = "<group>"; };
+		66A1395C20013F860076B0E5 /* AudioStreamer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioStreamer.h; sourceTree = "<group>"; };
 		66A1395D20013F860076B0E5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		66A1396220013F860076B0E5 /* AudioStreamerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AudioStreamerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		66A1396720013F860076B0E5 /* DownloaderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloaderTests.swift; sourceTree = "<group>"; };
@@ -142,7 +142,7 @@
 		66A1395B20013F860076B0E5 /* AudioStreamer */ = {
 			isa = PBXGroup;
 			children = (
-				66A1395C20013F860076B0E5 /* FileStreamer.h */,
+				66A1395C20013F860076B0E5 /* AudioStreamer.h */,
 				66A1397320013FAA0076B0E5 /* Download */,
 				66A139912001768B0076B0E5 /* Parse */,
 				66C835102001BED600E953C7 /* Reader */,
@@ -220,7 +220,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66A1396A20013F860076B0E5 /* FileStreamer.h in Headers */,
+				66A1396A20013F860076B0E5 /* AudioStreamer.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

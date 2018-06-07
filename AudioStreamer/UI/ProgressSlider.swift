@@ -1,6 +1,6 @@
 //
 //  ProgressSlider.swift
-//  FileStreamer
+//  AudioStreamer
 //
 //  Created by Syed Haris Ali on 5/22/18.
 //  Copyright © 2018 Ausome Apps LLC. All rights reserved.
