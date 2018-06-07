@@ -143,7 +143,7 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="Rql-KZ-673">
                                                 <rect key="frame" x="0.0" y="121.5" width="311" height="88"/>
                                                 <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Rt-X4-cTN">
+                                                    <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6Rt-X4-cTN">
                                                         <rect key="frame" x="0.0" y="24" width="311" height="64"/>
                                                         <state key="normal" image="play"/>
                                                         <connections>

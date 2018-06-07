@@ -11,6 +11,14 @@ import Foundation
 /// The `StreamableDelegate` provides an interface for responding to changes to a `Streamable` instance. These include whenever the streamer state changes, when the download progress changes, as well as the current time and duration changes.
 public protocol StreamableDelegate: class {
 
+    /// Triggered when the downloader fails
+    ///
+    /// - Parameters:
+    ///   - streamer: The current `Streamable` instance
+    ///   - error: An `Error` representing the reason the download failed
+    ///   - url: A `URL` representing the current resource the progress value is for.
+    func streamer(_ streamer: Streamable, failedDownloadWithError error: Error, forURL url: URL)
+    
     /// Triggered when the downloader's progress value changes.
     ///
     /// - Parameters:

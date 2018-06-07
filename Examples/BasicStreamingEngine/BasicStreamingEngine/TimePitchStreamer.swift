@@ -10,10 +10,13 @@ import Foundation
 import AVFoundation
 import FileStreamer
 
+/// The `TimePitchStreamer` demonstrates how to subclass the `Streamer` and add a time/pitch shift effect.
 final class TimePitchStreamer: Streamer {
     
+    /// An `AVAudioUnitTimePitch` used to perform the time/pitch shift effect
     let timePitchNode = AVAudioUnitTimePitch()
     
+    /// A `Float` representing the pitch of the audio
     var pitch: Float {
         get {
             return timePitchNode.pitch
@@ -23,6 +26,7 @@ final class TimePitchStreamer: Streamer {
         }
     }
     
+    /// A `Float` representing the playback rate of the audio
     var rate: Float {
         get {
             return timePitchNode.rate

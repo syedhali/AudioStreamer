@@ -12,6 +12,16 @@ import os.log
 
 extension ViewController: StreamableDelegate {
     
+    func streamer(_ streamer: Streamable, failedDownloadWithError error: Error, forURL url: URL) {
+        os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, error.localizedDescription)
+        
+        let alert = UIAlertController(title: "Download Failed", message: error.localizedDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        show(alert, sender: self)
+    }
+    
     func streamer(_ streamer: Streamable, updatedDownloadProgress progress: Float, forURL url: URL) {
         os_log("%@ - %d [%.2f]", log: ViewController.logger, type: .debug, #function, #line, progress)
         
@@ -44,6 +54,7 @@ extension ViewController: StreamableDelegate {
         
         durationTimeLabel.text = formattedDuration
         durationTimeLabel.isEnabled = true
+        playButton.isEnabled = true
         progressSlider.isEnabled = true
         progressSlider.minimumValue = 0.0
         progressSlider.maximumValue = Float(duration)

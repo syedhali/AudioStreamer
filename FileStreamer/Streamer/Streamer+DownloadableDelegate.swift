@@ -13,6 +13,10 @@ extension Streamer: DownloadableDelegate {
     
     public func download(_ download: Downloadable, completedWithError error: Error?) {
         os_log("%@ - %d [error: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
+        
+        if let error = error, let url = download.url {
+            delegate?.streamer(self, failedDownloadWithError: error, forURL: url)
+        }
     }
     
     public func download(_ download: Downloadable, changedState downloadState: DownloadableState) {
@@ -51,22 +55,7 @@ extension Streamer: DownloadableDelegate {
             self?.notifyDownloadProgress(progress)
             
             // Check if we have the duration
-            self?.checkDurationUpdated()
-        }
-    }
-    
-    func checkDurationUpdated() {
-        func update(_ newDuration: TimeInterval) {
-            self.duration = newDuration
-            notifyDurationUpdate(newDuration)
-        }
-        
-        if let newDuration = parser?.duration {
-            if duration == nil {
-                update(newDuration)
-            } else if let oldDuration = duration, oldDuration < newDuration {
-                update(newDuration)
-            }
+            self?.handleDurationUpdate()
         }
     }
     
