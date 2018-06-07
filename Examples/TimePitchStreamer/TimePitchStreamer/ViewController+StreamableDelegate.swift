@@ -1,6 +1,6 @@
 //
 //  ViewController+Streamer.swift
-//  BasicStreamingEngine
+//  TimePitchStreamer
 //
 //  Created by Syed Haris Ali on 6/5/18.
 //  Copyright © 2018 Ausome Apps LLC. All rights reserved.
