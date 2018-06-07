@@ -4,4 +4,4 @@
 
 [![Apache License](https://img.shields.io/badge/license-Apache%202-lightgrey.svg?style=flat)](https://github.com/syedhali/AudioStreamer/blob/master/LICENSE)
 
-A Swift 4 framework for streaming remote audio with real-time effects using `AVAudioEngine`. Blog post will be out soon on [Fast Learner](https://fastlearner.io/blog)
+A Swift 4 framework for streaming remote audio with real-time effects using `AVAudioEngine`. Blog post will be out soon on [Fast Learner](https://fastlearner.io/blog)!
