@@ -14,14 +14,11 @@ public protocol Parsable: class {
     
     // MARK: - Properties
         
-    /// The data format of the audio. Specifically, this is different from the `fileFormat` property in that it is a LPCM (uncompressed) format
+    /// The data format of the audio. This describes the sample rate, frames per packet, bytes per packet, etc. Previously we'd use an `AudioStreamBasicDescription`.
     var dataFormat: AVAudioFormat? { get }
     
     /// The total duration of the audio. For certain formats such as AAC or live streams this may be a guess or only equal to as many packets as have been processed.
     var duration: TimeInterval? { get }
-    
-    /// The file format of the audio (this is the on-disk format). For compressed formats such as MP3 or AAC this will represent the on-disk format, while the `dataFormat` property represents the audio data as it exists in memory)
-    var fileFormat: AVAudioFormat? { get }
     
     /// A `Bool` indicating whether all the audio packets have been parsed relative to the total packet count. This is optional where the default implementation will check if the total packets parsed (i.e. the count of `packets` property) is equal to the `totalPacketCount` property
     var isParsingComplete: Bool { get }
@@ -109,11 +106,11 @@ extension Parsable {
     }
     
     public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
-        guard let dataFormat = dataFormat?.streamDescription.pointee else {
+        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
             return nil
         }
         
-        return AVAudioPacketCount(frame) / AVAudioPacketCount(dataFormat.mFramesPerPacket)
+        return AVAudioPacketCount(frame) / AVAudioPacketCount(framesPerPacket)
     }
     
     public func timeOffset(forFrame frame: AVAudioFrameCount) -> TimeInterval? {

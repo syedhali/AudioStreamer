@@ -36,6 +36,8 @@ final class TimePitchStreamer: Streamer {
         }
     }
     
+    // MARK: - Methods
+    
     override func attachNodes() {
         super.attachNodes()
         engine.attach(timePitchNode)

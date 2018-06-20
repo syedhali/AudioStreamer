@@ -20,7 +20,6 @@ public class Parser: Parsable {
         
     public internal(set) var frameCount: UInt64 = 0
     public internal(set) var packetCount: UInt64 = 0
-    public internal(set) var fileFormat: AVAudioFormat?
     public internal(set) var dataFormat: AVAudioFormat?
     public internal(set) var isReadyToProducePackets: Bool = false
     public internal(set) var packets = [(Data, AudioStreamPacketDescription?)]()
