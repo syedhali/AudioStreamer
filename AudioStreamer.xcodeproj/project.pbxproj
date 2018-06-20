@@ -144,9 +144,9 @@
 			children = (
 				66A1395C20013F860076B0E5 /* AudioStreamer.h */,
 				66A1397320013FAA0076B0E5 /* Download */,
-				66A139912001768B0076B0E5 /* Parser */,
-				66C835102001BED600E953C7 /* Reader */,
-				66A1DBBB20C71EC100A29E34 /* Streamer */,
+				66A139912001768B0076B0E5 /* Parse */,
+				66C835102001BED600E953C7 /* Read */,
+				66A1DBBB20C71EC100A29E34 /* Stream */,
 				665DDEC920C7ACE500CBC330 /* UI */,
 				66A1395D20013F860076B0E5 /* Info.plist */,
 			);
@@ -178,7 +178,7 @@
 			path = Download;
 			sourceTree = "<group>";
 		};
-		66A139912001768B0076B0E5 /* Parser */ = {
+		66A139912001768B0076B0E5 /* Parse */ = {
 			isa = PBXGroup;
 			children = (
 				66A13995200177050076B0E5 /* Parser.swift */,
@@ -187,10 +187,10 @@
 				66A13992200176B60076B0E5 /* Parsable.swift */,
 				66C8350720019AD300E953C7 /* ParserError.swift */,
 			);
-			path = Parser;
+			path = Parse;
 			sourceTree = "<group>";
 		};
-		66A1DBBB20C71EC100A29E34 /* Streamer */ = {
+		66A1DBBB20C71EC100A29E34 /* Stream */ = {
 			isa = PBXGroup;
 			children = (
 				66A1DBBE20C71EDA00A29E34 /* Streamer.swift */,
@@ -199,10 +199,10 @@
 				66A1DBC020C7201500A29E34 /* StreamableState.swift */,
 				66A1DBC220C7212100A29E34 /* StreamableDelegate.swift */,
 			);
-			path = Streamer;
+			path = Stream;
 			sourceTree = "<group>";
 		};
-		66C835102001BED600E953C7 /* Reader */ = {
+		66C835102001BED600E953C7 /* Read */ = {
 			isa = PBXGroup;
 			children = (
 				66C835162001BF0000E953C7 /* Reader.swift */,
@@ -210,7 +210,7 @@
 				66C835132001BEFA00E953C7 /* Readable.swift */,
 				66C835192001DAC400E953C7 /* ReaderError.swift */,
 			);
-			path = Reader;
+			path = Read;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
