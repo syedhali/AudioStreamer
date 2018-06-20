@@ -144,7 +144,7 @@
 			children = (
 				66A1395C20013F860076B0E5 /* AudioStreamer.h */,
 				66A1397320013FAA0076B0E5 /* Download */,
-				66A139912001768B0076B0E5 /* Parse */,
+				66A139912001768B0076B0E5 /* Parser */,
 				66C835102001BED600E953C7 /* Reader */,
 				66A1DBBB20C71EC100A29E34 /* Streamer */,
 				665DDEC920C7ACE500CBC330 /* UI */,
@@ -178,7 +178,7 @@
 			path = Download;
 			sourceTree = "<group>";
 		};
-		66A139912001768B0076B0E5 /* Parse */ = {
+		66A139912001768B0076B0E5 /* Parser */ = {
 			isa = PBXGroup;
 			children = (
 				66A13995200177050076B0E5 /* Parser.swift */,
@@ -187,7 +187,7 @@
 				66A13992200176B60076B0E5 /* Parsable.swift */,
 				66C8350720019AD300E953C7 /* ParserError.swift */,
 			);
-			path = Parse;
+			path = Parser;
 			sourceTree = "<group>";
 		};
 		66A1DBBB20C71EC100A29E34 /* Streamer */ = {
