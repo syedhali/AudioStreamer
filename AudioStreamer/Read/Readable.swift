@@ -15,6 +15,9 @@ public protocol Readable {
     /// An `AVAudioPacketCount` representing the current packet index position. Reads are done relative to this position.
     var currentPacket: AVAudioPacketCount { get }
     
+    /// A `Parseable` used to read the parsed audio packets. The `Readable` handles converting compressed packets to a LPCM format a graph or engine can use (similar to `AVAudioFile`'s common format)
+    var parser: Parsable { get }
+    
     /// An `AVAudioFormat` representing the target audio format that the audio data should be converted to for read operations.
     var readFormat: AVAudioFormat { get }
     

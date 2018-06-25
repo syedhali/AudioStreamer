@@ -30,8 +30,7 @@ public class Downloader: NSObject, Downloadable {
     
     /// The `URLSession` currently being used as the HTTP/HTTPS implementation for the downloader.
     fileprivate lazy var session: URLSession = {
-        let session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
-        return session
+        return URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     }()
     
     /// A `URLSessionDataTask` representing the data operation for the current `URL`.
