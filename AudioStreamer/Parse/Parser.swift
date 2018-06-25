@@ -17,11 +17,8 @@ public class Parser: Parsable {
     static let loggerPropertyListenerCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
     
     // MARK: - Parsable props
-        
-    public internal(set) var frameCount: UInt64 = 0
-    public internal(set) var packetCount: UInt64 = 0
+    
     public internal(set) var dataFormat: AVAudioFormat?
-    public internal(set) var isReadyToProducePackets: Bool = false
     public internal(set) var packets = [(Data, AudioStreamPacketDescription?)]()
     public var totalPacketCount: AVAudioPacketCount? {
         guard let _ = dataFormat else {
@@ -30,6 +27,14 @@ public class Parser: Parsable {
         
         return max(AVAudioPacketCount(packetCount), AVAudioPacketCount(packets.count))
     }
+    
+    // MARK: - Properties
+    
+    /// A `UInt64` corresponding to the total frame count parsed by the Audio File Stream Services
+    public internal(set) var frameCount: UInt64 = 0
+    
+    /// A `UInt64` corresponding to the total packet count parsed by the Audio File Stream Services
+    public internal(set) var packetCount: UInt64 = 0
     
     /// The `AudioFileStreamID` used by the Audio File Stream Services for converting the binary data into audio packets
     fileprivate var streamID: AudioFileStreamID?

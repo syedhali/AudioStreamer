@@ -24,27 +24,18 @@ open class Streamer: Streamable {
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
     }
-    
     public var delegate: StreamableDelegate?
-    
+    public internal(set) var duration: TimeInterval?
     public lazy var downloader: Downloadable = {
         let downloader = Downloader()
         downloader.delegate = self
         return downloader
     }()
-    
-    public internal(set) var duration: TimeInterval?
-    
-    public let engine = AVAudioEngine()
-    
     public internal(set) var parser: Parsable?
-    
-    public let playerNode = AVAudioPlayerNode()
-    
     public internal(set) var reader: Readable?
-    
+    public let engine = AVAudioEngine()
+    public let playerNode = AVAudioPlayerNode()
     public internal(set) var state: StreamableState = .stopped
-    
     public var url: URL? {
         didSet {
             reset()
@@ -55,7 +46,6 @@ open class Streamer: Streamable {
             }
         }
     }
-    
     public var volume: Float {
         get {
             return engine.mainMixerNode.volume
@@ -78,103 +68,6 @@ open class Streamer: Streamable {
     public init() {        
         // Setup the audio engine (attach nodes, connect stuff, etc). No playback yet.
         setupAudioEngine()
-    }
-
-    // MARK: - Methods
-
-    public func play() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-
-        // Check we're not already playing
-        guard !playerNode.isPlaying else {
-            return
-        }
-
-        // Start the engine if it's not running
-        if !engine.isRunning {
-            do {
-                try engine.start()
-            } catch {
-                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-                return
-            }
-        }
-        
-        // Start playback on the player node
-        playerNode.play()
-
-        // Update the state
-        state = .playing
-        delegate?.streamer(self, changedState: state)
-    }
-
-    public func pause() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-
-        // Check if the player node is playing
-        guard playerNode.isPlaying else {
-            return
-        }
-
-        // Pause the player node and the engine
-        playerNode.pause()
-        engine.pause()
-
-        // Update the state
-        state = .paused
-        delegate?.streamer(self, changedState: state)
-    }
-
-    public func stop() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-
-        // Stop the downloader, the player node, and the engine
-        downloader.stop()
-        playerNode.stop()
-        engine.stop()
-
-        // Update the state
-        state = .stopped
-        delegate?.streamer(self, changedState: state)
-    }
-
-    public func seek(to time: TimeInterval) throws {
-        os_log("%@ - %d [%.1f]", log: Streamer.logger, type: .debug, #function, #line, time)
-
-        // Make sure we have a valid parser and reader
-        guard let parser = parser, let reader = reader else {
-            return
-        }
-
-        // Get the proper time and packet offset for the seek operation
-        guard let frameOffset = parser.frameOffset(forTime: time),
-            let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
-            return
-        }
-        currentTimeOffset = time
-        isFileSchedulingComplete = false
-
-        // We need to store whether or not the player node is currently playing to properly resume playback after
-        let isPlaying = playerNode.isPlaying
-
-        // Stop the player node to reset the time offset to 0
-        playerNode.stop()
-
-        // Perform the seek to the proper packet offset
-        do {
-            try reader.seek(packetOffset)
-        } catch {
-            os_log("Failed to seek: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-            return
-        }
-
-        // If the player node was previous playing then resume playback
-        if isPlaying {
-            playerNode.play()
-        }
-
-        // Update the current time
-        delegate?.streamer(self, updatedCurrentTime: time)
     }
 
     // MARK: - Setup
@@ -228,6 +121,103 @@ open class Streamer: Streamable {
     /// Subclass can override this to make custom node connections in the engine before it is prepared. Default implementation connects the playerNode to the mainMixerNode on the `AVAudioEngine` using the default `readFormat`. Subclass should use the `readFormat` property when connecting nodes.
     open func connectNodes() {
         engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
+    }
+    
+    // MARK: - Methods
+    
+    public func play() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
+        // Check we're not already playing
+        guard !playerNode.isPlaying else {
+            return
+        }
+        
+        // Start the engine if it's not running
+        if !engine.isRunning {
+            do {
+                try engine.start()
+            } catch {
+                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+                return
+            }
+        }
+        
+        // Start playback on the player node
+        playerNode.play()
+        
+        // Update the state
+        state = .playing
+        delegate?.streamer(self, changedState: state)
+    }
+    
+    public func pause() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
+        // Check if the player node is playing
+        guard playerNode.isPlaying else {
+            return
+        }
+        
+        // Pause the player node and the engine
+        playerNode.pause()
+        engine.pause()
+        
+        // Update the state
+        state = .paused
+        delegate?.streamer(self, changedState: state)
+    }
+    
+    public func stop() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
+        // Stop the downloader, the player node, and the engine
+        downloader.stop()
+        playerNode.stop()
+        engine.stop()
+        
+        // Update the state
+        state = .stopped
+        delegate?.streamer(self, changedState: state)
+    }
+    
+    public func seek(to time: TimeInterval) throws {
+        os_log("%@ - %d [%.1f]", log: Streamer.logger, type: .debug, #function, #line, time)
+        
+        // Make sure we have a valid parser and reader
+        guard let parser = parser, let reader = reader else {
+            return
+        }
+        
+        // Get the proper time and packet offset for the seek operation
+        guard let frameOffset = parser.frameOffset(forTime: time),
+            let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
+                return
+        }
+        currentTimeOffset = time
+        isFileSchedulingComplete = false
+        
+        // We need to store whether or not the player node is currently playing to properly resume playback after
+        let isPlaying = playerNode.isPlaying
+        
+        // Stop the player node to reset the time offset to 0
+        playerNode.stop()
+        
+        // Perform the seek to the proper packet offset
+        do {
+            try reader.seek(packetOffset)
+        } catch {
+            os_log("Failed to seek: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+            return
+        }
+        
+        // If the player node was previous playing then resume playback
+        if isPlaying {
+            playerNode.play()
+        }
+        
+        // Update the current time
+        delegate?.streamer(self, updatedCurrentTime: time)
     }
 
     // MARK: - Scheduling Buffers

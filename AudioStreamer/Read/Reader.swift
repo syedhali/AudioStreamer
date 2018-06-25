@@ -16,6 +16,12 @@ public class Reader: Readable {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
     static let loggerConverter = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader.Converter")
     
+    // MARK: - Readable props
+    
+    public internal(set) var currentPacket: AVAudioPacketCount = 0
+    public let parser: Parsable
+    public let readFormat: AVAudioFormat
+    
     // MARK: - Properties
     
     /// An `AudioConverterRef` used to do the conversion from the source format of the `parser` (i.e. the `sourceFormat`) to the read destination (i.e. the `destinationFormat`). This is provided by the Audio Conversion Services (I prefer it to the `AVAudioConverter`)
@@ -23,16 +29,6 @@ public class Reader: Readable {
     
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
     private let queue = DispatchQueue(label: "com.fastlearner.streamer")
-    
-    // MARK: - Properties (Readable)
-    
-    /// A `Parseable` used to read the parsed audio packets. The `Reader` handles converting compressed packets to a LPCM format a graph or engine can use (similar to `AVAudioFile`'s common format)
-    let parser: Parsable
-    
-    // MARK: - Readable props
-    
-    public internal(set) var currentPacket: AVAudioPacketCount = 0
-    public let readFormat: AVAudioFormat
     
     // MARK: - Lifecycle
     

@@ -15,10 +15,6 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
     
     /// Parse the various properties
     switch propertyID {
-    case kAudioFileStreamProperty_ReadyToProducePackets:
-        parser.isReadyToProducePackets = true
-        os_log("Ready to produce packets!", log: Parser.loggerPropertyListenerCallback, type: .debug)
-        
     case kAudioFileStreamProperty_DataFormat:
         var format = AudioStreamBasicDescription()
         GetPropertyValue(&format, streamID, propertyID)
