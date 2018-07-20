@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
-		66ADA36320C9B614000A4503 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 66ADA36220C9B614000A4503 /* Default-568h@2x.png */; };
 		66ADA36420C9B64B000A4503 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; };
 		66ADA36520C9B64B000A4503 /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */; };
@@ -60,7 +59,6 @@
 /* Begin PBXFileReference section */
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
 		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
-		66ADA36220C9B614000A4503 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C8352D2002C67700E953C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,7 +93,6 @@
 		66C835212002C67700E953C7 = {
 			isa = PBXGroup;
 			children = (
-				66ADA36220C9B614000A4503 /* Default-568h@2x.png */,
 				66C8352C2002C67700E953C7 /* TimePitchStreamer */,
 				66C8352B2002C67700E953C7 /* Products */,
 			);
@@ -215,7 +212,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				66C835382002C67700E953C7 /* LaunchScreen.storyboard in Resources */,
-				66ADA36320C9B614000A4503 /* Default-568h@2x.png in Resources */,
 				66C835352002C67700E953C7 /* Assets.xcassets in Resources */,
 				66C835332002C67700E953C7 /* Main.storyboard in Resources */,
 			);
