@@ -114,11 +114,11 @@ class ViewController: UIViewController {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
         let step: Float = 100
-        var pitch = roundf(sender.value)
+        var pitch = roundf(pitchSlider.value)
         let newStep = roundf(pitch / step)
         pitch = newStep * step
-        sender.value = pitch
         streamer.pitch = pitch
+        pitchSlider.value = pitch
         pitchLabel.text = String(format: "%i cents", Int(pitch))
     }
     
@@ -137,11 +137,11 @@ class ViewController: UIViewController {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, sender.value)
         
         let step: Float = 0.25
-        var rate = sender.value
+        var rate = rateSlider.value
         let newStep = roundf(rate / step)
         rate = newStep * step
-        sender.value = rate
         streamer.rate = rate
+        rateSlider.value = rate
         rateLabel.text = String(format: "%.2fx", rate)
     }
     
