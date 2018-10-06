@@ -81,7 +81,7 @@ class ViewController: UIViewController {
         os_log("%@ - %d [%.1f]", log: ViewController.logger, type: .debug, #function, #line, progressSlider.value)
         
         do {
-            let time = TimeInterval(sender.value)
+            let time = TimeInterval(progressSlider.value)
             try streamer.seek(to: time)
         } catch {
             os_log("Failed to seek: %@", log: ViewController.logger, type: .error, error.localizedDescription)
@@ -97,7 +97,7 @@ class ViewController: UIViewController {
     @IBAction func progressSliderValueChanged(_ sender: UISlider) {
         os_log("%@ - %d", log: ViewController.logger, type: .debug, #function, #line)
         
-        let currentTime = TimeInterval(sender.value)
+        let currentTime = TimeInterval(progressSlider.value)
         currentTimeLabel.text = currentTime.toMMSS()
     }
     
