@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6623E79E21690D98008A1DBB /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; };
+		6623E79F21690D98008A1DBB /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
-		66ADA36420C9B64B000A4503 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; };
-		66ADA36520C9B64B000A4503 /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 66ADA35B20C9B548000A4503 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
 		66C835302002C67700E953C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352F2002C67700E953C7 /* ViewController.swift */; };
@@ -19,26 +19,26 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		66ADA35A20C9B548000A4503 /* PBXContainerItemProxy */ = {
+		6623E7A021690D98008A1DBB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 66A1395820013F860076B0E5;
+			remoteInfo = AudioStreamer;
+		};
+		6663ADCF20EA7F6B00991B15 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 66A1395920013F860076B0E5;
 			remoteInfo = AudioStreamer;
 		};
-		66ADA35C20C9B548000A4503 /* PBXContainerItemProxy */ = {
+		6663ADD120EA7F6B00991B15 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 66A1396220013F860076B0E5;
 			remoteInfo = AudioStreamerTests;
-		};
-		66ADA36620C9B64B000A4503 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
-			proxyType = 1;
-			remoteGlobalIDString = 66A1395820013F860076B0E5;
-			remoteInfo = AudioStreamer;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -49,7 +49,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				66ADA36520C9B64B000A4503 /* AudioStreamer.framework in Embed Frameworks */,
+				6623E79F21690D98008A1DBB /* AudioStreamer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -58,7 +58,7 @@
 
 /* Begin PBXFileReference section */
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
-		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
+		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
 		66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C8352D2002C67700E953C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -74,18 +74,18 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66ADA36420C9B64B000A4503 /* AudioStreamer.framework in Frameworks */,
+				6623E79E21690D98008A1DBB /* AudioStreamer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		66ADA35620C9B548000A4503 /* Products */ = {
+		6663ADCB20EA7F6B00991B15 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				66ADA35B20C9B548000A4503 /* AudioStreamer.framework */,
-				66ADA35D20C9B548000A4503 /* AudioStreamerTests.xctest */,
+				6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */,
+				6663ADD220EA7F6B00991B15 /* AudioStreamerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -93,6 +93,7 @@
 		66C835212002C67700E953C7 = {
 			isa = PBXGroup;
 			children = (
+				66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */,
 				66C8352C2002C67700E953C7 /* TimePitchStreamer */,
 				66C8352B2002C67700E953C7 /* Products */,
 			);
@@ -109,7 +110,6 @@
 		66C8352C2002C67700E953C7 /* TimePitchStreamer */ = {
 			isa = PBXGroup;
 			children = (
-				66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */,
 				66C8352D2002C67700E953C7 /* AppDelegate.swift */,
 				66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */,
 				66C8352F2002C67700E953C7 /* ViewController.swift */,
@@ -137,7 +137,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				66ADA36720C9B64B000A4503 /* PBXTargetDependency */,
+				6623E7A121690D98008A1DBB /* PBXTargetDependency */,
 			);
 			name = TimePitchStreamer;
 			productName = BasicStreamingEngine;
@@ -178,7 +178,7 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
-					ProductGroup = 66ADA35620C9B548000A4503 /* Products */;
+					ProductGroup = 6663ADCB20EA7F6B00991B15 /* Products */;
 					ProjectRef = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
 				},
 			);
@@ -190,18 +190,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
-		66ADA35B20C9B548000A4503 /* AudioStreamer.framework */ = {
+		6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
 			path = AudioStreamer.framework;
-			remoteRef = 66ADA35A20C9B548000A4503 /* PBXContainerItemProxy */;
+			remoteRef = 6663ADCF20EA7F6B00991B15 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		66ADA35D20C9B548000A4503 /* AudioStreamerTests.xctest */ = {
+		6663ADD220EA7F6B00991B15 /* AudioStreamerTests.xctest */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.cfbundle;
 			path = AudioStreamerTests.xctest;
-			remoteRef = 66ADA35C20C9B548000A4503 /* PBXContainerItemProxy */;
+			remoteRef = 6663ADD120EA7F6B00991B15 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -234,10 +234,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		66ADA36720C9B64B000A4503 /* PBXTargetDependency */ = {
+		6623E7A121690D98008A1DBB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = AudioStreamer;
-			targetProxy = 66ADA36620C9B64B000A4503 /* PBXContainerItemProxy */;
+			targetProxy = 6623E7A021690D98008A1DBB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 

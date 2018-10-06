@@ -35,7 +35,11 @@ open class Streamer: Streamable {
     public internal(set) var reader: Readable?
     public let engine = AVAudioEngine()
     public let playerNode = AVAudioPlayerNode()
-    public internal(set) var state: StreamableState = .stopped
+    public internal(set) var state: StreamableState = .stopped {
+        didSet {
+            delegate?.streamer(self, changedState: state)
+        }
+    }
     public var url: URL? {
         didSet {
             reset()
@@ -83,7 +87,7 @@ open class Streamer: Streamable {
 
         // Prepare the engine
         engine.prepare()
-
+        
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
         Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
@@ -92,25 +96,6 @@ open class Streamer: Streamable {
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()
         }
-    }
-    
-    func reset() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-        
-        // Reset the playback state
-        stop()
-        duration = nil
-        reader = nil
-        isFileSchedulingComplete = false
-        state = .stopped
-        
-        // Create a new parser
-        do {
-            parser = try Parser()
-        } catch {
-            os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-        }
-        
     }
 
     /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
@@ -121,6 +106,25 @@ open class Streamer: Streamable {
     /// Subclass can override this to make custom node connections in the engine before it is prepared. Default implementation connects the playerNode to the mainMixerNode on the `AVAudioEngine` using the default `readFormat`. Subclass should use the `readFormat` property when connecting nodes.
     open func connectNodes() {
         engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
+    }
+    
+    // MARK: - Reset
+    
+    func reset() {
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        
+        // Reset the playback state
+        stop()
+        duration = nil
+        reader = nil
+        isFileSchedulingComplete = false
+        
+        // Create a new parser
+        do {
+            parser = try Parser()
+        } catch {
+            os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+        }
     }
     
     // MARK: - Methods
@@ -148,7 +152,6 @@ open class Streamer: Streamable {
         
         // Update the state
         state = .playing
-        delegate?.streamer(self, changedState: state)
     }
     
     public func pause() {
@@ -165,7 +168,6 @@ open class Streamer: Streamable {
         
         // Update the state
         state = .paused
-        delegate?.streamer(self, changedState: state)
     }
     
     public func stop() {
@@ -178,7 +180,6 @@ open class Streamer: Streamable {
         
         // Update the state
         state = .stopped
-        delegate?.streamer(self, changedState: state)
     }
     
     public func seek(to time: TimeInterval) throws {
