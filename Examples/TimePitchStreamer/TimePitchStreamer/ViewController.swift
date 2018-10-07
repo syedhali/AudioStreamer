@@ -70,6 +70,7 @@ class ViewController: UIViewController {
         
         if streamer.state == .playing {
             streamer.pause()
+            
         } else {
             streamer.play()
         }
