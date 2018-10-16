@@ -44,7 +44,6 @@ class ReaderTests: XCTestCase {
             XCTAssertNil($0)
             
             XCTAssertNotEqual(parser.dataFormat, nil)
-            XCTAssertNotEqual(parser.fileFormat, nil)
             XCTAssertEqual(parser.packets.count, 6897)
             
             expectation.fulfill()
