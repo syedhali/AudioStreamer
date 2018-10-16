@@ -4,7 +4,7 @@
 
 [![Apache License](https://img.shields.io/badge/license-Apache%202-lightgrey.svg?style=flat)](https://github.com/syedhali/AudioStreamer/blob/master/LICENSE)
 
-A Swift 4 framework for streaming remote audio with real-time effects using `AVAudioEngine`. Read the full article 
+A Swift 4 framework for streaming remote audio with real-time effects using `AVAudioEngine`. Read the full article [here](https://fastlearner.io/blog/streaming-audio-with-effects-using-avaudioengine)!
 
 # Blog Post Preview
 
@@ -23,4 +23,4 @@ Here's a breakdown of the streamer's components:
 3. **Read** the parsed audio packets into LPCM audio packets. To handle any format conversion required (specifically compressed to uncompressed) we'll be using the [Audio Converter Services](https://developer.apple.com/documentation/audiotoolbox/audio_converter_services) API.
 4. **Stream** (i.e. playback) the LPCM audio packets using an `AVAudioEngine` by scheduling them onto the `AVAudioPlayerNode` at the head of the engine.
 
-In the following sections we're going to dive into the implementation of each of these components. We're going to use a protocol-based approach to define the functionality we'd expect from each component and then do a concrete implementation. For instance, for the **Download** component we're going to define a `Downloadable` protocol and perform a concrete implementation of the protocol using the `URLSession` in the `Downloader` class...[read more](fastlearner.io/blog/streaming-audio-with-effects-using-avaudioengine)
+In the following sections we're going to dive into the implementation of each of these components. We're going to use a protocol-based approach to define the functionality we'd expect from each component and then do a concrete implementation. For instance, for the **Download** component we're going to define a `Downloadable` protocol and perform a concrete implementation of the protocol using the `URLSession` in the `Downloader` class...[read more](https://fastlearner.io/blog/streaming-audio-with-effects-using-avaudioengine)
