@@ -19,7 +19,7 @@ open class Streamer: Streamable {
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
             let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-            return nil
+            return currentTimeOffset
         }
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
@@ -58,6 +58,8 @@ open class Streamer: Streamable {
             engine.mainMixerNode.outputVolume = newValue
         }
     }
+    var volumeRampTimer: Timer?
+    var volumeRampTargetValue: Float?
 
     // MARK: - Properties
     
@@ -146,17 +148,15 @@ open class Streamer: Streamable {
             }
         }
         
-        //
-        let lastVolume = volume
+        // To make the volume change less harsh we mute the output volume
+        let lastVolume = volumeRampTargetValue ?? volume
         volume = 0
         
         // Start playback on the player node
         playerNode.play()
         
-        //
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) { [unowned self] in
-            self.volume = lastVolume
-        }
+        // After 250ms we restore the volume to where it was
+        swellVolume(to: lastVolume)
         
         // Update the state
         state = .playing
@@ -207,7 +207,7 @@ open class Streamer: Streamable {
         
         // We need to store whether or not the player node is currently playing to properly resume playback after
         let isPlaying = playerNode.isPlaying
-        let lastVolume = volume
+        let lastVolume = volumeRampTargetValue ?? volume
         
         // Stop the player node to reset the time offset to 0
         playerNode.stop()
@@ -228,8 +228,26 @@ open class Streamer: Streamable {
         
         // Update the current time
         delegate?.streamer(self, updatedCurrentTime: time)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) { [unowned self] in
-            self.volume = lastVolume
+        
+        // After 250ms we restore the volume back to where it was
+        swellVolume(to: lastVolume)
+    }
+    
+    func swellVolume(to newVolume: Float, duration: TimeInterval = 0.5) {
+        volumeRampTargetValue = newVolume
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(Int(duration*1000/2))) { [unowned self] in
+            self.volumeRampTimer?.invalidate()
+            let timer = Timer(timeInterval: Double(Float((duration/2.0))/(newVolume * 10)), repeats: true) { timer in
+                if self.volume != newVolume {
+                    self.volume = min(newVolume, self.volume + 0.1)
+                } else {
+                    self.volumeRampTimer = nil
+                    self.volumeRampTargetValue = nil
+                    timer.invalidate()
+                }
+            }
+            RunLoop.current.add(timer, forMode: .common)
+            self.volumeRampTimer = timer
         }
     }
 
@@ -285,7 +303,7 @@ open class Streamer: Streamable {
 
         if currentTime >= duration {
             try? seek(to: 0)
-            stop()
+            pause()
         }
     }
 
