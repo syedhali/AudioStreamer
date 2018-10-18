@@ -52,10 +52,10 @@ open class Streamer: Streamable {
     }
     public var volume: Float {
         get {
-            return engine.mainMixerNode.volume
+            return engine.mainMixerNode.outputVolume
         }
         set {
-            engine.mainMixerNode.volume = newValue
+            engine.mainMixerNode.outputVolume = newValue
         }
     }
 
@@ -137,18 +137,18 @@ open class Streamer: Streamable {
             return
         }
         
-        // Start the engine if it's not running
         if !engine.isRunning {
-            do {
-                try engine.start()
-            } catch {
-                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-                return
-            }
+            try? engine.start()
         }
         
+        let lastVolume = volume
+        volume = 0
+        
         // Start playback on the player node
-        playerNode.play()
+        self.playerNode.play()
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+            self.volume = lastVolume
+        }
         
         // Update the state
         state = .playing
@@ -164,7 +164,7 @@ open class Streamer: Streamable {
         
         // Pause the player node and the engine
         playerNode.pause()
-        engine.pause()
+//        engine.pause()
         
         // Update the state
         state = .paused
@@ -200,9 +200,11 @@ open class Streamer: Streamable {
         
         // We need to store whether or not the player node is currently playing to properly resume playback after
         let isPlaying = playerNode.isPlaying
+        let lastVolume = volume
         
         // Stop the player node to reset the time offset to 0
         playerNode.stop()
+        volume = 0
         
         // Perform the seek to the proper packet offset
         do {
@@ -219,6 +221,9 @@ open class Streamer: Streamable {
         
         // Update the current time
         delegate?.streamer(self, updatedCurrentTime: time)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+            self.volume = lastVolume
+        }
     }
 
     // MARK: - Scheduling Buffers
