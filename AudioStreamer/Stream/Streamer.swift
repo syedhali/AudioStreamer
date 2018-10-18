@@ -90,12 +90,13 @@ open class Streamer: Streamable {
         
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
-        Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
+        let timer = Timer(timeInterval: interval / 2, repeats: true) {
             [weak self] _ in
             self?.scheduleNextBuffer()
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()
         }
+        RunLoop.current.add(timer, forMode: .common)
     }
 
     /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
@@ -138,15 +139,22 @@ open class Streamer: Streamable {
         }
         
         if !engine.isRunning {
-            try? engine.start()
+            do {
+                try engine.start()
+            } catch {
+                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+            }
         }
         
+        //
         let lastVolume = volume
         volume = 0
         
         // Start playback on the player node
-        self.playerNode.play()
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+        playerNode.play()
+        
+        //
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) { [unowned self] in
             self.volume = lastVolume
         }
         
@@ -164,7 +172,6 @@ open class Streamer: Streamable {
         
         // Pause the player node and the engine
         playerNode.pause()
-//        engine.pause()
         
         // Update the state
         state = .paused
@@ -221,7 +228,7 @@ open class Streamer: Streamable {
         
         // Update the current time
         delegate?.streamer(self, updatedCurrentTime: time)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(300)) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(250)) { [unowned self] in
             self.volume = lastVolume
         }
     }
