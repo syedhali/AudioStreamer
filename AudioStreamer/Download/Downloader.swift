@@ -9,9 +9,9 @@
 import Foundation
 import os.log
 
-/// The `Downloader` is a concrete implementation of the `Downloadable` protocol
+/// The `Downloader` is a concrete implementation of the `Downloading` protocol
 /// using `URLSession` as the backing HTTP/HTTPS implementation.
-public class Downloader: NSObject, Downloadable {
+public class Downloader: NSObject, Downloading {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
     
     // MARK: - Singleton
@@ -42,13 +42,13 @@ public class Downloader: NSObject, Downloadable {
     /// A `Int64` representing the total amount of bytes for the entire file
     var totalBytesCount: Int64 = 0
     
-    // MARK: - Properties (Downloadable)
+    // MARK: - Properties (Downloading)
     
-    public var delegate: DownloadableDelegate?
+    public var delegate: DownloadingDelegate?
     public var completionHandler: ((Error?) -> Void)?
     public var progressHandler: ((Data, Float) -> Void)?
     public var progress: Float = 0
-    public var state: DownloadableState = .notStarted {
+    public var state: DownloadingState = .notStarted {
         didSet {
             delegate?.download(self, changedState: state)
         }

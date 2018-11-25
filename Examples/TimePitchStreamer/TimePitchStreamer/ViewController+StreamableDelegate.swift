@@ -11,9 +11,9 @@ import AudioStreamer
 import os.log
 import UIKit
 
-extension ViewController: StreamableDelegate {
+extension ViewController: StreamingDelegate {
     
-    func streamer(_ streamer: Streamable, failedDownloadWithError error: Error, forURL url: URL) {
+    func streamer(_ streamer: Streaming, failedDownloadWithError error: Error, forURL url: URL) {
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, error.localizedDescription)
         
         let alert = UIAlertController(title: "Download Failed", message: error.localizedDescription, preferredStyle: .alert)
@@ -23,13 +23,13 @@ extension ViewController: StreamableDelegate {
         show(alert, sender: self)
     }
     
-    func streamer(_ streamer: Streamable, updatedDownloadProgress progress: Float, forURL url: URL) {
+    func streamer(_ streamer: Streaming, updatedDownloadProgress progress: Float, forURL url: URL) {
         os_log("%@ - %d [%.2f]", log: ViewController.logger, type: .debug, #function, #line, progress)
         
         progressSlider.progress = progress
     }
     
-    func streamer(_ streamer: Streamable, changedState state: StreamableState) {
+    func streamer(_ streamer: Streaming, changedState state: StreamingState) {
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, String(describing: state))
         
         switch state {
@@ -40,7 +40,7 @@ extension ViewController: StreamableDelegate {
         }
     }
     
-    func streamer(_ streamer: Streamable, updatedCurrentTime currentTime: TimeInterval) {
+    func streamer(_ streamer: Streaming, updatedCurrentTime currentTime: TimeInterval) {
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, currentTime.toMMSS())
         
         if !isSeeking {
@@ -49,7 +49,7 @@ extension ViewController: StreamableDelegate {
         }
     }
     
-    func streamer(_ streamer: Streamable, updatedDuration duration: TimeInterval) {
+    func streamer(_ streamer: Streaming, updatedDuration duration: TimeInterval) {
         let formattedDuration = duration.toMMSS()
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, formattedDuration)
         

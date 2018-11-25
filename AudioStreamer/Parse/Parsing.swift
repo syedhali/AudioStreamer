@@ -1,5 +1,5 @@
 //
-//  Parsable.swift
+//  Parsing.swift
 //  AudioStreamer
 //
 //  Created by Syed Haris Ali on 1/6/18.
@@ -9,8 +9,8 @@
 import Foundation
 import AVFoundation
 
-/// The `Parsable` protocol represents a generic parser that can be used for converting binary data into audio packets.
-public protocol Parsable: class {
+/// The `Parsing` protocol represents a generic parser that can be used for converting binary data into audio packets.
+public protocol Parsing: class {
     
     // MARK: - Properties
         
@@ -60,7 +60,7 @@ public protocol Parsable: class {
 }
 
 // Usually these methods are gonna be calculated using the same way everytime so here are the default implementations that should work 99% of the time relative to the properties defined. 
-extension Parsable {
+extension Parsing {
     
     public var duration: TimeInterval? {
         guard let sampleRate = dataFormat?.sampleRate else {

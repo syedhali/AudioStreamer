@@ -1,5 +1,5 @@
 //
-//  Streamer+DownloadableDelegate.swift
+//  Streamer+DownloadingDelegate.swift
 //  AudioStreamer
 //
 //  Created by Syed Haris Ali on 6/5/18.
@@ -9,9 +9,9 @@
 import Foundation
 import os.log
 
-extension Streamer: DownloadableDelegate {
+extension Streamer: DownloadingDelegate {
     
-    public func download(_ download: Downloadable, completedWithError error: Error?) {
+    public func download(_ download: Downloading, completedWithError error: Error?) {
         os_log("%@ - %d [error: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
         
         if let error = error, let url = download.url {
@@ -19,11 +19,11 @@ extension Streamer: DownloadableDelegate {
         }
     }
     
-    public func download(_ download: Downloadable, changedState downloadState: DownloadableState) {
+    public func download(_ download: Downloading, changedState downloadState: DownloadingState) {
         os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
     }
     
-    public func download(_ download: Downloadable, didReceiveData data: Data, progress: Float) {
+    public func download(_ download: Downloading, didReceiveData data: Data, progress: Float) {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
 
         guard let parser = parser else {

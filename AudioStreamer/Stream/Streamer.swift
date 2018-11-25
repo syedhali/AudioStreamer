@@ -10,11 +10,11 @@ import AVFoundation
 import Foundation
 import os.log
 
-/// The `Streamer` is a concrete implementation of the `Streamable` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
-open class Streamer: Streamable {
+/// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
+open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
-    // MARK: - Properties (Streamable)
+    // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
@@ -24,18 +24,18 @@ open class Streamer: Streamable {
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
     }
-    public var delegate: StreamableDelegate?
+    public var delegate: StreamingDelegate?
     public internal(set) var duration: TimeInterval?
-    public lazy var downloader: Downloadable = {
+    public lazy var downloader: Downloading = {
         let downloader = Downloader()
         downloader.delegate = self
         return downloader
     }()
-    public internal(set) var parser: Parsable?
-    public internal(set) var reader: Readable?
+    public internal(set) var parser: Parsing?
+    public internal(set) var reader: Reading?
     public let engine = AVAudioEngine()
     public let playerNode = AVAudioPlayerNode()
-    public internal(set) var state: StreamableState = .stopped {
+    public internal(set) var state: StreamingState = .stopped {
         didSet {
             delegate?.streamer(self, changedState: state)
         }

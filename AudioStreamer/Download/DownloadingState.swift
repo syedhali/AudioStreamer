@@ -1,5 +1,5 @@
 //
-//  DownloadableState.swift
+//  DownloadingState.swift
 //  AudioStreamer
 //
 //  Created by Syed Haris Ali on 1/6/18.
@@ -15,7 +15,7 @@ import Foundation
 /// - paused: The download is paused
 /// - notStarted: The download has not started yet
 /// - stopped: The download has been stopped/cancelled
-public enum DownloadableState: String {
+public enum DownloadingState: String {
     case completed
     case started
     case paused
