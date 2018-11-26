@@ -68,10 +68,12 @@ public enum ReaderError: LocalizedError {
             return "Input sample rate out of range"
         case kAudioConverterErr_OutputSampleRateOutOfRange:
             return "Output sample rate out of range"
+#if os(iOS)
         case kAudioConverterErr_HardwareInUse:
             return "Hardware is in use"
         case kAudioConverterErr_NoHardwarePermission:
             return "No hardware permission"
+#endif
         default:
             return "Unspecified error"
         }

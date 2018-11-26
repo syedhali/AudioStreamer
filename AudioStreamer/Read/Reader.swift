@@ -11,15 +11,15 @@ import AudioToolbox
 import AVFoundation
 import os.log
 
-/// The `Reader` is a concrete implementation of the `Readable` protocol and is intended to provide the audio data provider for an `AVAudioEngine`. The `parser` property provides a `Parseable` that handles converting binary audio data into audio packets in whatever the original file's format was (MP3, AAC, WAV, etc). The reader handles converting the audio data coming from the parser to a LPCM format that can be used in the context of `AVAudioEngine` since the `AVAudioPlayerNode` requires we provide `AVAudioPCMBuffer` in the `scheduleBuffer` methods.
-public class Reader: Readable {
+/// The `Reader` is a concrete implementation of the `Reading` protocol and is intended to provide the audio data provider for an `AVAudioEngine`. The `parser` property provides a `Parseable` that handles converting binary audio data into audio packets in whatever the original file's format was (MP3, AAC, WAV, etc). The reader handles converting the audio data coming from the parser to a LPCM format that can be used in the context of `AVAudioEngine` since the `AVAudioPlayerNode` requires we provide `AVAudioPCMBuffer` in the `scheduleBuffer` methods.
+public class Reader: Reading {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
     static let loggerConverter = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader.Converter")
     
-    // MARK: - Readable props
+    // MARK: - Reading props
     
     public internal(set) var currentPacket: AVAudioPacketCount = 0
-    public let parser: Parsable
+    public let parser: Parsing
     public let readFormat: AVAudioFormat
     
     // MARK: - Properties
@@ -39,7 +39,7 @@ public class Reader: Readable {
         }
     }
     
-    public required init(parser: Parsable, readFormat: AVAudioFormat) throws {
+    public required init(parser: Parsing, readFormat: AVAudioFormat) throws {
         self.parser = parser
         
         guard let dataFormat = parser.dataFormat else {

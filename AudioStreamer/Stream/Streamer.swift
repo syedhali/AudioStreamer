@@ -10,32 +10,32 @@ import AVFoundation
 import Foundation
 import os.log
 
-/// The `Streamer` is a concrete implementation of the `Streamable` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
-open class Streamer: Streamable {
+/// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
+open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
-    // MARK: - Properties (Streamable)
+    // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
             let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-            return nil
+            return currentTimeOffset
         }
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
         return currentTime + currentTimeOffset
     }
-    public var delegate: StreamableDelegate?
+    public var delegate: StreamingDelegate?
     public internal(set) var duration: TimeInterval?
-    public lazy var downloader: Downloadable = {
+    public lazy var downloader: Downloading = {
         let downloader = Downloader()
         downloader.delegate = self
         return downloader
     }()
-    public internal(set) var parser: Parsable?
-    public internal(set) var reader: Readable?
+    public internal(set) var parser: Parsing?
+    public internal(set) var reader: Reading?
     public let engine = AVAudioEngine()
     public let playerNode = AVAudioPlayerNode()
-    public internal(set) var state: StreamableState = .stopped {
+    public internal(set) var state: StreamingState = .stopped {
         didSet {
             delegate?.streamer(self, changedState: state)
         }
@@ -52,12 +52,14 @@ open class Streamer: Streamable {
     }
     public var volume: Float {
         get {
-            return engine.mainMixerNode.volume
+            return engine.mainMixerNode.outputVolume
         }
         set {
-            engine.mainMixerNode.volume = newValue
+            engine.mainMixerNode.outputVolume = newValue
         }
     }
+    var volumeRampTimer: Timer?
+    var volumeRampTargetValue: Float?
 
     // MARK: - Properties
     
@@ -90,12 +92,13 @@ open class Streamer: Streamable {
         
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
-        Timer.scheduledTimer(withTimeInterval: interval / 2, repeats: true) {
+        let timer = Timer(timeInterval: interval / 2, repeats: true) {
             [weak self] _ in
             self?.scheduleNextBuffer()
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()
         }
+        RunLoop.current.add(timer, forMode: .common)
     }
 
     /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
@@ -137,18 +140,23 @@ open class Streamer: Streamable {
             return
         }
         
-        // Start the engine if it's not running
         if !engine.isRunning {
             do {
                 try engine.start()
             } catch {
                 os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
-                return
             }
         }
         
+        // To make the volume change less harsh we mute the output volume
+        let lastVolume = volumeRampTargetValue ?? volume
+        volume = 0
+        
         // Start playback on the player node
         playerNode.play()
+        
+        // After 250ms we restore the volume to where it was
+        swellVolume(to: lastVolume)
         
         // Update the state
         state = .playing
@@ -164,7 +172,6 @@ open class Streamer: Streamable {
         
         // Pause the player node and the engine
         playerNode.pause()
-        engine.pause()
         
         // Update the state
         state = .paused
@@ -200,9 +207,11 @@ open class Streamer: Streamable {
         
         // We need to store whether or not the player node is currently playing to properly resume playback after
         let isPlaying = playerNode.isPlaying
+        let lastVolume = volumeRampTargetValue ?? volume
         
         // Stop the player node to reset the time offset to 0
         playerNode.stop()
+        volume = 0
         
         // Perform the seek to the proper packet offset
         do {
@@ -219,6 +228,27 @@ open class Streamer: Streamable {
         
         // Update the current time
         delegate?.streamer(self, updatedCurrentTime: time)
+        
+        // After 250ms we restore the volume back to where it was
+        swellVolume(to: lastVolume)
+    }
+    
+    func swellVolume(to newVolume: Float, duration: TimeInterval = 0.5) {
+        volumeRampTargetValue = newVolume
+        DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(Int(duration*1000/2))) { [unowned self] in
+            self.volumeRampTimer?.invalidate()
+            let timer = Timer(timeInterval: Double(Float((duration/2.0))/(newVolume * 10)), repeats: true) { timer in
+                if self.volume != newVolume {
+                    self.volume = min(newVolume, self.volume + 0.1)
+                } else {
+                    self.volumeRampTimer = nil
+                    self.volumeRampTargetValue = nil
+                    timer.invalidate()
+                }
+            }
+            RunLoop.current.add(timer, forMode: .common)
+            self.volumeRampTimer = timer
+        }
     }
 
     // MARK: - Scheduling Buffers
@@ -273,7 +303,7 @@ open class Streamer: Streamable {
 
         if currentTime >= duration {
             try? seek(to: 0)
-            stop()
+            pause()
         }
     }
 

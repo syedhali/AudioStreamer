@@ -1,5 +1,5 @@
 //
-//  Streamable.swift
+//  Streaming.swift
 //  AudioStreamer
 //
 //  Created by Syed Haris Ali on 6/5/18.
@@ -9,28 +9,28 @@
 import Foundation
 import AVFoundation
 
-/// The `Streamable` protocol provides an interface for defining the behavior we expect of an `AVAudioEngine`-based streamer. In this protocol we assume we're pulling the audio data from a remote URL on the internet, but could modify it to support loading audio data from any arbitrary source. We use the `downloader` property to describe a concrete class we expect to download the audio's binary data. Then we use the `parser` property to describe a concrete class we expect to parse the audio's binary data into audio packets in the audio's native format (could be compressed like MP3, AAC, etc). We finally use the `reader` property to describe a concrete class we expect to provide LPCM audio packets to the `playerNode` to schedule for playback in the `engine`. The `reader` pulls audio data from the parser's packets and converts it into the target LPCM format. In addition, in this protocol we provide playback related properties such as `currentTime`, `duration`, and `state` as well as a `delegate` adhering to the `StreamableDelegate` to provide a caller updates when properties change. 
-public protocol Streamable: class {
+/// The `Streaming` protocol provides an interface for defining the behavior we expect of an `AVAudioEngine`-based streamer. In this protocol we assume we're pulling the audio data from a remote URL on the internet, but could modify it to support loading audio data from any arbitrary source. We use the `downloader` property to describe a concrete class we expect to download the audio's binary data. Then we use the `parser` property to describe a concrete class we expect to parse the audio's binary data into audio packets in the audio's native format (could be compressed like MP3, AAC, etc). We finally use the `reader` property to describe a concrete class we expect to provide LPCM audio packets to the `playerNode` to schedule for playback in the `engine`. The `reader` pulls audio data from the parser's packets and converts it into the target LPCM format. In addition, in this protocol we provide playback related properties such as `currentTime`, `duration`, and `state` as well as a `delegate` adhering to the `StreamingDelegate` to provide a caller updates when properties change. 
+public protocol Streaming: class {
     
     // MARK: - Properties
     
     /// A `TimeInterval` representing the current play time
     var currentTime: TimeInterval? { get }
     
-    /// A `StreamableDelegate` to handle events from a `Streamable`
-    var delegate: StreamableDelegate? { get set }
+    /// A `StreamingDelegate` to handle events from a `Streaming`
+    var delegate: StreamingDelegate? { get set }
     
     /// A `TimeInterval` representing the total duration
     var duration: TimeInterval? { get }
     
-    /// A `Downloadable` used to download the audio's binary data
-    var downloader: Downloadable { get }
+    /// A `Downloading` used to download the audio's binary data
+    var downloader: Downloading { get }
     
-    /// A `Parsable` used to parse the audio's binary data into audio packets
-    var parser: Parsable? { get }
+    /// A `Parsing` used to parse the audio's binary data into audio packets
+    var parser: Parsing? { get }
     
-    /// A `Readable` used to provide LPCM audio packets from the audio packets from the `parser`
-    var reader: Readable? { get }
+    /// A `Reading` used to provide LPCM audio packets from the audio packets from the `parser`
+    var reader: Reading? { get }
     
     /// An `AVAudioEngine` used for playback
     var engine: AVAudioEngine { get }
@@ -44,8 +44,8 @@ public protocol Streamable: class {
     /// An `AVAudioFormat` representing a LPCM format that the `reader` will provide audio as. The connections on the `engine` should be set using this format. Default is a non-interleaved, 32-bit float, stereo (2 channel), 44.1 kHz sample rate.
     var readFormat: AVAudioFormat { get }
     
-    /// A `StreamableState` indicating the current status of a streamer.
-    var state: StreamableState { get }
+    /// A `StreamingState` indicating the current status of a streamer.
+    var state: StreamingState { get }
     
     /// A `URL` representing the current remote resource being streamed.
     var url: URL? { get }
@@ -72,7 +72,7 @@ public protocol Streamable: class {
     
 }
 
-extension Streamable {
+extension Streaming {
     
     public var readBufferSize: AVAudioFrameCount {
         return 8192
