@@ -21,33 +21,28 @@ class ViewController: NSViewController {
     
     @IBOutlet weak var currentTimeLabel: NSTextField!
     @IBOutlet weak var durationTimeLabel: NSTextField!
-    
     @IBOutlet weak var playbackControlsStackView: NSStackView!
-    
     @IBOutlet weak var playButton: NSButton! {
         willSet {
             newValue.setFilterColor(.white)
         }
     }
-    
     @IBOutlet weak var progressIndicator: NSProgressIndicator! {
         willSet {
             newValue.isIndeterminate = false
             newValue.setFilterColor(NSColor(red: 0.18, green: 0.243, blue: 0.345, alpha: 1))
         }
     }
-    
-    var isSeeking = false
-    var seekTimer: Timer?
-    
     @IBOutlet weak var seekSlider: NSSlider! {
         willSet {
             newValue.doubleValue = 0
             newValue.setFilterColor(.white)
         }
     }
-    
     @IBOutlet weak var stackView: NSStackView!
+    
+    var isSeeking = false
+    var seekTimer: Timer?
     
     lazy var pitchController: ValueChangeController = {
         let vc = ValueChangeController()
@@ -94,34 +89,6 @@ class ViewController: NSViewController {
     }
     
     // MARK: - Methods
-    
-    /// MARK: - Change Pitch
-    
-//    @IBAction func changePitch(_ sender: UISlider) {
-//        os_log("%@ - %d [%.1f]", log: logger, type: .debug, #function, #line, sender.value)
-//
-//        let step: Float = 100
-//        var pitch = roundf(pitchSlider.value)
-//        let newStep = roundf(pitch / step)
-//        pitch = newStep * step
-//        streamer.pitch = pitch
-//        pitchSlider.value = pitch
-//        pitchLabel.text = String(format: "%i cents", Int(pitch))
-//    }
-    
-    /// MARK: - Change Rate
-    
-//    @IBAction func changeRate(_ sender: UISlider) {
-//        os_log("%@ - %d [%.1f]", log: logger, type: .debug, #function, #line, sender.value)
-//
-//        let step: Float = 0.25
-//        var rate = rateSlider.value
-//        let newStep = roundf(rate / step)
-//        rate = newStep * step
-//        streamer.rate = rate
-//        rateSlider.value = rate
-//        rateLabel.text = String(format: "%.2fx", rate)
-//    }
     
     @IBAction func playButtonPressed(_ sender: NSButton) {
         os_log("%@ - %d", log: logger, type: .debug, #function, #line)
