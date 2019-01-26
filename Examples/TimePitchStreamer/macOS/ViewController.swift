@@ -24,7 +24,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var playbackControlsStackView: NSStackView!
     @IBOutlet weak var playButton: NSButton! {
         willSet {
-            newValue.setFilterColor(.white)
+            newValue.setFilterColor(NSColor(red: 0.18, green: 0.243, blue: 0.345, alpha: 1))
         }
     }
     @IBOutlet weak var progressIndicator: NSProgressIndicator! {
@@ -36,7 +36,7 @@ class ViewController: NSViewController {
     @IBOutlet weak var seekSlider: NSSlider! {
         willSet {
             newValue.doubleValue = 0
-            newValue.setFilterColor(.white)
+            newValue.setFilterColor(NSColor(red: 0.18, green: 0.243, blue: 0.345, alpha: 1))
         }
     }
     @IBOutlet weak var stackView: NSStackView!
@@ -79,6 +79,9 @@ class ViewController: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        view.wantsLayer = true
+        view.layer?.backgroundColor = NSColor(red: 0.953, green: 0.965, blue: 0.984, alpha: 1).cgColor
+        
         /// Setup value change controllers
         stackView.addArrangedSubview(pitchController.view)
         stackView.addArrangedSubview(rateController.view)

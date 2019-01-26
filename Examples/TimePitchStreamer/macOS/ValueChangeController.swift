@@ -19,15 +19,14 @@ class ValueChangeController: NSViewController {
     
     // MARK: - Properties
 
-    @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var titleLabel: NSTextField! {
+        willSet {
+            newValue.textColor = NSColor(red: 0.18, green: 0.243, blue: 0.345, alpha: 1)
+        }
+    }
     @IBOutlet weak var subtitleLabel: NSTextField!
     @IBOutlet weak var slider: NSSlider!
     @IBOutlet weak var resetButton: NSButton!
-    
-//    override func viewDidLoad() {
-//        view.wantsLayer = true
-//        view.layer?.backgroundColor = NSColor.red.cgColor
-//    }
 
     // MARK: - Methods
     

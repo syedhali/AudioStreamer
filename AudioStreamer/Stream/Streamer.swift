@@ -94,6 +94,10 @@ open class Streamer: Streaming {
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
         let timer = Timer(timeInterval: interval / 2, repeats: true) {
             [weak self] _ in
+            guard self?.state != .stopped else {
+                return
+            }
+            
             self?.scheduleNextBuffer()
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()

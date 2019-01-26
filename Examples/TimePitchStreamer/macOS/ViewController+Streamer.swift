@@ -16,11 +16,18 @@ extension ViewController: StreamingDelegate {
     func streamer(_ streamer: Streaming, failedDownloadWithError error: Error, forURL url: URL) {
         os_log("%@ - %d [%@]", log: ViewController.logger, type: .debug, #function, #line, error.localizedDescription)
         
-//        let alert = UIAlertController(title: "Download Failed", message: error.localizedDescription, preferredStyle: .alert)
-//        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { _ in
-//            alert.dismiss(animated: true, completion: nil)
-//        }))
-//        show(alert, sender: self)
+        streamer.stop()
+        
+        guard let window = view.window else {
+            return
+        }
+        
+        let alert = NSAlert()
+        alert.messageText = "Download Failed"
+        alert.informativeText = error.localizedDescription
+        alert.addButton(withTitle: "Cancel")
+        alert.alertStyle = .critical
+        alert.beginSheetModal(for: window) { _ in }
     }
     
     func streamer(_ streamer: Streaming, updatedDownloadProgress progress: Float, forURL url: URL) {

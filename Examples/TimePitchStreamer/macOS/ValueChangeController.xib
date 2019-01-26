@@ -27,7 +27,7 @@
                             <rect key="frame" x="-2" y="110" width="70" height="39"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Title" id="Vjj-IX-l28">
                                 <font key="font" size="32" name="Helvetica-Bold"/>
-                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="textColor" red="0.16078431369999999" green="0.1843137255" blue="0.21176470589999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
@@ -35,7 +35,7 @@
                             <rect key="frame" x="-2" y="65" width="84" height="29"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="Subtitle" id="z1q-gi-R0d">
                                 <font key="font" metaFont="system" size="24"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.16078431369999999" green="0.1843137255" blue="0.21176470589999999" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>

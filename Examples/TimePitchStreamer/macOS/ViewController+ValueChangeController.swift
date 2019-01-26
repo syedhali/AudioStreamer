@@ -12,7 +12,6 @@ import os.log
 extension ViewController: ValueChangeControllerDelegate {
     
     func valueChangeControllerTappedResetButton(_ controller: ValueChangeController) {
-        
         switch controller {
         case pitchController:
             let pitch: Float = 0
@@ -30,7 +29,6 @@ extension ViewController: ValueChangeControllerDelegate {
     }
     
     func valueChangeController(_ controller: ValueChangeController, changedValue value: Float) {
-        
         switch controller {
         case pitchController:
             let step: Float = 100

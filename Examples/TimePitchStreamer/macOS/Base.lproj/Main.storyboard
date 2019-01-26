@@ -739,7 +739,7 @@
                                                                 <rect key="frame" x="30" y="7" width="208" height="17"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" title="00:00" id="sGB-7y-Z3K">
                                                                     <font key="font" usesAppearanceFont="YES"/>
-                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" red="0.1450980392" green="0.1647058824" blue="0.18823529410000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
@@ -747,7 +747,7 @@
                                                                 <rect key="frame" x="242" y="7" width="208" height="17"/>
                                                                 <textFieldCell key="cell" lineBreakMode="clipping" alignment="right" title="00:00" id="xin-Xi-RGp">
                                                                     <font key="font" usesAppearanceFont="YES"/>
-                                                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                                                    <color key="textColor" red="0.1450980392" green="0.1647058824" blue="0.18823529410000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                                                     <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                                 </textFieldCell>
                                                             </textField>
