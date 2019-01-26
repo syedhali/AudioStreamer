@@ -10,6 +10,10 @@
 		6623E79E21690D98008A1DBB /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; };
 		6623E79F21690D98008A1DBB /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		663E09C821FCE118004B391D /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09C721FCE118004B391D /* TimePitchStreamer.swift */; };
+		663E09D021FCE320004B391D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09CF21FCE320004B391D /* AppDelegate.swift */; };
+		663E09D221FCE320004B391D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09D121FCE320004B391D /* ViewController.swift */; };
+		663E09D421FCE320004B391D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 663E09D321FCE320004B391D /* Assets.xcassets */; };
+		663E09D721FCE320004B391D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 663E09D521FCE320004B391D /* Main.storyboard */; };
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
 		66C835302002C67700E953C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352F2002C67700E953C7 /* ViewController.swift */; };
@@ -65,6 +69,13 @@
 
 /* Begin PBXFileReference section */
 		663E09C721FCE118004B391D /* TimePitchStreamer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
+		663E09CD21FCE320004B391D /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		663E09CF21FCE320004B391D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		663E09D121FCE320004B391D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		663E09D321FCE320004B391D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		663E09D621FCE320004B391D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		663E09D821FCE320004B391D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		663E09D921FCE320004B391D /* TimePitchStreamer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimePitchStreamer.entitlements; sourceTree = "<group>"; };
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
 		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +88,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		663E09CA21FCE320004B391D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66C835272002C67700E953C7 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -96,6 +114,19 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		663E09CE21FCE320004B391D /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				663E09CF21FCE320004B391D /* AppDelegate.swift */,
+				663E09D121FCE320004B391D /* ViewController.swift */,
+				663E09D321FCE320004B391D /* Assets.xcassets */,
+				663E09D521FCE320004B391D /* Main.storyboard */,
+				663E09D821FCE320004B391D /* Info.plist */,
+				663E09D921FCE320004B391D /* TimePitchStreamer.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
 		6663ADCB20EA7F6B00991B15 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +143,7 @@
 				66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */,
 				663E09C621FCE118004B391D /* Common */,
 				66C8352C2002C67700E953C7 /* iOS */,
+				663E09CE21FCE320004B391D /* macOS */,
 				66C8352B2002C67700E953C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -120,6 +152,7 @@
 			isa = PBXGroup;
 			children = (
 				66C8352A2002C67700E953C7 /* TimePitchStreamer.app */,
+				663E09CD21FCE320004B391D /* TimePitchStreamer.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -141,6 +174,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		663E09CC21FCE320004B391D /* TimePitchStreamer-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 663E09DA21FCE320004B391D /* Build configuration list for PBXNativeTarget "TimePitchStreamer-macOS" */;
+			buildPhases = (
+				663E09C921FCE320004B391D /* Sources */,
+				663E09CA21FCE320004B391D /* Frameworks */,
+				663E09CB21FCE320004B391D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TimePitchStreamer-macOS";
+			productName = TimePitchStreamer;
+			productReference = 663E09CD21FCE320004B391D /* TimePitchStreamer.app */;
+			productType = "com.apple.product-type.application";
+		};
 		66C835292002C67700E953C7 /* TimePitchStreamer-iOS */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer-iOS" */;
@@ -166,10 +216,14 @@
 		66C835222002C67700E953C7 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0920;
+				LastSwiftUpdateCheck = 1010;
 				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = "Ausome Apps LLC";
 				TargetAttributes = {
+					663E09CC21FCE320004B391D = {
+						CreatedOnToolsVersion = 10.1;
+						ProvisioningStyle = Automatic;
+					};
 					66C835292002C67700E953C7 = {
 						CreatedOnToolsVersion = 9.2;
 						ProvisioningStyle = Automatic;
@@ -201,6 +255,7 @@
 			projectRoot = "";
 			targets = (
 				66C835292002C67700E953C7 /* TimePitchStreamer-iOS */,
+				663E09CC21FCE320004B391D /* TimePitchStreamer-macOS */,
 			);
 		};
 /* End PBXProject section */
@@ -230,6 +285,15 @@
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
+		663E09CB21FCE320004B391D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				663E09D421FCE320004B391D /* Assets.xcassets in Resources */,
+				663E09D721FCE320004B391D /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66C835282002C67700E953C7 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -243,6 +307,15 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		663E09C921FCE320004B391D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				663E09D221FCE320004B391D /* ViewController.swift in Sources */,
+				663E09D021FCE320004B391D /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66C835262002C67700E953C7 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -265,6 +338,14 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		663E09D521FCE320004B391D /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				663E09D621FCE320004B391D /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
 		66C835312002C67700E953C7 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -284,6 +365,49 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		663E09DB21FCE320004B391D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = macOS/TimePitchStreamer.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = QZ222K9SPY;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
+				PRODUCT_NAME = TimePitchStreamer;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		663E09DC21FCE320004B391D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CODE_SIGN_ENTITLEMENTS = macOS/TimePitchStreamer.entitlements;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = QZ222K9SPY;
+				INFOPLIST_FILE = "$(SRCROOT)/macOS/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
+				PRODUCT_NAME = TimePitchStreamer;
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
 		66C8353A2002C67700E953C7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -430,6 +554,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		663E09DA21FCE320004B391D /* Build configuration list for PBXNativeTarget "TimePitchStreamer-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				663E09DB21FCE320004B391D /* Debug */,
+				663E09DC21FCE320004B391D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		66C835252002C67700E953C7 /* Build configuration list for PBXProject "TimePitchStreamer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
