@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "663E09AE21FCDF7C004B391D"
-               BuildableName = "TimePitchStreamer-macOS.app"
+               BlueprintIdentifier = "663E09CC21FCE320004B391D"
+               BuildableName = "TimePitchStreamer.app"
                BlueprintName = "TimePitchStreamer-macOS"
                ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
             </BuildableReference>
@@ -74,8 +74,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "663E09AE21FCDF7C004B391D"
-            BuildableName = "TimePitchStreamer-macOS.app"
+            BlueprintIdentifier = "663E09CC21FCE320004B391D"
+            BuildableName = "TimePitchStreamer.app"
             BlueprintName = "TimePitchStreamer-macOS"
             ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
          </BuildableReference>

@@ -14,7 +14,16 @@
 		663E09D221FCE320004B391D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09D121FCE320004B391D /* ViewController.swift */; };
 		663E09D421FCE320004B391D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 663E09D321FCE320004B391D /* Assets.xcassets */; };
 		663E09D721FCE320004B391D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 663E09D521FCE320004B391D /* Main.storyboard */; };
-		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
+		66A1DBCC20C7900F00A29E34 /* ViewController+Streamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+Streamer.swift */; };
+		66B57D4321FCEB1C000EB810 /* ValueChangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B57D3D21FCE95D000EB810 /* ValueChangeController.swift */; };
+		66B57D4421FCEBC2000EB810 /* ValueChangeController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 66B57D3E21FCE95D000EB810 /* ValueChangeController.xib */; };
+		66B57D4821FCF2B1000EB810 /* NSView+Filter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B57D4521FCF1B9000EB810 /* NSView+Filter.swift */; };
+		66B57D4F21FCF477000EB810 /* ValueChangeControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B57D4E21FCF477000EB810 /* ValueChangeControllerDelegate.swift */; };
+		66B57D5121FCF4BA000EB810 /* ViewController+ValueChangeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B57D5021FCF4BA000EB810 /* ViewController+ValueChangeController.swift */; };
+		66B57D5221FCF7E2000EB810 /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 663E09C521FCE10D004B391D /* AudioStreamer.framework */; };
+		66B57D5321FCF7E2000EB810 /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 663E09C521FCE10D004B391D /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		66B57D5721FCF7FE000EB810 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09C721FCE118004B391D /* TimePitchStreamer.swift */; };
+		66B57D5921FCF816000EB810 /* ViewController+Streamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B57D5821FCF816000EB810 /* ViewController+Streamer.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
 		66C835302002C67700E953C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352F2002C67700E953C7 /* ViewController.swift */; };
 		66C835332002C67700E953C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66C835312002C67700E953C7 /* Main.storyboard */; };
@@ -51,6 +60,13 @@
 			remoteGlobalIDString = 66A1396220013F860076B0E5;
 			remoteInfo = AudioStreamerTests;
 		};
+		66B57D5421FCF7E2000EB810 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 6643D820217833CF003DA158;
+			remoteInfo = "AudioStreamer-macOS";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -61,6 +77,17 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6623E79F21690D98008A1DBB /* AudioStreamer.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		66B57D5621FCF7E3000EB810 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				66B57D5321FCF7E2000EB810 /* AudioStreamer.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,8 +103,14 @@
 		663E09D621FCE320004B391D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		663E09D821FCE320004B391D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		663E09D921FCE320004B391D /* TimePitchStreamer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = TimePitchStreamer.entitlements; sourceTree = "<group>"; };
-		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
+		66A1DBCB20C7900F00A29E34 /* ViewController+Streamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Streamer.swift"; sourceTree = "<group>"; };
 		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
+		66B57D3D21FCE95D000EB810 /* ValueChangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueChangeController.swift; sourceTree = "<group>"; };
+		66B57D3E21FCE95D000EB810 /* ValueChangeController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ValueChangeController.xib; sourceTree = "<group>"; };
+		66B57D4521FCF1B9000EB810 /* NSView+Filter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSView+Filter.swift"; sourceTree = "<group>"; };
+		66B57D4E21FCF477000EB810 /* ValueChangeControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValueChangeControllerDelegate.swift; sourceTree = "<group>"; };
+		66B57D5021FCF4BA000EB810 /* ViewController+ValueChangeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+ValueChangeController.swift"; sourceTree = "<group>"; };
+		66B57D5821FCF816000EB810 /* ViewController+Streamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+Streamer.swift"; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C8352D2002C67700E953C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66C8352F2002C67700E953C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -92,6 +125,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66B57D5221FCF7E2000EB810 /* AudioStreamer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +153,12 @@
 			children = (
 				663E09CF21FCE320004B391D /* AppDelegate.swift */,
 				663E09D121FCE320004B391D /* ViewController.swift */,
+				66B57D5821FCF816000EB810 /* ViewController+Streamer.swift */,
+				66B57D5021FCF4BA000EB810 /* ViewController+ValueChangeController.swift */,
+				66B57D3D21FCE95D000EB810 /* ValueChangeController.swift */,
+				66B57D3E21FCE95D000EB810 /* ValueChangeController.xib */,
+				66B57D4E21FCF477000EB810 /* ValueChangeControllerDelegate.swift */,
+				66B57D4721FCF1C1000EB810 /* Utils */,
 				663E09D321FCE320004B391D /* Assets.xcassets */,
 				663E09D521FCE320004B391D /* Main.storyboard */,
 				663E09D821FCE320004B391D /* Info.plist */,
@@ -135,6 +175,14 @@
 				663E09C521FCE10D004B391D /* AudioStreamer.framework */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		66B57D4721FCF1C1000EB810 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				66B57D4521FCF1B9000EB810 /* NSView+Filter.swift */,
+			);
+			path = Utils;
 			sourceTree = "<group>";
 		};
 		66C835212002C67700E953C7 = {
@@ -162,7 +210,7 @@
 			children = (
 				66C8352D2002C67700E953C7 /* AppDelegate.swift */,
 				66C8352F2002C67700E953C7 /* ViewController.swift */,
-				66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */,
+				66A1DBCB20C7900F00A29E34 /* ViewController+Streamer.swift */,
 				66C835312002C67700E953C7 /* Main.storyboard */,
 				66C835342002C67700E953C7 /* Assets.xcassets */,
 				66C835362002C67700E953C7 /* LaunchScreen.storyboard */,
@@ -181,10 +229,12 @@
 				663E09C921FCE320004B391D /* Sources */,
 				663E09CA21FCE320004B391D /* Frameworks */,
 				663E09CB21FCE320004B391D /* Resources */,
+				66B57D5621FCF7E3000EB810 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				66B57D5521FCF7E2000EB810 /* PBXTargetDependency */,
 			);
 			name = "TimePitchStreamer-macOS";
 			productName = TimePitchStreamer;
@@ -223,6 +273,11 @@
 					663E09CC21FCE320004B391D = {
 						CreatedOnToolsVersion = 10.1;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
 					};
 					66C835292002C67700E953C7 = {
 						CreatedOnToolsVersion = 9.2;
@@ -289,6 +344,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66B57D4421FCEBC2000EB810 /* ValueChangeController.xib in Resources */,
 				663E09D421FCE320004B391D /* Assets.xcassets in Resources */,
 				663E09D721FCE320004B391D /* Main.storyboard in Resources */,
 			);
@@ -311,7 +367,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				66B57D5721FCF7FE000EB810 /* TimePitchStreamer.swift in Sources */,
+				66B57D4821FCF2B1000EB810 /* NSView+Filter.swift in Sources */,
+				66B57D4321FCEB1C000EB810 /* ValueChangeController.swift in Sources */,
 				663E09D221FCE320004B391D /* ViewController.swift in Sources */,
+				66B57D4F21FCF477000EB810 /* ValueChangeControllerDelegate.swift in Sources */,
+				66B57D5921FCF816000EB810 /* ViewController+Streamer.swift in Sources */,
+				66B57D5121FCF4BA000EB810 /* ViewController+ValueChangeController.swift in Sources */,
 				663E09D021FCE320004B391D /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -322,7 +384,7 @@
 			files = (
 				663E09C821FCE118004B391D /* TimePitchStreamer.swift in Sources */,
 				66C835302002C67700E953C7 /* ViewController.swift in Sources */,
-				66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */,
+				66A1DBCC20C7900F00A29E34 /* ViewController+Streamer.swift in Sources */,
 				66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -334,6 +396,11 @@
 			isa = PBXTargetDependency;
 			name = AudioStreamer;
 			targetProxy = 6623E7A021690D98008A1DBB /* PBXContainerItemProxy */;
+		};
+		66B57D5521FCF7E2000EB810 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "AudioStreamer-macOS";
+			targetProxy = 66B57D5421FCF7E2000EB810 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -368,6 +435,7 @@
 		663E09DB21FCE320004B391D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/TimePitchStreamer.entitlements;
@@ -390,6 +458,7 @@
 		663E09DC21FCE320004B391D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_OBJC_WEAK = YES;
 				CODE_SIGN_ENTITLEMENTS = macOS/TimePitchStreamer.entitlements;

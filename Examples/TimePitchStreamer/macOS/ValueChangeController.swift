@@ -1,0 +1,62 @@
+//
+//  ValueChangeController.swift
+//  TimePitchStreamer-iOS
+//
+//  Created by Haris Ali on 1/26/19.
+//  Copyright © 2019 Ausome Apps LLC. All rights reserved.
+//
+
+import Cocoa
+import os.log
+
+class ValueChangeController: NSViewController {
+    static let logger = OSLog(subsystem: "com.ausomeapps", category: "ValueChangeController")
+    var logger: OSLog {
+        return ValueChangeController.logger
+    }
+    
+    weak var delegate: ValueChangeControllerDelegate?
+    
+    // MARK: - Properties
+
+    @IBOutlet weak var titleLabel: NSTextField!
+    @IBOutlet weak var subtitleLabel: NSTextField!
+    @IBOutlet weak var slider: NSSlider!
+    @IBOutlet weak var resetButton: NSButton!
+    
+//    override func viewDidLoad() {
+//        view.wantsLayer = true
+//        view.layer?.backgroundColor = NSColor.red.cgColor
+//    }
+
+    // MARK: - Methods
+    
+    @IBAction func resetButtonPressed(_ sender: NSButton) {
+        os_log("%s - %d", log: logger, type: .debug, #function, #line)
+        delegate?.valueChangeControllerTappedResetButton(self)
+    }
+    
+    @IBAction func sliderValueChanged(_ sender: NSSlider) {
+        os_log("%s - %d", log: logger, type: .debug, #function, #line)
+        delegate?.valueChangeController(self, changedValue: sender.floatValue)
+    }
+    
+    func setup(_ delegate: ValueChangeControllerDelegate,
+               title: String,
+               subtitle: String,
+               filterColor: NSColor,
+               currentValue: Double,
+               minValue: Double,
+               maxValue: Double) {
+        _ = view
+        titleLabel.stringValue = title
+        subtitleLabel.stringValue = subtitle
+        slider.setFilterColor(filterColor)
+        slider.doubleValue = currentValue
+        slider.minValue = minValue
+        slider.maxValue = maxValue
+        resetButton.setFilterColor(filterColor)
+        self.delegate = delegate
+    }
+    
+}
