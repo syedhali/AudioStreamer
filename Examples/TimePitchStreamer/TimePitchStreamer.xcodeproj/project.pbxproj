@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		6623E79E21690D98008A1DBB /* AudioStreamer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; };
 		6623E79F21690D98008A1DBB /* AudioStreamer.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		663E09C821FCE118004B391D /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 663E09C721FCE118004B391D /* TimePitchStreamer.swift */; };
 		66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */; };
-		66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */; };
 		66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352D2002C67700E953C7 /* AppDelegate.swift */; };
 		66C835302002C67700E953C7 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 66C8352F2002C67700E953C7 /* ViewController.swift */; };
 		66C835332002C67700E953C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 66C835312002C67700E953C7 /* Main.storyboard */; };
@@ -25,6 +25,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 66A1395820013F860076B0E5;
 			remoteInfo = AudioStreamer;
+		};
+		663E09C421FCE10D004B391D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 6643D821217833CF003DA158;
+			remoteInfo = "AudioStreamer-macOS";
 		};
 		6663ADCF20EA7F6B00991B15 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -57,9 +64,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		663E09C721FCE118004B391D /* TimePitchStreamer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
 		66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController+StreamableDelegate.swift"; sourceTree = "<group>"; };
 		66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AudioStreamer.xcodeproj; path = ../../AudioStreamer.xcodeproj; sourceTree = "<group>"; };
-		66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimePitchStreamer.swift; sourceTree = "<group>"; };
 		66C8352A2002C67700E953C7 /* TimePitchStreamer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TimePitchStreamer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		66C8352D2002C67700E953C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		66C8352F2002C67700E953C7 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -81,11 +88,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		663E09C621FCE118004B391D /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				663E09C721FCE118004B391D /* TimePitchStreamer.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
 		6663ADCB20EA7F6B00991B15 /* Products */ = {
 			isa = PBXGroup;
 			children = (
 				6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */,
 				6663ADD220EA7F6B00991B15 /* AudioStreamerTests.xctest */,
+				663E09C521FCE10D004B391D /* AudioStreamer.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -94,7 +110,8 @@
 			isa = PBXGroup;
 			children = (
 				66ADA35520C9B548000A4503 /* AudioStreamer.xcodeproj */,
-				66C8352C2002C67700E953C7 /* TimePitchStreamer */,
+				663E09C621FCE118004B391D /* Common */,
+				66C8352C2002C67700E953C7 /* iOS */,
 				66C8352B2002C67700E953C7 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,11 +124,10 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		66C8352C2002C67700E953C7 /* TimePitchStreamer */ = {
+		66C8352C2002C67700E953C7 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
 				66C8352D2002C67700E953C7 /* AppDelegate.swift */,
-				66B478C620C7A66A003490D8 /* TimePitchStreamer.swift */,
 				66C8352F2002C67700E953C7 /* ViewController.swift */,
 				66A1DBCB20C7900F00A29E34 /* ViewController+StreamableDelegate.swift */,
 				66C835312002C67700E953C7 /* Main.storyboard */,
@@ -119,15 +135,15 @@
 				66C835362002C67700E953C7 /* LaunchScreen.storyboard */,
 				66C835392002C67700E953C7 /* Info.plist */,
 			);
-			path = TimePitchStreamer;
+			path = iOS;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		66C835292002C67700E953C7 /* TimePitchStreamer */ = {
+		66C835292002C67700E953C7 /* TimePitchStreamer-iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer" */;
+			buildConfigurationList = 66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer-iOS" */;
 			buildPhases = (
 				66C835262002C67700E953C7 /* Sources */,
 				66C835272002C67700E953C7 /* Frameworks */,
@@ -139,7 +155,7 @@
 			dependencies = (
 				6623E7A121690D98008A1DBB /* PBXTargetDependency */,
 			);
-			name = TimePitchStreamer;
+			name = "TimePitchStreamer-iOS";
 			productName = BasicStreamingEngine;
 			productReference = 66C8352A2002C67700E953C7 /* TimePitchStreamer.app */;
 			productType = "com.apple.product-type.application";
@@ -184,12 +200,19 @@
 			);
 			projectRoot = "";
 			targets = (
-				66C835292002C67700E953C7 /* TimePitchStreamer */,
+				66C835292002C67700E953C7 /* TimePitchStreamer-iOS */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		663E09C521FCE10D004B391D /* AudioStreamer.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = AudioStreamer.framework;
+			remoteRef = 663E09C421FCE10D004B391D /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		6663ADD020EA7F6B00991B15 /* AudioStreamer.framework */ = {
 			isa = PBXReferenceProxy;
 			fileType = wrapper.framework;
@@ -224,7 +247,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				66B478C720C7A66A003490D8 /* TimePitchStreamer.swift in Sources */,
+				663E09C821FCE118004B391D /* TimePitchStreamer.swift in Sources */,
 				66C835302002C67700E953C7 /* ViewController.swift in Sources */,
 				66A1DBCC20C7900F00A29E34 /* ViewController+StreamableDelegate.swift in Sources */,
 				66C8352E2002C67700E953C7 /* AppDelegate.swift in Sources */,
@@ -379,10 +402,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QZ222K9SPY;
-				INFOPLIST_FILE = "$(SRCROOT)/TimePitchStreamer/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TimePitchStreamer;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -395,10 +418,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = QZ222K9SPY;
-				INFOPLIST_FILE = "$(SRCROOT)/TimePitchStreamer/Info.plist";
+				INFOPLIST_FILE = "$(SRCROOT)/iOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.ausomeapps.TimePitchStreamer;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = TimePitchStreamer;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -416,7 +439,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer" */ = {
+		66C8353C2002C67700E953C7 /* Build configuration list for PBXNativeTarget "TimePitchStreamer-iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				66C8353D2002C67700E953C7 /* Debug */,

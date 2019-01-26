@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "66C835292002C67700E953C7"
-               BuildableName = "TimePitchStreamer-iOS.app"
-               BlueprintName = "TimePitchStreamer-iOS"
-               ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
+               BlueprintIdentifier = "6643D820217833CF003DA158"
+               BuildableName = "AudioStreamer.framework"
+               BlueprintName = "AudioStreamer-macOS"
+               ReferencedContainer = "container:AudioStreamer.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -29,15 +29,6 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
       </Testables>
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "66C835292002C67700E953C7"
-            BuildableName = "TimePitchStreamer-iOS.app"
-            BlueprintName = "TimePitchStreamer-iOS"
-            ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </TestAction>
@@ -51,16 +42,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "66C835292002C67700E953C7"
-            BuildableName = "TimePitchStreamer-iOS.app"
-            BlueprintName = "TimePitchStreamer-iOS"
-            ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
+            BlueprintIdentifier = "6643D820217833CF003DA158"
+            BuildableName = "AudioStreamer.framework"
+            BlueprintName = "AudioStreamer-macOS"
+            ReferencedContainer = "container:AudioStreamer.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
       <AdditionalOptions>
       </AdditionalOptions>
    </LaunchAction>
@@ -70,16 +60,15 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "66C835292002C67700E953C7"
-            BuildableName = "TimePitchStreamer-iOS.app"
-            BlueprintName = "TimePitchStreamer-iOS"
-            ReferencedContainer = "container:TimePitchStreamer.xcodeproj">
+            BlueprintIdentifier = "6643D820217833CF003DA158"
+            BuildableName = "AudioStreamer.framework"
+            BlueprintName = "AudioStreamer-macOS"
+            ReferencedContainer = "container:AudioStreamer.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
