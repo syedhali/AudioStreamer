@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AudioStreamer"
-  s.version      = "1.4.0"
+  s.version      = "1.5.0"
   s.summary      = "A Swift 4 framework for streaming remote audio with real-time effects using AVAudioEngine"
   s.homepage     = "https://github.com/syedhali/AudioStreamer"
   s.screenshots  = "https://res.cloudinary.com/fast-learner/image/upload/v1527455500/blog/22/banner/1d9b0d3b-0998-4ad7-854e-4fb854b9955e.jpg"
