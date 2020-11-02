@@ -87,7 +87,7 @@ class ViewController: NSViewController {
         stackView.addArrangedSubview(rateController.view)
         
         /// Download
-        let url = URL(string: "https://cdn.fastlearner.media/bensound-rumble.mp3")!
+        let url = URL(string: "https://res.cloudinary.com/drvibcm45/video/upload/v1604299573/bensound-rumble_bn2ipv.mp3")!
         streamer.url = url
     }
     
