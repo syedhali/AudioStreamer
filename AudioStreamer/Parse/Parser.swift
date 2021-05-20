@@ -12,9 +12,9 @@ import os.log
 
 /// The `Parser` is a concrete implementation of the `Parsing` protocol used to convert binary data into audio packet data. This class uses the Audio File Stream Services to progressively parse the properties and packets of the incoming audio data.
 public class Parser: Parsing {
-    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser")
-    static let loggerPacketCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.Packets")
-    static let loggerPropertyListenerCallback = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
+    static let logger = OSLog.disabled // = OSLog(subsystem: "com.fastlearner.streamer", category: "Parser")
+    static let loggerPacketCallback = OSLog.disabled //= OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.Packets")
+    static let loggerPropertyListenerCallback = OSLog.disabled //= OSLog(subsystem: "com.fastlearner.streamer", category: "Parser.PropertyListener")
     
     // MARK: - Parsing props
     

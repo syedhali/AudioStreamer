@@ -12,7 +12,7 @@ import os.log
 
 /// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streaming {
-    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
+    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
     static let queue = DispatchQueue(label: "com.fastlearner.streamer")
