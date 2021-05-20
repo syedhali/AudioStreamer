@@ -14,6 +14,9 @@ import os.log
 open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
+    /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
+    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
+
     // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
@@ -94,7 +97,7 @@ open class Streamer: Streaming {
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
         let timer = Timer(timeInterval: interval / 2, repeats: true) {
             [weak self] _ in
-            guard self?.state != .stopped else {
+            guard self?.state == .playing else {
                 return
             }
             

@@ -56,13 +56,15 @@ public class Parser: Parsing {
     public func parse(data: Data) throws {
         os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         
-        let streamID = self.streamID!
-        let count = data.count
-        _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
-            let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
-            guard result == noErr else {
-                os_log("Failed to parse bytes", log: Parser.logger, type: .error)
-                throw ParserError.failedToParseBytes(result)
+        try Streamer.queue.sync {
+            let streamID = self.streamID!
+            let count = data.count
+            _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
+                let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
+                guard result == noErr else {
+                    os_log("Failed to parse bytes", log: Parser.logger, type: .error)
+                    throw ParserError.failedToParseBytes(result)
+                }
             }
         }
     }

@@ -26,10 +26,7 @@ public class Reader: Reading {
     
     /// An `AudioConverterRef` used to do the conversion from the source format of the `parser` (i.e. the `sourceFormat`) to the read destination (i.e. the `destinationFormat`). This is provided by the Audio Conversion Services (I prefer it to the `AVAudioConverter`)
     var converter: AudioConverterRef? = nil
-    
-    /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
-    private let queue = DispatchQueue(label: "com.fastlearner.streamer")
-    
+        
     // MARK: - Lifecycle
     
     deinit {
@@ -70,7 +67,7 @@ public class Reader: Reading {
         buffer.frameLength = frames
         
         // Try to read the frames from the parser
-        try queue.sync {
+        try Streamer.queue.sync {
             let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
             let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
             guard status == noErr else {
@@ -92,7 +89,7 @@ public class Reader: Reading {
     public func seek(_ packet: AVAudioPacketCount) throws {
         os_log("%@ - %d [packet: %i]", log: Parser.logger, type: .debug, #function, #line, packet)
         
-        queue.sync {
+        Streamer.queue.sync {
             currentPacket = packet
         }
     }
