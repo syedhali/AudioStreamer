@@ -209,6 +209,7 @@ open class Streamer: Streaming {
             let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
                 return
         }
+        print("🌶 Seek Frame [\(frameOffset)] -- Packet [\(packetOffset)]")
         currentTimeOffset = time
         isFileSchedulingComplete = false
         

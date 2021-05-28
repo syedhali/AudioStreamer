@@ -63,7 +63,7 @@ public protocol Parsing: class {
 extension Parsing {
     
     public var duration: TimeInterval? {
-        guard let sampleRate = dataFormat?.sampleRate else {
+        guard let sampleRate = dataFormat?.sampleRate, sampleRate > 0 else {
             return nil
         }
         
@@ -106,7 +106,7 @@ extension Parsing {
     }
     
     public func packetOffset(forFrame frame: AVAudioFramePosition) -> AVAudioPacketCount? {
-        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket else {
+        guard let framesPerPacket = dataFormat?.streamDescription.pointee.mFramesPerPacket, framesPerPacket > 0 else {
             return nil
         }
         
