@@ -28,9 +28,13 @@ extension Downloader: URLSessionDataDelegate {
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
-
         state = .completed
-        delegate?.download(self, completedWithError: error)
-        completionHandler?(error)
+        if let httpResponse = task.response as? HTTPURLResponse, httpResponse.statusCode == 403 {
+            delegate?.download(self, completedWithError: ResponseError.trackNotAllowed)
+            completionHandler?(ResponseError.trackNotAllowed)
+        } else {
+            delegate?.download(self, completedWithError: error)
+            completionHandler?(error)
+        }
     }
 }
