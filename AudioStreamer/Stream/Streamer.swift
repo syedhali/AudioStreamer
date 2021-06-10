@@ -12,7 +12,7 @@ import os.log
 
 /// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streaming {
-    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
     static let queue = DispatchQueue(label: "com.fastlearner.streamer")
@@ -36,7 +36,7 @@ open class Streamer: Streaming {
     }()
     public internal(set) var parser: Parsing?
     public internal(set) var reader: Reading?
-    public let engine = AVAudioEngine()
+    public var engine = AVAudioEngine()
     public let playerNode = AVAudioPlayerNode()
     public internal(set) var state: StreamingState = .stopped {
         didSet {
@@ -71,6 +71,9 @@ open class Streamer: Streaming {
     
     /// A `Bool` indicating whether the file has been completely scheduled into the player node.
     var isFileSchedulingComplete = false
+
+    /// A `TimeInterval` used to calculate the current play time relative to a seek operation.
+    var previousTimeOffset: TimeInterval = 0
 
     // MARK: - Lifecycle
     
@@ -117,6 +120,44 @@ open class Streamer: Streaming {
     open func connectNodes() {
         engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
     }
+
+    open func resume() {
+
+        os_log("🌶 Previous Time was %d", log: Streamer.logger, type: .debug, previousTimeOffset)
+        currentTimeOffset = previousTimeOffset
+
+        engine.disconnectNodeInput(playerNode)
+        engine.detach(playerNode)
+
+        engine = AVAudioEngine()
+
+        attachNodes()
+        connectNodes()
+        
+        
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+
+        // Attach nodes
+//        attachNodes()
+
+        // Node nodes
+//        connectNodes()
+
+        // Prepare the engine
+        engine.prepare()
+        
+        
+        if engine.isRunning == false {
+            os_log("🌶 Starting back engine", log: Streamer.logger, type: .debug)
+            do {
+                try engine.start()
+            } catch {
+                os_log("🌶 Can not start engine", log: Streamer.logger, type: .debug)
+            }
+        } else {
+            os_log("🌶 Already running", log: Streamer.logger, type: .debug)
+        }
+    }
     
     // MARK: - Reset
     
@@ -128,6 +169,8 @@ open class Streamer: Streaming {
         duration = nil
         reader = nil
         isFileSchedulingComplete = false
+        previousTimeOffset = 0
+        currentTimeOffset = 0
         
         // Create a new parser
         do {
@@ -144,16 +187,22 @@ open class Streamer: Streaming {
         
         // Check we're not already playing
         guard !playerNode.isPlaying else {
+            os_log("%@ - %d // Already playing", log: Streamer.logger, type: .debug, #function, #line)
             return
         }
         
         if !engine.isRunning {
+            os_log("🌶 Engine not running", log: Streamer.logger, type: .debug)
             do {
                 try engine.start()
             } catch {
-                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+                os_log("Failed to start engine: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
             }
+        } else {
+            os_log("🌶 Engine running", log: Streamer.logger, type: .debug)
         }
+        
+        os_log("🌶 Wait", log: Streamer.logger, type: .debug)
         
         // To make the volume change less harsh we mute the output volume
         let lastVolume = volumeRampTargetValue ?? volume
@@ -176,8 +225,9 @@ open class Streamer: Streaming {
         guard playerNode.isPlaying else {
             return
         }
-        
+
         // Pause the player node and the engine
+        engine.pause()
         playerNode.pause()
         
         // Update the state
@@ -266,17 +316,46 @@ open class Streamer: Streaming {
             os_log("No reader yet...", log: Streamer.logger, type: .debug)
             return
         }
-
+        
         guard !isFileSchedulingComplete else {
+            return
+        }
+        
+         if engine.isRunning == false {
+            do {
+                os_log("👻 Engine not running - trying to launch", log: Streamer.logger, type: .debug)
+                try engine.start()
+                return
+            } catch {
+//                os_log("🌶 Engine Error", log: Streamer.logger, type: .debug)
+            }
+        }
+        
+        guard playerNode.isPlaying else {
+            os_log("👻 Player node not running - restart it", log: Streamer.logger, type: .debug)
+            playerNode.play()
             return
         }
 
         do {
+//            if engine.isRunning {
+//                os_log("🌶 Engine running - Read next buffer", log: Streamer.logger, type: .debug)
+//            } else {
+//                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
+//            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.reachedEndOfFile {
-            os_log("Scheduler reached end of file", log: Streamer.logger, type: .debug)
-            isFileSchedulingComplete = true
+            if downloader.state == .completed {
+                os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
+                isFileSchedulingComplete = true
+            } else if downloader.state == .started {
+                pause()
+                state = .buffering
+                os_log("🌶 Buffering", log: Streamer.logger, type: .debug)
+            } else {
+                os_log("🌶 Downloader in weird state", log: Streamer.logger, type: .debug)
+            }
         } catch {
             os_log("Cannot schedule buffer: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
         }
@@ -308,11 +387,13 @@ open class Streamer: Streaming {
         guard let currentTime = currentTime, let duration = duration else {
             return
         }
+        
+        previousTimeOffset = currentTime
 
-        if currentTime >= duration {
-            try? seek(to: 0)
-            pause()
-        }
+//        if currentTime >= duration {
+//            try? seek(to: 0)
+//            pause()
+//        }
     }
 
     // MARK: - Notifying The Delegate
@@ -321,7 +402,10 @@ open class Streamer: Streaming {
         guard let url = url else {
             return
         }
-
+        if state == .buffering {
+            isFileSchedulingComplete = false
+            os_log("Reset file scheduling - Downloading not finished", log: Streamer.logger, type: .debug)
+        }
         delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
     }
 

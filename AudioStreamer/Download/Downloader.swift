@@ -12,7 +12,7 @@ import os.log
 /// The `Downloader` is a concrete implementation of the `Downloading` protocol
 /// using `URLSession` as the backing HTTP/HTTPS implementation.
 public class Downloader: NSObject, Downloading {
-    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
+    static let logger = OSLog.disabled //OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
     
     enum ResponseError: Error {
         case trackNotAllowed

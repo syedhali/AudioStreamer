@@ -13,8 +13,10 @@ import Foundation
 /// - stopped: Audio playback and download operations are all stopped
 /// - paused: Audio playback is paused
 /// - playing: Audio playback is playing
+/// - buffering: Audio playback is buffering
 public enum StreamingState: String {
     case stopped
     case paused
     case playing
+    case buffering
 }
