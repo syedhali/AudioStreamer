@@ -30,8 +30,9 @@ public class Reader: Reading {
     // MARK: - Lifecycle
     
     deinit {
+        os_log("🗑 dispose of audio converter", log: Reader.logger, type: .debug)
         guard AudioConverterDispose(converter!) == noErr else {
-            os_log("Failed to dispose of audio converter", log: Reader.logger, type: .error)
+            os_log("Failed to dispose of audio converter", log: Reader.logger, type: .debug)
             return
         }
     }
