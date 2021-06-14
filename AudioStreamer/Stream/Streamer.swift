@@ -15,7 +15,7 @@ open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
-    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
+    static let queue = DispatchQueue(label: "com.fastlearner.streamer", qos: .userInitiated)
 
     // MARK: - Properties (Streaming)
     
@@ -387,10 +387,9 @@ open class Streamer: Streaming {
 //                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
 //            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
-      //      Streamer.queue.async { [weak self] in
-            // self?.
-            playerNode.scheduleBuffer(nextScheduledBuffer)
-        //    }
+            Streamer.queue.async { [weak self] in
+                self?.playerNode.scheduleBuffer(nextScheduledBuffer)
+            }
         } catch ReaderError.reachedEndOfFile {
             if downloader.state == .completed {
                 os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
