@@ -12,10 +12,10 @@ import os.log
 
 /// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streaming {
-    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
-    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
+    static let queue = DispatchQueue(label: "com.fastlearner.streamer", qos: .userInitiated)
 
     // MARK: - Properties (Streaming)
     
@@ -36,7 +36,7 @@ open class Streamer: Streaming {
     }()
     public internal(set) var parser: Parsing?
     public internal(set) var reader: Reading?
-    public let engine = AVAudioEngine()
+    public var engine = AVAudioEngine()
     public let playerNode = AVAudioPlayerNode()
     public internal(set) var state: StreamingState = .stopped {
         didSet {
@@ -61,6 +61,7 @@ open class Streamer: Streaming {
             engine.mainMixerNode.outputVolume = newValue
         }
     }
+    
     var volumeRampTimer: Timer?
     var volumeRampTargetValue: Float?
 
@@ -72,12 +73,52 @@ open class Streamer: Streaming {
     /// A `Bool` indicating whether the file has been completely scheduled into the player node.
     var isFileSchedulingComplete = false
 
+    /// A `TimeInterval` used to calculate the current play time relative to a seek operation.
+    var previousTimeOffset: TimeInterval = 0
+
+    private var numberOfBuffersScheduledFromPoll = 0 {
+        didSet {
+            if numberOfBuffersScheduledFromPoll > MAX_POLL_BUFFER_COUNT {
+                shouldPollForNextBuffer = false
+            }
+        }
+    }
+
+    private var shouldPollForNextBuffer = true {
+        didSet {
+            if shouldPollForNextBuffer {
+                numberOfBuffersScheduledFromPoll = 0
+            }
+        }
+    }
+    
+    private var numberOfBuffersScheduledInTotal = 0 {
+        didSet {
+            //   os_log("number of buffers scheduled in total %d", log: Streamer.logger, type: .debug, numberOfBuffersScheduledInTotal)
+            if numberOfBuffersScheduledInTotal == 0 {
+                //                delegate?.didError()
+                // TODO: we should not have an error here. We should instead have the throttler
+                // propegate when it doesn't enough buffers while they were playing
+                // TODO: "Make this a legitimate warning to user about needing more data from stream"
+            }
+        }
+    }
+
+    private let MAX_POLL_BUFFER_COUNT = 300 //Having one buffer in engine at a time is choppy.
+    private let MIN_BUFFERS_TO_BE_PLAYABLE = 1
+
     // MARK: - Lifecycle
     
     public init() {        
         // Setup the audio engine (attach nodes, connect stuff, etc). No playback yet.
         setupAudioEngine()
     }
+    
+    deinit {
+        os_log("🗑 DELETE STREAMER", log: Streamer.logger, type: .debug)
+    }
+    
+    var _timer: Timer?
 
     // MARK: - Setup
 
@@ -95,17 +136,22 @@ open class Streamer: Streaming {
         
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
-        let timer = Timer(timeInterval: interval / 2, repeats: true) {
+        let timer = Timer(timeInterval: interval, repeats: true) {
             [weak self] _ in
             guard self?.state == .playing else {
                 return
             }
             
+//            self?.pollForNextBuffer()
             self?.scheduleNextBuffer()
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()
         }
-        RunLoop.current.add(timer, forMode: .common)
+//        _timer?.fire()
+        
+//        Streamer.queue.async {
+            RunLoop.current.add(timer, forMode: .default)
+//        }
     }
 
     /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
@@ -117,6 +163,44 @@ open class Streamer: Streaming {
     open func connectNodes() {
         engine.connect(playerNode, to: engine.mainMixerNode, format: readFormat)
     }
+
+    open func resume() {
+
+        os_log("🌶 Previous Time was %d", log: Streamer.logger, type: .debug, previousTimeOffset)
+        currentTimeOffset = previousTimeOffset
+
+        engine.disconnectNodeInput(playerNode)
+        engine.detach(playerNode)
+
+        engine = AVAudioEngine()
+
+        attachNodes()
+        connectNodes()
+        
+        
+        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+
+        // Attach nodes
+//        attachNodes()
+
+        // Node nodes
+//        connectNodes()
+
+        // Prepare the engine
+        engine.prepare()
+        
+        
+        if engine.isRunning == false {
+            os_log("🌶 Starting back engine", log: Streamer.logger, type: .debug)
+            do {
+                try engine.start()
+            } catch {
+                os_log("🌶 Can not start engine", log: Streamer.logger, type: .debug)
+            }
+        } else {
+            os_log("🌶 Already running", log: Streamer.logger, type: .debug)
+        }
+    }
     
     // MARK: - Reset
     
@@ -124,10 +208,13 @@ open class Streamer: Streaming {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
         
         // Reset the playback state
+        shouldPollForNextBuffer = false
         stop()
         duration = nil
         reader = nil
         isFileSchedulingComplete = false
+        previousTimeOffset = 0
+        currentTimeOffset = 0
         
         // Create a new parser
         do {
@@ -144,16 +231,22 @@ open class Streamer: Streaming {
         
         // Check we're not already playing
         guard !playerNode.isPlaying else {
+            os_log("%@ - %d // Already playing", log: Streamer.logger, type: .debug, #function, #line)
             return
         }
         
         if !engine.isRunning {
+            os_log("🌶 Engine not running", log: Streamer.logger, type: .debug)
             do {
                 try engine.start()
             } catch {
-                os_log("Failed to start engine: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+                os_log("Failed to start engine: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
             }
+        } else {
+            os_log("🌶 Engine running", log: Streamer.logger, type: .debug)
         }
+        
+        os_log("🌶 Wait", log: Streamer.logger, type: .debug)
         
         // To make the volume change less harsh we mute the output volume
         let lastVolume = volumeRampTargetValue ?? volume
@@ -167,6 +260,8 @@ open class Streamer: Streaming {
         
         // Update the state
         state = .playing
+
+        shouldPollForNextBuffer = true
     }
     
     public func pause() {
@@ -176,10 +271,11 @@ open class Streamer: Streaming {
         guard playerNode.isPlaying else {
             return
         }
-        
+
         // Pause the player node and the engine
-        playerNode.pause()
-        
+        self.engine.pause()
+        self.playerNode.pause()
+        shouldPollForNextBuffer = false
         // Update the state
         state = .paused
     }
@@ -188,9 +284,9 @@ open class Streamer: Streaming {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
         
         // Stop the downloader, the player node, and the engine
-        downloader.stop()
-        playerNode.stop()
-        engine.stop()
+            downloader.stop()
+            playerNode.stop()
+            engine.stop()
         
         // Update the state
         state = .stopped
@@ -218,7 +314,7 @@ open class Streamer: Streaming {
         let lastVolume = volumeRampTargetValue ?? volume
         
         // Stop the player node to reset the time offset to 0
-        playerNode.stop()
+            playerNode.stop()
         volume = 0
         
         // Perform the seek to the proper packet offset
@@ -266,17 +362,46 @@ open class Streamer: Streaming {
             os_log("No reader yet...", log: Streamer.logger, type: .debug)
             return
         }
-
+        
         guard !isFileSchedulingComplete else {
+            return
+        }
+        
+         if engine.isRunning == false {
+            do {
+                os_log("👻 Engine not running - trying to launch", log: Streamer.logger, type: .debug)
+                try engine.start()
+                return
+            } catch {
+//                os_log("🌶 Engine Error", log: Streamer.logger, type: .debug)
+            }
+        }
+        
+        guard playerNode.isPlaying else {
+            os_log("👻 Player node not running - restart it", log: Streamer.logger, type: .debug)
+            playerNode.play()
             return
         }
 
         do {
+//            if engine.isRunning {
+//                os_log("🌶 Engine running - Read next buffer", log: Streamer.logger, type: .debug)
+//            } else {
+//                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
+//            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.reachedEndOfFile {
-            os_log("Scheduler reached end of file", log: Streamer.logger, type: .debug)
-            isFileSchedulingComplete = true
+            if downloader.state == .completed {
+                os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
+                isFileSchedulingComplete = true
+            } else if downloader.state == .started {
+                pause()
+                state = .buffering
+                os_log("🌶 Buffering", log: Streamer.logger, type: .debug)
+            } else {
+                os_log("🌶 Downloader in weird state", log: Streamer.logger, type: .debug)
+            }
         } catch {
             os_log("Cannot schedule buffer: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
         }
@@ -308,11 +433,13 @@ open class Streamer: Streaming {
         guard let currentTime = currentTime, let duration = duration else {
             return
         }
+        
+        previousTimeOffset = currentTime
 
-        if currentTime >= duration {
-            try? seek(to: 0)
-            pause()
-        }
+//        if currentTime >= duration {
+//            try? seek(to: 0)
+//            pause()
+//        }
     }
 
     // MARK: - Notifying The Delegate
@@ -321,7 +448,10 @@ open class Streamer: Streaming {
         guard let url = url else {
             return
         }
-
+        if state == .buffering {
+            isFileSchedulingComplete = false
+            os_log("Reset file scheduling - Downloading not finished", log: Streamer.logger, type: .debug)
+        }
         delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
     }
 
@@ -343,5 +473,81 @@ open class Streamer: Streaming {
         }
 
         delegate?.streamer(self, updatedCurrentTime: currentTime)
+    }
+}
+
+// MARK: - Buffer
+extension Streamer {
+    private func pollForNextBuffer() {
+        guard shouldPollForNextBuffer else { return }
+        
+        pollForNextBufferRecursive()
+    }
+    
+    private func pollForNextBufferRecursive() {
+        guard let reader = reader else {
+            os_log("No reader yet...", log: Streamer.logger, type: .debug)
+            return
+        }
+        
+        guard !isFileSchedulingComplete else {
+            return
+        }
+        
+         if engine.isRunning == false {
+            do {
+                os_log("👻 Engine not running - trying to launch", log: Streamer.logger, type: .debug)
+                try engine.start()
+                return
+            } catch {
+//                os_log("🌶 Engine Error", log: Streamer.logger, type: .debug)
+            }
+        }
+
+        guard playerNode.isPlaying else {
+            os_log("👻 Player node not running - restart it", log: Streamer.logger, type: .debug)
+            playerNode.play()
+            return
+        }
+
+        do {
+            
+            var nextScheduledBuffer: AVAudioPCMBuffer! = try reader.read(readBufferSize)
+
+            numberOfBuffersScheduledFromPoll += 1
+            numberOfBuffersScheduledInTotal += 1
+            
+         //   os_log("processed buffer for engine of frame length %d", log: Streamer.logger, type: .debug, nextScheduledBuffer.frameLength)
+            Streamer.queue.async { [weak self] in
+                if #available(iOS 11.0, *) {
+                    // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer, completionCallbackType: .dataConsumed, completionHandler: { (_) in
+                        nextScheduledBuffer = nil
+                        self?.numberOfBuffersScheduledInTotal -= 1
+                        self?.pollForNextBufferRecursive()
+                    })
+                } else {
+                    self?.playerNode.scheduleBuffer(nextScheduledBuffer) {
+                        nextScheduledBuffer = nil
+                        self?.numberOfBuffersScheduledInTotal -= 1
+                        self?.pollForNextBufferRecursive()
+                    }
+                }
+            }
+        } catch ReaderError.reachedEndOfFile {
+            if downloader.state == .completed {
+                os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
+                isFileSchedulingComplete = true
+            } else if downloader.state == .started {
+                pause()
+                state = .buffering
+                shouldPollForNextBuffer = false
+                os_log("🌶 Buffering", log: Streamer.logger, type: .debug)
+            } else {
+                os_log("🌶 Downloader in weird state", log: Streamer.logger, type: .debug)
+            }
+        } catch {
+            os_log("Cannot schedule buffer: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
+        }
     }
 }

@@ -12,7 +12,7 @@ import os.log
 extension Streamer: DownloadingDelegate {
     
     public func download(_ download: Downloading, completedWithError error: Error?) {
-        os_log("%@ - %d [error: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
+     //   os_log("%@ - %d [error: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
         
         if let error = error, let url = download.url {
             DispatchQueue.main.async { [unowned self] in
@@ -22,11 +22,11 @@ extension Streamer: DownloadingDelegate {
     }
     
     public func download(_ download: Downloading, changedState downloadState: DownloadingState) {
-        os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
+ //       os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
     }
     
     public func download(_ download: Downloading, didReceiveData data: Data, progress: Float) {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+//        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
 
         guard let parser = parser else {
             os_log("Expected parser, bail...", log: Streamer.logger, type: .error)
@@ -45,7 +45,7 @@ extension Streamer: DownloadingDelegate {
             do {
                 reader = try Reader(parser: parser, readFormat: readFormat)
             } catch {
-                os_log("Failed to create reader: %@", log: Streamer.logger, type: .error, error.localizedDescription)
+                os_log("Failed to create reader: %@", log: Reader.logger, type: .error, error.localizedDescription)
             }
         }
         

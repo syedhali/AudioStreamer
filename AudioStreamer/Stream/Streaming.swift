@@ -70,6 +70,7 @@ public protocol Streaming: class {
     /// - Throws: An `Error` describing the reason the seek failed. Concrete classes can use typed-errors to give a specific reason.
     func seek(to time: TimeInterval) throws
     
+    func resume()    
 }
 
 extension Streaming {

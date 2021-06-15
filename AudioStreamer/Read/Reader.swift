@@ -13,7 +13,7 @@ import os.log
 
 /// The `Reader` is a concrete implementation of the `Reading` protocol and is intended to provide the audio data provider for an `AVAudioEngine`. The `parser` property provides a `Parseable` that handles converting binary audio data into audio packets in whatever the original file's format was (MP3, AAC, WAV, etc). The reader handles converting the audio data coming from the parser to a LPCM format that can be used in the context of `AVAudioEngine` since the `AVAudioPlayerNode` requires we provide `AVAudioPCMBuffer` in the `scheduleBuffer` methods.
 public class Reader: Reading {
-    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
+    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Reader")
     static let loggerConverter = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Reader.Converter")
     
     // MARK: - Reading props
@@ -28,10 +28,11 @@ public class Reader: Reading {
     var converter: AudioConverterRef? = nil
         
     // MARK: - Lifecycle
-    
+
     deinit {
+        os_log("🗑 dispose of audio converter", log: Reader.logger, type: .debug)
         guard AudioConverterDispose(converter!) == noErr else {
-            os_log("Failed to dispose of audio converter", log: Reader.logger, type: .error)
+            os_log("Failed to dispose of audio converter", log: Reader.logger, type: .debug)
             return
         }
     }
@@ -59,7 +60,8 @@ public class Reader: Reading {
     public func read(_ frames: AVAudioFrameCount) throws -> AVAudioPCMBuffer {
         let framesPerPacket = readFormat.streamDescription.pointee.mFramesPerPacket
         var packets = frames / framesPerPacket
-        
+     //   os_log("[frames: %i] / [framesPerPacket: %i] = [packets: %i]", log: Reader.logger, type: .debug, frames, framesPerPacket, packets)
+
         /// Allocate a buffer to hold the target audio data in the Read format
         guard let buffer = AVAudioPCMBuffer(pcmFormat: readFormat, frameCapacity: frames) else {
             throw ReaderError.failedToCreatePCMBuffer
@@ -87,7 +89,7 @@ public class Reader: Reading {
     }
     
     public func seek(_ packet: AVAudioPacketCount) throws {
-        os_log("%@ - %d [packet: %i]", log: Parser.logger, type: .debug, #function, #line, packet)
+        os_log("%@ - %d [packet: %i]", log: Reader.logger, type: .debug, #function, #line, packet)
         
         Streamer.queue.sync {
             currentPacket = packet

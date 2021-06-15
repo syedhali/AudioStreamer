@@ -12,7 +12,7 @@ import os.log
 /// The `Downloader` is a concrete implementation of the `Downloading` protocol
 /// using `URLSession` as the backing HTTP/HTTPS implementation.
 public class Downloader: NSObject, Downloading {
-    static let logger = OSLog.disabled // OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
+    static let logger = OSLog.disabled //OSLog(subsystem: "com.fastlearner.streamer", category: "Downloader")
     
     enum ResponseError: Error {
         case trackNotAllowed
@@ -26,7 +26,7 @@ public class Downloader: NSObject, Downloading {
     // MARK: - Properties
     
     /// A `Bool` indicating whether the session should use the shared URL cache or not. Really useful for testing, but in production environments you probably always want this to `true`. Default is true.
-    public var useCache = true {
+    public var useCache = false {
         didSet {
             session.configuration.urlCache = useCache ? URLCache.shared : nil
         }
