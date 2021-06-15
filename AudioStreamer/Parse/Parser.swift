@@ -51,6 +51,10 @@ public class Parser: Parsing {
         }
     }
     
+    deinit {
+        os_log("🗑 DELETE PARSER", log: Streamer.logger, type: .debug)
+    }
+    
     // MARK: - Methods
     
     public func parse(data: Data) throws {

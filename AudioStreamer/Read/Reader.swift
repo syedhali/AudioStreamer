@@ -28,7 +28,7 @@ public class Reader: Reading {
     var converter: AudioConverterRef? = nil
         
     // MARK: - Lifecycle
-    
+
     deinit {
         os_log("🗑 dispose of audio converter", log: Reader.logger, type: .debug)
         guard AudioConverterDispose(converter!) == noErr else {

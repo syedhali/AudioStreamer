@@ -94,7 +94,7 @@ open class Streamer: Streaming {
     
     private var numberOfBuffersScheduledInTotal = 0 {
         didSet {
-            os_log("number of buffers scheduled in total %d", log: Streamer.logger, type: .debug, numberOfBuffersScheduledInTotal)
+            //   os_log("number of buffers scheduled in total %d", log: Streamer.logger, type: .debug, numberOfBuffersScheduledInTotal)
             if numberOfBuffersScheduledInTotal == 0 {
                 //                delegate?.didError()
                 // TODO: we should not have an error here. We should instead have the throttler
@@ -112,6 +112,10 @@ open class Streamer: Streaming {
     public init() {        
         // Setup the audio engine (attach nodes, connect stuff, etc). No playback yet.
         setupAudioEngine()
+    }
+    
+    deinit {
+        os_log("🗑 DELETE STREAMER", log: Streamer.logger, type: .debug)
     }
     
     var _timer: Timer?
@@ -138,8 +142,8 @@ open class Streamer: Streaming {
                 return
             }
             
-            self?.pollForNextBuffer()
-//            self?.scheduleNextBuffer()
+//            self?.pollForNextBuffer()
+            self?.scheduleNextBuffer()
             self?.handleTimeUpdate()
             self?.notifyTimeUpdated()
         }
@@ -269,9 +273,8 @@ open class Streamer: Streaming {
         }
 
         // Pause the player node and the engine
-        engine.pause()
-        playerNode.pause()
-        
+        self.engine.pause()
+        self.playerNode.pause()
         shouldPollForNextBuffer = false
         // Update the state
         state = .paused
@@ -281,9 +284,9 @@ open class Streamer: Streaming {
         os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
         
         // Stop the downloader, the player node, and the engine
-        downloader.stop()
-        playerNode.stop()
-        engine.stop()
+            downloader.stop()
+            playerNode.stop()
+            engine.stop()
         
         // Update the state
         state = .stopped
@@ -311,7 +314,7 @@ open class Streamer: Streaming {
         let lastVolume = volumeRampTargetValue ?? volume
         
         // Stop the player node to reset the time offset to 0
-        playerNode.stop()
+            playerNode.stop()
         volume = 0
         
         // Perform the seek to the proper packet offset
@@ -387,9 +390,7 @@ open class Streamer: Streaming {
 //                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
 //            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
-            Streamer.queue.async { [weak self] in
-                self?.playerNode.scheduleBuffer(nextScheduledBuffer)
-            }
+            playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.reachedEndOfFile {
             if downloader.state == .completed {
                 os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
@@ -502,13 +503,13 @@ extension Streamer {
 //                os_log("🌶 Engine Error", log: Streamer.logger, type: .debug)
             }
         }
-        
+
         guard playerNode.isPlaying else {
             os_log("👻 Player node not running - restart it", log: Streamer.logger, type: .debug)
             playerNode.play()
             return
         }
-        
+
         do {
             
             var nextScheduledBuffer: AVAudioPCMBuffer! = try reader.read(readBufferSize)
@@ -516,7 +517,7 @@ extension Streamer {
             numberOfBuffersScheduledFromPoll += 1
             numberOfBuffersScheduledInTotal += 1
             
-            os_log("processed buffer for engine of frame length %d", log: Streamer.logger, type: .debug, nextScheduledBuffer.frameLength)
+         //   os_log("processed buffer for engine of frame length %d", log: Streamer.logger, type: .debug, nextScheduledBuffer.frameLength)
             Streamer.queue.async { [weak self] in
                 if #available(iOS 11.0, *) {
                     // to make sure the pcm buffers are properly free'd from memory we need to nil them after the player has used them
