@@ -15,7 +15,7 @@ open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
     /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
-    static let queue = DispatchQueue(label: "com.fastlearner.streamer", qos: .userInitiated)
+    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
 
     // MARK: - Properties (Streaming)
     
@@ -150,7 +150,7 @@ open class Streamer: Streaming {
 //        _timer?.fire()
         
 //        Streamer.queue.async {
-            RunLoop.current.add(timer, forMode: .default)
+            RunLoop.current.add(timer, forMode: .common)
 //        }
     }
 
