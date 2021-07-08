@@ -57,7 +57,7 @@ extension Streamer: DownloadingDelegate {
             self?.notifyDownloadProgress(progress)
             
             // Check if we have the duration
-            self?.handleDurationUpdate()
+//            self?.handleDurationUpdate()
         }
     }
     
