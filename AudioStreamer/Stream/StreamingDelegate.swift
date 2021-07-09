@@ -48,4 +48,5 @@ public protocol StreamingDelegate: class {
     ///   - duration: A `TimeInterval` representing the new duration value.
     func streamer(_ streamer: Streaming, updatedDuration duration: TimeInterval)
     
+    func streamer(_ streamer: Streaming, failedToRead error: Error, forURL url: URL)
 }
