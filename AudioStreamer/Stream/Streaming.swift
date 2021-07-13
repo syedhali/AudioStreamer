@@ -21,7 +21,7 @@ public protocol Streaming: class {
     var delegate: StreamingDelegate? { get set }
     
     /// A `TimeInterval` representing the total duration
-    var duration: TimeInterval? { get }
+    var duration: TimeInterval? { get set }
     
     /// A `Downloading` used to download the audio's binary data
     var downloader: Downloading { get }

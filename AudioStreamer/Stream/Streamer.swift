@@ -28,7 +28,7 @@ open class Streamer: Streaming {
         return currentTime + currentTimeOffset
     }
     public var delegate: StreamingDelegate?
-    public internal(set) var duration: TimeInterval?
+    public var duration: TimeInterval?
     public lazy var downloader: Downloading = {
         let downloader = Downloader()
         downloader.delegate = self
