@@ -390,6 +390,7 @@ open class Streamer: Streaming {
 //                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
 //            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
+            delegate?.streamer(self, buffer: nextScheduledBuffer)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.reachedEndOfFile {
             if downloader.state == .completed {
