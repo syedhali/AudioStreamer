@@ -11,7 +11,7 @@ import os.log
 
 extension Downloader: URLSessionDataDelegate {
     public func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive response: URLResponse, completionHandler: @escaping (URLSession.ResponseDisposition) -> Void) {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        print("Download Started bytes \(response.expectedContentLength)")
 
         totalBytesCount = response.expectedContentLength
         completionHandler(.allow)
@@ -27,7 +27,7 @@ extension Downloader: URLSessionDataDelegate {
     }
     
     public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
+        print("Download completed")
         state = .completed
         if let httpResponse = task.response as? HTTPURLResponse, httpResponse.statusCode == 403 {
             delegate?.download(self, completedWithError: ResponseError.trackNotAllowed)

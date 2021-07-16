@@ -19,14 +19,14 @@ func ParserPropertyChangeCallback(_ context: UnsafeMutableRawPointer, _ streamID
         var format = AudioStreamBasicDescription()
         GetPropertyValue(&format, streamID, propertyID)
         parser.dataFormat = AVAudioFormat(streamDescription: &format)
-        os_log("Data format: %@", log: Parser.loggerPropertyListenerCallback, type: .debug, String(describing: parser.dataFormat))
+        print("Data format: \(String(describing: parser.dataFormat))")
         
     case kAudioFileStreamProperty_AudioDataPacketCount:
         GetPropertyValue(&parser.packetCount, streamID, propertyID)
-        os_log("Packet count: %i", log: Parser.loggerPropertyListenerCallback, type: .debug, parser.packetCount)
+        print("Packet count: \(parser.packetCount)")
 
     default:
-        os_log("%@", log: Parser.loggerPropertyListenerCallback, type: .debug, propertyID.description)
+        print("Property Description -> \(propertyID.description)")
     }
 }
 

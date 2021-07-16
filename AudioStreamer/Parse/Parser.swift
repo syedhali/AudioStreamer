@@ -27,7 +27,7 @@ public class Parser: Parsing {
         
         return max(AVAudioPacketCount(packetCount), AVAudioPacketCount(packets.count))
     }
-    
+        
     // MARK: - Properties
     
     /// A `UInt64` corresponding to the total frame count parsed by the Audio File Stream Services
@@ -38,7 +38,7 @@ public class Parser: Parsing {
     
     /// The `AudioFileStreamID` used by the Audio File Stream Services for converting the binary data into audio packets
     fileprivate var streamID: AudioFileStreamID?
-    
+
     // MARK: - Lifecycle
     
     /// Initializes an instance of the `Parser`
@@ -58,16 +58,18 @@ public class Parser: Parsing {
     // MARK: - Methods
     
     public func parse(data: Data) throws {
-        os_log("%@ - %d", log: Parser.logger, type: .debug, #function, #line)
         let streamID = self.streamID!
         let count = data.count
         _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
             let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
             guard result == noErr else {
-                os_log("Failed to parse bytes", log: Parser.logger, type: .error)
+                print("Failed to parse bytes")
                 throw ParserError.failedToParseBytes(result)
             }
         }
     }
-
+    
+    public func add(packet: (Data, AudioStreamPacketDescription?)) {
+        packets.append(packet)
+    }
 }

@@ -403,8 +403,10 @@ open class Streamer: Streaming {
                 os_log("🌶 Downloader in weird state", log: Streamer.logger, type: .debug)
             }
         } catch {
-            if let url = url { delegate?.streamer(self, failedToRead: error, forURL: url) }
-            os_log("Cannot schedule buffer: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
+            print("Cannot schedule buffer: \(error.localizedDescription)")
+            if let url = url {
+                delegate?.streamer(self, failedToRead: error, forURL: url)
+            }
         }
     }
 

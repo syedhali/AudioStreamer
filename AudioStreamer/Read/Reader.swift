@@ -76,6 +76,7 @@ public class Reader: Reading {
             let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
             let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
             guard status == noErr else {
+                print("Error Read \(status)")
                 switch status {
                 case ReaderMissingSourceFormatError:
                     throw ReaderError.parserMissingDataFormat
