@@ -15,12 +15,15 @@ import AudioToolbox
 /// - failedToParseBytes: The parser failed to parse the raw bytes. This will contain an OSStatus that is the return value from the AudioFileParseBytes method that emitted this error.
 public enum ParserError: LocalizedError {
     case streamCouldNotOpen
+    case fileTypeUnsupported
     case failedToParseBytes(OSStatus)
     
     public var errorDescription: String? {
         switch self {
         case .streamCouldNotOpen:
             return "Could not open stream for parsing"
+        case .fileTypeUnsupported:
+            return "The file type is not supported"
         case .failedToParseBytes(let status):
             return localizedDescriptionFromParseError(status)
         }
@@ -28,8 +31,6 @@ public enum ParserError: LocalizedError {
     
     func localizedDescriptionFromParseError(_ status: OSStatus) -> String {
         switch status {
-        case kAudioFileStreamError_UnsupportedFileType:
-            return "The file type is not supported"
         case kAudioFileStreamError_UnsupportedDataFormat:
             return "The data format is not supported by this file type"
         case kAudioFileStreamError_UnsupportedProperty:

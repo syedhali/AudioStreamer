@@ -14,6 +14,7 @@ import AudioToolbox
 let ReaderReachedEndOfDataError: OSStatus = 932332581
 let ReaderNotEnoughDataError: OSStatus = 932332582
 let ReaderMissingSourceFormatError: OSStatus = 932332583
+let ReaderCodecBadDataError: OSStatus = 1650549857
 
 // MARK: - ReaderError
 
@@ -23,6 +24,7 @@ public enum ReaderError: LocalizedError {
     case failedToCreateDestinationFormat
     case failedToCreatePCMBuffer
     case notEnoughData
+    case codecBadData
     case parserMissingDataFormat
     case reachedEndOfFile
     case unableToCreateConverter(OSStatus)
@@ -41,6 +43,8 @@ public enum ReaderError: LocalizedError {
             return "Not enough data for read-conversion operation"
         case .parserMissingDataFormat:
             return "Parser is missing a valid data format"
+        case .codecBadData:
+            return "Bad data on codec format"
         case .reachedEndOfFile:
             return "Reached the end of the file"
         case .unableToCreateConverter(let status):

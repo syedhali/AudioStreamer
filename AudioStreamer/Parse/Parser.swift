@@ -46,7 +46,7 @@ public class Parser: Parsing {
     /// - Throws: A `ParserError.streamCouldNotOpen` meaning a file stream instance could not be opened
     public init() throws {
         let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
-        guard AudioFileStreamOpen(context, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileMP3Type, &streamID) == noErr else {
+        guard AudioFileStreamOpen(context, ParserPropertyChangeCallback, ParserPacketCallback, kAudioFileM4AType, &streamID) == noErr else {
             throw ParserError.streamCouldNotOpen
         }
     }
@@ -63,8 +63,11 @@ public class Parser: Parsing {
         _ = try data.withUnsafeBytes { (bytes: UnsafePointer<UInt8>) in
             let result = AudioFileStreamParseBytes(streamID, UInt32(count), bytes, [])
             guard result == noErr else {
-                print("Failed to parse bytes")
-                throw ParserError.failedToParseBytes(result)
+                if result == kAudioFileStreamError_UnsupportedFileType {
+                    throw ParserError.fileTypeUnsupported
+                } else {
+                    throw ParserError.failedToParseBytes(result)
+                }
             }
         }
     }

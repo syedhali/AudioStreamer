@@ -384,14 +384,14 @@ open class Streamer: Streaming {
         }
 
         do {
-//            if engine.isRunning {
-//                os_log("🌶 Engine running - Read next buffer", log: Streamer.logger, type: .debug)
-//            } else {
-//                os_log("🌶 Engine not running - Read next buffer", log: Streamer.logger, type: .debug)
-//            }
             let nextScheduledBuffer = try reader.read(readBufferSize)
             delegate?.streamer(self, buffer: nextScheduledBuffer)
             playerNode.scheduleBuffer(nextScheduledBuffer)
+        } catch ReaderError.codecBadData {
+            print("🌶 Error codec bad data - relauching download")
+            let currentUrl = url
+            url = currentUrl
+            play()
         } catch ReaderError.reachedEndOfFile {
             if downloader.state == .completed {
                 os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)

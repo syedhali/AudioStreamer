@@ -36,6 +36,10 @@ extension Streamer: DownloadingDelegate {
         /// Parse the incoming audio into packets
         do {
             try parser.parse(data: data)
+        } catch ParserError.fileTypeUnsupported {
+            let currentUrl = url
+            url = currentUrl
+            play()
         } catch {
             os_log("Failed to parse: %@", log: Streamer.logger, type: .error, error.localizedDescription)
         }

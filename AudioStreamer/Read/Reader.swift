@@ -84,6 +84,8 @@ public class Reader: Reading {
                     throw ReaderError.reachedEndOfFile
                 case ReaderNotEnoughDataError:
                     throw ReaderError.notEnoughData
+                case ReaderCodecBadDataError:
+                    throw ReaderError.codecBadData
                 default:
                     throw ReaderError.converterFailed(status)
                 }
