@@ -48,7 +48,7 @@ public class Downloader: NSObject, Downloading {
     
     // MARK: - Properties (Downloading)
     
-    public var delegate: DownloadingDelegate?
+    public weak var delegate: DownloadingDelegate?
     public var completionHandler: ((Error?) -> Void)?
     public var progressHandler: ((Data, Float) -> Void)?
     public var progress: Float = 0
