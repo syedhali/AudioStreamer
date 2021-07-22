@@ -14,9 +14,6 @@ import os.log
 open class Streamer: Streaming {
     static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
 
-    /// A `DispatchQueue` used to ensure any operations we do changing the current packet index is thread-safe
-    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
-
     // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
@@ -75,7 +72,10 @@ open class Streamer: Streaming {
 
     /// A `TimeInterval` used to calculate the current play time relative to a seek operation.
     var previousTimeOffset: TimeInterval = 0
-
+    
+    /// A `BackgroundWorker` used to read our packets.
+    let worker = BackgroundWorker()
+    
     // MARK: - Lifecycle
     
     public init() {        
@@ -84,11 +84,10 @@ open class Streamer: Streaming {
     }
     
     deinit {
+        worker.stop()
         print("🗑 Delete streamer")
     }
     
-    var _timer: Timer?
-
     // MARK: - Setup
 
     func setupAudioEngine() {
@@ -100,19 +99,20 @@ open class Streamer: Streaming {
 
         // Prepare the engine
         engine.prepare()
-        
+
         /// Use timer to schedule the buffers (this is not ideal, wish AVAudioEngine provided a pull-model for scheduling buffers)
         let interval = 1 / (readFormat.sampleRate / Double(readBufferSize))
-        let timer = Timer(timeInterval: interval, repeats: true) {
-            [weak self] _ in
-            guard self?.state == .playing else {
-                return
+        worker.start { [weak self] in
+            let timer = Timer(timeInterval: interval, repeats: true) { [weak self] _ in
+                guard self?.state == .playing else {
+                    return
+                }
+                self?.scheduleNextBuffer()
+                self?.handleTimeUpdate()
+                self?.notifyTimeUpdated()
             }
-            self?.scheduleNextBuffer()
-            self?.handleTimeUpdate()
-            self?.notifyTimeUpdated()
+            RunLoop.current.add(timer, forMode: .common)
         }
-        RunLoop.main.add(timer, forMode: .common)
     }
 
     /// Subclass can override this to attach additional nodes to the engine before it is prepared. Default implementation attaches the `playerNode`. Subclass should call super or be sure to attach the playerNode.
@@ -143,7 +143,6 @@ open class Streamer: Streaming {
 
         // Prepare the engine
         engine.prepare()
-        
         
         if engine.isRunning == false {
             print("🌶 Starting back engine")
@@ -234,12 +233,12 @@ open class Streamer: Streaming {
     }
     
     public func stop() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
+        print("🌶 Stop")
         
         // Stop the downloader, the player node, and the engine
-            downloader.stop()
-            playerNode.stop()
-            engine.stop()
+        downloader.stop()
+        playerNode.stop()
+        engine.stop()
         
         // Update the state
         state = .stopped
@@ -338,7 +337,7 @@ open class Streamer: Streaming {
 
         do {
             let nextScheduledBuffer = try reader.read(readBufferSize)
-            delegate?.streamer(self, buffer: nextScheduledBuffer)
+          //  delegate?.streamer(self, buffer: nextScheduledBuffer)
             playerNode.scheduleBuffer(nextScheduledBuffer)
         } catch ReaderError.codecBadData {
             print("🌶 Error codec bad data - relauching download")
