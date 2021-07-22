@@ -32,6 +32,8 @@ extension Downloader: URLSessionDataDelegate {
         if let httpResponse = task.response as? HTTPURLResponse, httpResponse.statusCode == 403 {
             delegate?.download(self, completedWithError: ResponseError.trackNotAllowed)
             completionHandler?(ResponseError.trackNotAllowed)
+        } else if let err = error as? NSError, err.code == -999 {
+            // Do nothing cuz user decided to cancel download
         } else {
             delegate?.download(self, completedWithError: error)
             completionHandler?(error)
