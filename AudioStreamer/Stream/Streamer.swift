@@ -306,6 +306,8 @@ open class Streamer: Streaming {
             self.volumeRampTimer = timer
         }
     }
+    
+    let locker = NSLock()
 
     // MARK: - Scheduling Buffers
 
@@ -337,8 +339,13 @@ open class Streamer: Streaming {
 
         do {
             let nextScheduledBuffer = try reader.read(readBufferSize)
-          //  delegate?.streamer(self, buffer: nextScheduledBuffer)
             playerNode.scheduleBuffer(nextScheduledBuffer)
+            locker.lock()
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                self.delegate?.streamer(self, buffer: nextScheduledBuffer)
+            }
+            locker.unlock()
         } catch ReaderError.codecBadData {
             print("🌶 Error codec bad data - relauching download")
             let currentUrl = url
@@ -423,6 +430,9 @@ open class Streamer: Streaming {
             return
         }
 
-        delegate?.streamer(self, updatedCurrentTime: currentTime)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            self.delegate?.streamer(self, updatedCurrentTime: currentTime)
+        }
     }
 }
