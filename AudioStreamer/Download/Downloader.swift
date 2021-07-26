@@ -24,17 +24,12 @@ public class Downloader: NSObject, Downloading {
     public static var shared: Downloader = Downloader()
     
     // MARK: - Properties
-    
-    /// A `Bool` indicating whether the session should use the shared URL cache or not. Really useful for testing, but in production environments you probably always want this to `true`. Default is true.
-    public var useCache = false {
-        didSet {
-            session.configuration.urlCache = useCache ? URLCache.shared : nil
-        }
-    }
-    
+
     /// The `URLSession` currently being used as the HTTP/HTTPS implementation for the downloader.
     fileprivate lazy var session: URLSession = {
-        return URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        let urlSession = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
+        urlSession.configuration.urlCache = nil
+        return urlSession
     }()
     
     /// A `URLSessionDataTask` representing the data operation for the current `URL`.
