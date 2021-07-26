@@ -72,7 +72,7 @@ public class Reader: Reading {
         buffer.frameLength = frames
         
         // Try to read the frames from the parser
-        try queue.sync {
+//        try queue.sync {
             let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
             let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
             guard status == noErr else {
@@ -90,7 +90,7 @@ public class Reader: Reading {
                     throw ReaderError.converterFailed(status)
                 }
             }
-        }
+//        }
         return buffer
     }
     
