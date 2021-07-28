@@ -12,16 +12,16 @@ import os.log
 
 /// The `Streamer` is a concrete implementation of the `Streaming` protocol and is intended to provide a high-level, extendable class for streaming an audio file living at a URL on the internet. Subclasses can override the `attachNodes` and `connectNodes` methods to insert custom effects.
 open class Streamer: Streaming {
-    static let logger = OSLog(subsystem: "com.fastlearner.streamer", category: "Streamer")
-
     // MARK: - Properties (Streaming)
     
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
             let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-            return currentTimeOffset
+            print("No time available so returning current \(previousTimeOffset)")
+            return previousTimeOffset
         }
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
+        print("Current time \(currentTime) + time offset \(currentTimeOffset) = \(currentTime + currentTimeOffset)")
         return currentTime + currentTimeOffset
     }
     public weak var delegate: StreamingDelegate?
@@ -85,7 +85,6 @@ open class Streamer: Streaming {
     
     deinit {
         worker.stop()
-        print("🗑 Delete streamer")
     }
     
     // MARK: - Setup
@@ -126,8 +125,7 @@ open class Streamer: Streaming {
     }
 
     open func resume() {
-
-        os_log("🌶 Previous Time was %d", log: Streamer.logger, type: .debug, previousTimeOffset)
+        print("🌶 Previous Time was \(previousTimeOffset)")
         currentTimeOffset = previousTimeOffset
 
         engine.disconnectNodeInput(playerNode)
@@ -145,24 +143,17 @@ open class Streamer: Streaming {
         engine.prepare()
         
         if engine.isRunning == false {
-            print("🌶 Starting back engine")
             do {
                 try engine.start()
             } catch {
-                print("🌶 Can not start engine")
             }
-        } else {
-            print("🌶 Already running")
         }
-
         play()
     }
     
     // MARK: - Reset
     
     func reset() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-        
         // Reset the playback state
         stop()
         duration = nil
@@ -175,34 +166,24 @@ open class Streamer: Streaming {
         do {
             parser = try Parser()
         } catch {
-            os_log("Failed to create parser: %@", log: Streamer.logger, type: .error, error.localizedDescription)
         }
     }
     
     // MARK: - Methods
     
     public func play() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-        
         // Check we're not already playing
         guard !playerNode.isPlaying else {
-            os_log("%@ - %d // Already playing", log: Streamer.logger, type: .debug, #function, #line)
             return
         }
         
         if !engine.isRunning {
-            os_log("🌶 Engine not running", log: Streamer.logger, type: .debug)
             do {
                 try engine.start()
             } catch {
-                os_log("Failed to start engine: %@", log: Streamer.logger, type: .debug, error.localizedDescription)
             }
-        } else {
-            os_log("🌶 Engine running", log: Streamer.logger, type: .debug)
         }
-        
-        os_log("🌶 Wait", log: Streamer.logger, type: .debug)
-        
+
         // To make the volume change less harsh we mute the output volume
         let lastVolume = volumeRampTargetValue ?? volume
         volume = 0
@@ -218,8 +199,6 @@ open class Streamer: Streaming {
     }
     
     public func pause() {
-        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-        
         // Check if the player node is playing
         guard playerNode.isPlaying else {
             return
@@ -233,8 +212,6 @@ open class Streamer: Streaming {
     }
     
     public func stop() {
-        print("🌶 Stop")
-        
         // Stop the downloader, the player node, and the engine
         downloader.stop()
         playerNode.stop()
@@ -245,8 +222,6 @@ open class Streamer: Streaming {
     }
     
     public func seek(to time: TimeInterval) throws {
-        os_log("%@ - %d [%.1f]", log: Streamer.logger, type: .debug, #function, #line, time)
-        
         // Make sure we have a valid parser and reader
         guard let parser = parser, let reader = reader else {
             return
@@ -257,7 +232,6 @@ open class Streamer: Streaming {
             let packetOffset = parser.packetOffset(forFrame: frameOffset) else {
                 return
         }
-        print("🌶 Seek Frame [\(frameOffset)] -- Packet [\(packetOffset)]")
         currentTimeOffset = time
         isFileSchedulingComplete = false
         
@@ -273,7 +247,6 @@ open class Streamer: Streaming {
         do {
             try reader.seek(packetOffset)
         } catch {
-            os_log("Failed to seek: %@", log: Streamer.logger, type: .error, error.localizedDescription)
             return
         }
         
@@ -313,7 +286,6 @@ open class Streamer: Streaming {
 
     func scheduleNextBuffer() {
         guard let reader = reader else {
-            os_log("No reader yet...", log: Streamer.logger, type: .debug)
             return
         }
         
@@ -323,16 +295,13 @@ open class Streamer: Streaming {
         
          if engine.isRunning == false {
             do {
-                os_log("👻 Engine not running - trying to launch", log: Streamer.logger, type: .debug)
                 try engine.start()
                 return
             } catch {
-//                os_log("🌶 Engine Error", log: Streamer.logger, type: .debug)
             }
         }
         
         guard playerNode.isPlaying else {
-            os_log("👻 Player node not running - restart it", log: Streamer.logger, type: .debug)
             playerNode.play()
             return
         }
@@ -347,23 +316,18 @@ open class Streamer: Streaming {
             }
             locker.unlock()
         } catch ReaderError.codecBadData {
-            print("🌶 Error codec bad data - relauching download")
             let currentUrl = url
             url = currentUrl
             play()
         } catch ReaderError.reachedEndOfFile {
             if downloader.state == .completed {
-                os_log("🌶 Scheduler reached end of file", log: Streamer.logger, type: .debug)
                 isFileSchedulingComplete = true
             } else if downloader.state == .started {
+                previousTimeOffset = currentTime ?? 0
                 pause()
                 state = .buffering
-                os_log("🌶 Buffering", log: Streamer.logger, type: .debug)
-            } else {
-                os_log("🌶 Downloader in weird state", log: Streamer.logger, type: .debug)
             }
         } catch {
-            print("Cannot schedule buffer: \(error.localizedDescription)")
             if let url = url {
                 delegate?.streamer(self, failedToRead: error, forURL: url)
             }
@@ -408,7 +372,6 @@ open class Streamer: Streaming {
         }
         if state == .buffering {
             isFileSchedulingComplete = false
-            os_log("Reset file scheduling - Downloading not finished", log: Streamer.logger, type: .debug)
         }
         delegate?.streamer(self, updatedDownloadProgress: progress, forURL: url)
     }

@@ -12,24 +12,16 @@ import os.log
 extension Streamer: DownloadingDelegate {
     
     public func download(_ download: Downloading, completedWithError error: Error?) {
-     //   os_log("%@ - %d [error: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: error?.localizedDescription))
-        
         if let error = error, let url = download.url {
-//            DispatchQueue.main.async { [unowned self] in
-                self.delegate?.streamer(self, failedDownloadWithError: error, forURL: url)
-//            }
+            self.delegate?.streamer(self, failedDownloadWithError: error, forURL: url)
         }
     }
     
     public func download(_ download: Downloading, changedState downloadState: DownloadingState) {
- //       os_log("%@ - %d [state: %@]", log: Streamer.logger, type: .debug, #function, #line, String(describing: downloadState))
     }
     
     public func download(_ download: Downloading, didReceiveData data: Data, progress: Float) {
-//        os_log("%@ - %d", log: Streamer.logger, type: .debug, #function, #line)
-
         guard let parser = parser else {
-            os_log("Expected parser, bail...", log: Streamer.logger, type: .error)
             return
         }
         
@@ -41,7 +33,6 @@ extension Streamer: DownloadingDelegate {
             url = currentUrl
             play()
         } catch {
-            os_log("Failed to parse: %@", log: Streamer.logger, type: .error, error.localizedDescription)
         }
         
         /// Once there's enough data to start producing packets we can use the data format
@@ -49,19 +40,12 @@ extension Streamer: DownloadingDelegate {
             do {
                 reader = try Reader(parser: parser, readFormat: readFormat)
             } catch {
-                os_log("Failed to create reader: %@", log: Reader.logger, type: .error, error.localizedDescription)
             }
         }
-        
         /// Update the progress UI
-        DispatchQueue.main.async {
-            [weak self] in
-            
+        DispatchQueue.main.async { [weak self] in
             // Notify the delegate of the new progress value of the download
             self?.notifyDownloadProgress(progress)
-
-            // Check if we have the duration
-//            self?.handleDurationUpdate()
         }
     }
     
