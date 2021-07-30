@@ -17,11 +17,9 @@ open class Streamer: Streaming {
     public var currentTime: TimeInterval? {
         guard let nodeTime = playerNode.lastRenderTime,
             let playerTime = playerNode.playerTime(forNodeTime: nodeTime) else {
-            print("No time available so returning current \(previousTimeOffset)")
             return previousTimeOffset
         }
         let currentTime = TimeInterval(playerTime.sampleTime) / playerTime.sampleRate
-        print("Current time \(currentTime) + time offset \(currentTimeOffset) = \(currentTime + currentTimeOffset)")
         return currentTime + currentTimeOffset
     }
     public weak var delegate: StreamingDelegate?
@@ -61,6 +59,8 @@ open class Streamer: Streaming {
     
     var volumeRampTimer: Timer?
     var volumeRampTargetValue: Float?
+    
+    static let queue = DispatchQueue(label: "com.fastlearner.streamer")
 
     // MARK: - Properties
     

@@ -22,7 +22,7 @@ public class Reader: Reading {
     public let parser: Parsing
     public let readFormat: AVAudioFormat
     
-    private let queue = DispatchQueue(label: "com.fastlearner.streamer")
+//    private let queue = DispatchQueue(label: "com.fastlearner.streamer")
 
     
     // MARK: - Properties
@@ -72,7 +72,7 @@ public class Reader: Reading {
         buffer.frameLength = frames
         
         // Try to read the frames from the parser
-//        try queue.sync {
+        try Streamer.queue.sync {
             let context = unsafeBitCast(self, to: UnsafeMutableRawPointer.self)
             let status = AudioConverterFillComplexBuffer(converter!, ReaderConverterCallback, context, &packets, buffer.mutableAudioBufferList, nil)
             guard status == noErr else {
@@ -90,14 +90,14 @@ public class Reader: Reading {
                     throw ReaderError.converterFailed(status)
                 }
             }
-//        }
+        }
         return buffer
     }
     
     public func seek(_ packet: AVAudioPacketCount) throws {
         os_log("%@ - %d [packet: %i]", log: Reader.logger, type: .debug, #function, #line, packet)
         
-        queue.sync {
+        Streamer.queue.sync {
             currentPacket = packet
         }
     }

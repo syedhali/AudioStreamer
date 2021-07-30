@@ -18,8 +18,6 @@ public class Parser: Parsing {
     
     // MARK: - Parsing props
     
-    private let locker = NSLock()
-    
     public internal(set) var dataFormat: AVAudioFormat?
     public internal(set) var packets = [(Data, AudioStreamPacketDescription?)]()
     public var totalPacketCount: AVAudioPacketCount? {
@@ -71,8 +69,6 @@ public class Parser: Parsing {
     }
     
     public func add(packet: (Data, AudioStreamPacketDescription?)) {
-        locker.lock()
         packets.append(packet)
-        locker.unlock()
     }
 }

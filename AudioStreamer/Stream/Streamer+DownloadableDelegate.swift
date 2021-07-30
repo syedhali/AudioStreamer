@@ -25,14 +25,17 @@ extension Streamer: DownloadingDelegate {
             return
         }
         
-        /// Parse the incoming audio into packets
-        do {
-            try parser.parse(data: data)
-        } catch ParserError.fileTypeUnsupported {
-            let currentUrl = url
-            url = currentUrl
-            play()
-        } catch {
+        Streamer.queue.async { [weak self] in
+            guard let self = self else { return }
+            /// Parse the incoming audio into packets
+            do {
+                try self.parser?.parse(data: data)
+            } catch ParserError.fileTypeUnsupported {
+                let currentUrl = self.url
+                self.url = currentUrl
+                self.play()
+            } catch {
+            }
         }
         
         /// Once there's enough data to start producing packets we can use the data format
