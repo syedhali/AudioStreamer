@@ -15,7 +15,7 @@ enum RemoteFileURL {
     case theLastOnes
     
     private var hostname: String {
-        return "cdn.fastlearner.media"
+        return "cdn.ausomeapps.com"
     }
     
     var filename: String {
