@@ -54,6 +54,7 @@ public class Downloader: NSObject, Downloading {
     }
   }
   public var localFilePath: String = ""
+  public var storage: Storage?
   public var url: URL? {
     didSet {
       if state == .started {
@@ -73,6 +74,12 @@ public class Downloader: NSObject, Downloading {
   }
   
   // MARK: - Methods
+  
+  public func start(url: URL, localPath: String, storage: Storage) {
+    self.localFilePath = localPath
+    self.storage = storage
+    self.url = url
+  }
   
   public func start() {
     os_log("%@ - %d [%@]", log: Downloader.logger, type: .debug, #function, #line, String(describing: url))

@@ -34,6 +34,9 @@ public protocol Downloading: AnyObject {
   
   // MARK: - Methods
   
+  /// Starts the downloader with storage to save downloaded file
+  func start(url: URL, localPath: String, storage: Storage)
+  
   /// Starts the downloader
   func start()
   

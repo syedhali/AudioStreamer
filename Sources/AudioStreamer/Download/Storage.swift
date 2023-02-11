@@ -8,5 +8,6 @@
 import Foundation
 
 public protocol Storage {
-  
+  func appendDownloadedData(data: Data, _ filePath: String)
+  func finalizeDownload(_ filePath: String)
 }

@@ -24,6 +24,10 @@ extension Downloader: URLSessionDataDelegate {
     progress = Float(totalBytesReceived) / Float(totalBytesCount)
     delegate?.download(self, didReceiveData: data, progress: progress)
     progressHandler?(data, progress)
+    storage?.appendDownloadedData(data: data, localFilePath)
+    if progress >= 1 {
+      storage?.finalizeDownload(localFilePath)
+    }
   }
   
   public func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
