@@ -10,8 +10,8 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = "10.0"
   s.osx.deployment_target = "10.12"
   s.source       = { :git => "https://github.com/syedhali/AudioStreamer.git", :tag => "v#{s.version}" }
-  s.source_files  = "AudioStreamer/**/*.{swift}"
-  s.osx.exclude_files = "AudioStreamer/UI/ProgressSlider.swift"
+  s.source_files  = "Sources/AudioStreamer/**/*.{swift}"
+  s.osx.exclude_files = "Sources/AudioStreamer/UI/ProgressSlider.swift"
   s.swift_version = "4.2"
   s.frameworks = "AVFoundation", "AudioToolbox"
   s.requires_arc = true
