@@ -179,8 +179,10 @@ open class Streamer: Streaming {
     downloader.start()
   }
   
-  public func start(url: URL, localPath: String, storage: Storage) {
-    downloader.start(url: url, localPath: localPath, storage: storage)
+  public func start(remoteURL: String, localPath: String, storage: Storage) {
+    self.downloader.localFilePath = localPath
+    self.downloader.storage = storage
+    self.url = URL(string: remoteURL)
   }
   
   public func play() {

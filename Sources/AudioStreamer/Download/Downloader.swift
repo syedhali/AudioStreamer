@@ -75,12 +75,6 @@ public class Downloader: NSObject, Downloading {
   
   // MARK: - Methods
   
-  public func start(url: URL, localPath: String, storage: Storage) {
-    self.localFilePath = localPath
-    self.storage = storage
-    self.url = url
-  }
-  
   public func start() {
     os_log("%@ - %d [%@]", log: Downloader.logger, type: .debug, #function, #line, String(describing: url))
     
