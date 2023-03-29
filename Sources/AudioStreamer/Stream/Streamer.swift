@@ -355,8 +355,7 @@ open class Streamer: Streaming {
     }
     
     if currentTime >= duration {
-      try? seek(to: 0)
-      pause()
+			state = .finished
     }
   }
   

@@ -17,4 +17,5 @@ public enum StreamingState: String {
   case stopped
   case paused
   case playing
+	case finished
 }
