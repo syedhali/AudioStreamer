@@ -355,6 +355,7 @@ open class Streamer: Streaming {
     }
     
     if duration > 0 && currentTime >= duration {
+			stop()
 			state = .finished
     }
   }
