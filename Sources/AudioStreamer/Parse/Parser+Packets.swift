@@ -12,8 +12,7 @@ import os.log
 
 func ParserPacketCallback(_ context: UnsafeMutableRawPointer, _ byteCount: UInt32, _ packetCount: UInt32, _ data: UnsafeRawPointer, _ packetDescriptions: UnsafeMutablePointer<AudioStreamPacketDescription>?) {
   let parser = Unmanaged<Parser>.fromOpaque(context).takeUnretainedValue()
-  let packetDescriptionsOrNil: UnsafeMutablePointer<AudioStreamPacketDescription>? = packetDescriptions
-  let isCompressed = packetDescriptionsOrNil != nil
+  let isCompressed = packetDescriptions != nil
   os_log("%@ - %d [bytes: %i, packets: %i, compressed: %@]", log: Parser.loggerPacketCallback, type: .debug, #function, #line, byteCount, packetCount, "\(isCompressed)")
   
   /// At this point we should definitely have a data format
