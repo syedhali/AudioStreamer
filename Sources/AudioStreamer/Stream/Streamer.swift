@@ -210,7 +210,7 @@ open class Streamer: Streaming {
     
     // After 250ms we restore the volume to where it was
     swellVolume(to: lastVolume)
-    
+    state = .playing
   }
   
   public func pause() {
