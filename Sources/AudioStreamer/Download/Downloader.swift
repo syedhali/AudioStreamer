@@ -98,10 +98,6 @@ public class Downloader: NSObject, Downloading {
       return
     }
     
-    guard state == .started else {
-      return
-    }
-    
     state = .paused
     task.suspend()
   }
@@ -110,10 +106,6 @@ public class Downloader: NSObject, Downloading {
     os_log("%@ - %d", log: Downloader.logger, type: .debug, #function, #line)
     
     guard let task = task else {
-      return
-    }
-    
-    guard state == .started else {
       return
     }
     
