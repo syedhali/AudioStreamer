@@ -14,8 +14,11 @@ import Foundation
 /// - paused: Audio playback is paused
 /// - playing: Audio playback is playing
 public enum StreamingState: String {
-  case stopped
+  case idle
+  case loading
+  case buffering
   case paused
   case playing
+  case stopped
 	case finished
 }

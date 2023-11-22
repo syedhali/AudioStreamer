@@ -35,7 +35,7 @@ open class Streamer: Streaming {
   public internal(set) var reader: Reading?
   public let engine = AVAudioEngine()
   public let playerNode = AVAudioPlayerNode()
-  public internal(set) var state: StreamingState = .stopped {
+  public internal(set) var state: StreamingState = .idle {
     didSet {
       delegate?.streamer(self, changedState: state)
     }
@@ -211,8 +211,6 @@ open class Streamer: Streaming {
     // After 250ms we restore the volume to where it was
     swellVolume(to: lastVolume)
     
-    // Update the state
-    state = .playing
   }
   
   public func pause() {
@@ -308,6 +306,7 @@ open class Streamer: Streaming {
   
   func scheduleNextBuffer() {
     guard let reader = reader else {
+      state = .buffering
       os_log("No reader yet...", log: Streamer.logger, type: .debug)
       return
     }
@@ -319,6 +318,9 @@ open class Streamer: Streaming {
     do {
       let nextScheduledBuffer = try reader.read(readBufferSize)
       playerNode.scheduleBuffer(nextScheduledBuffer)
+      if playerNode.isPlaying {
+        state = .playing
+      }
     } catch ReaderError.reachedEndOfFile {
       os_log("Scheduler reached end of file", log: Streamer.logger, type: .debug)
       isFileSchedulingComplete = true
